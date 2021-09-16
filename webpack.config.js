@@ -1,16 +1,19 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const EslintWebpackPlugin = require('eslint-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const webpack = require('webpack');
+const DotenvPlugin = require('dotenv-webpack');
 const path = require('path');
 
-const { DEV_PORT, VERCEL_URL } = process.env;
-const { parsed } = require('dotenv').config({
+require('dotenv').config({
   path: './.env',
 });
 
+const { DEV_PORT, VERCEL_URL, PUBLIC_PATH } = process.env;
+
 const config = {
-  DEV_PORT: DEV_PORT || parsed.DEV_PORT,
-  PUBLIC_PATH: VERCEL_URL ? `https://${VERCEL_URL}/` : parsed.PUBLIC_PATH,
+  DEV_PORT,
+  PUBLIC_PATH: VERCEL_URL ? `https://${VERCEL_URL}/` : PUBLIC_PATH,
 };
 
 const { ModuleFederationPlugin } = webpack.container;
@@ -60,12 +63,6 @@ module.exports = {
   module: {
     rules: [
       {
-        enforce: 'pre',
-        test: /\.(ts|js)x?$/,
-        use: 'eslint-loader',
-        exclude: [/node_modules/],
-      },
-      {
         test: /\.(ts|js)x?$/,
         exclude: [/node_modules/],
         use: [
@@ -112,14 +109,21 @@ module.exports = {
     ],
   },
   plugins: [
+    new EslintWebpackPlugin({
+      extensions: ['ts', 'js', 'tsx', 'jsx'],
+      exclude: [`/node_modules/`],
+    }),
+    new DotenvPlugin({
+      systemvars: true,
+    }),
     new ForkTsCheckerWebpackPlugin({
       eslint: {
         files: './src/**/*.{ts,tsx,js,jsx}',
       },
     }),
     new ModuleFederationPlugin({
-      name: 'app',
-      library: { type: 'var', name: 'app' },
+      name: 'reporting_hub_bop_trx_ui',
+      library: { type: 'var', name: 'reporting_hub_bop_trx_ui' },
       filename: 'app.js',
       exposes: {
         './App': './src/Injector',

@@ -9,7 +9,7 @@ interface ExportMenuProps {
 export default function ExportMenu({ path }: ExportMenuProps) {
   return (
     <>
-      <Menu.Item path={`${path}/transfers`} label="Find Transfers" />
+      <Menu.Item path={`${path}`} label="Find Transfers" />
     </>
   );
 }
