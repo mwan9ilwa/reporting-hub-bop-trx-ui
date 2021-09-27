@@ -1288,6 +1288,13 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
+"@modusbox/microfrontend-utils@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@modusbox/microfrontend-utils/-/microfrontend-utils-0.0.3.tgz#15a431141335160b96e8de57b6a0a22fbc39ea7c"
+  integrity sha512-MAWmhyFP8zX62R49j/Jl9LkRgENzUX9LxIjddw2AR+Zx2xVkjgwLTnAjbQ1mTNNSStjjMq4FF7OSaTd1zJu+DA==
+  dependencies:
+    lodash "^4.17.21"
+
 "@modusbox/modusbox-ui-components@^1.23.0":
   version "1.23.0"
   resolved "https://registry.yarnpkg.com/@modusbox/modusbox-ui-components/-/modusbox-ui-components-1.23.0.tgz#661dd1aefe0b918cb12b6d83e7284f39fa7f0180"
