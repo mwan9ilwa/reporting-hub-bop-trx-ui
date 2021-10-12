@@ -1,6 +1,10 @@
-# Changelog
+# Changelog: [mojaloop/reporting-hub-bop-trx-ui](https://github.com/mojaloop/reporting-hub-bop-trx-ui)
+## [1.2.0](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.1.1...v1.2.0) (2021-10-12)
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### Features
+
+* **#2514:** add code for productionization ([#6](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/6)) ([4ba9b25](https://github.com/mojaloop/reporting-hub-bop-trx-ui/commit/4ba9b253bf7f1e67a5f1760bb4d706b6f40a1d84)), closes [#2514](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/2514)
 
 ### [1.1.1](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.1.0...v1.1.1) (2021-10-06)
 
