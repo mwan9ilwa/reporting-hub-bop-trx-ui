@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-trx-ui](https://github.com/mojaloop/reporting-hub-bop-trx-ui)
+## [1.3.0](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.2.1...v1.3.0) (2021-10-18)
+
+
+### Features
+
+* update ui to handle reporting api ([#7](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/7)) ([9aaca07](https://github.com/mojaloop/reporting-hub-bop-trx-ui/commit/9aaca079e8cdca1c951cbf3199114c255f7a59fa))
+
 ### [1.2.1](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.2.0...v1.2.1) (2021-10-18)
 
 
