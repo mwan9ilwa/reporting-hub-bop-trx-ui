@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-trx-ui](https://github.com/mojaloop/reporting-hub-bop-trx-ui)
+## [1.4.0](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.3.0...v1.4.0) (2021-10-21)
+
+
+### Features
+
+* add cookie passing flag for axios api calls for auth ([#9](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/9)) ([47a4f0a](https://github.com/mojaloop/reporting-hub-bop-trx-ui/commit/47a4f0a3fc01c79234ea91bf139306b2de414b09))
+
 ## [1.3.0](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.2.1...v1.3.0) (2021-10-18)
 
 
