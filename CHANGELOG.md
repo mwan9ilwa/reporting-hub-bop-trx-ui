@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-trx-ui](https://github.com/mojaloop/reporting-hub-bop-trx-ui)
+### [1.4.1](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.4.0...v1.4.1) (2021-10-25)
+
+
+### Bug Fixes
+
+* fix variable names ([44a6fb0](https://github.com/mojaloop/reporting-hub-bop-trx-ui/commit/44a6fb0e436cc69d1e99c8cebbcce9cced7afbcb))
+
 ## [1.4.0](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.3.0...v1.4.0) (2021-10-21)
 
 
