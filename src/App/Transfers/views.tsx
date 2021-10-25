@@ -175,8 +175,8 @@ const Filters: FC<TransferFiltersProps> = ({
           className="transfers__filters__textfield"
           placeholder="Payer FSPID"
           size="small"
-          value={model?.payerFspid}
-          onChange={(value) => onFilterChange('payerFspid', value)}
+          value={model?.payerFSPId}
+          onChange={(value) => onFilterChange('payerFSPId', value)}
         />
         <Select
           className="transfers__filters__select"
@@ -200,8 +200,8 @@ const Filters: FC<TransferFiltersProps> = ({
           className="transfers__filters__textfield"
           placeholder="Payee FSPID"
           size="small"
-          value={model?.payeeFspid}
-          onChange={(value) => onFilterChange('payeeFspid', value)}
+          value={model?.payeeFSPId}
+          onChange={(value) => onFilterChange('payeeFSPId', value)}
         />
         <Select
           className="transfers__filters__select"
@@ -298,9 +298,9 @@ const Transfers: FC<ConnectorProps> = ({
       endDate: filtersModel.to,
       currency: filtersModel.currency,
       transferState: filtersModel.transferState,
-      payeeDFSPId: filtersModel.payeeFspid,
-      payerDFSPId: filtersModel.payerFspid,
-      payeeIdType: filtersModel.payerIdType,
+      payeeFSPId: filtersModel.payeeFSPId,
+      payerFSPId: filtersModel.payerFSPId,
+      payeeIdType: filtersModel.payeeIdType,
       payerIdType: filtersModel.payerIdType,
       payeeIdValue: filtersModel.payeeIdValue,
       payerIdValue: filtersModel.payerIdValue,

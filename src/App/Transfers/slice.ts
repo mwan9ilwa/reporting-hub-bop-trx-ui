@@ -7,8 +7,8 @@ const initialState: types.TransfersState = {
   selectedJson: undefined,
   selectedParty: undefined,
   transfersFilter: {
-    payerFspid: undefined,
-    payeeFspid: undefined,
+    payerFSPId: undefined,
+    payeeFSPId: undefined,
     payerIdType: undefined,
     payerIdValue: undefined,
     payeeIdType: undefined,
