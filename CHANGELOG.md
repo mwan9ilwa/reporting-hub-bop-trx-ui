@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-trx-ui](https://github.com/mojaloop/reporting-hub-bop-trx-ui)
+## [1.5.0](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.4.3...v1.5.0) (2021-11-01)
+
+
+### Features
+
+* **#2541:** add transfer dashboard ([#13](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/13)) ([6229015](https://github.com/mojaloop/reporting-hub-bop-trx-ui/commit/6229015f2b2d5ab2d341b63f5fc40ff12f1464f8)), closes [#2541](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/2541)
+
 ### [1.4.3](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.4.2...v1.4.3) (2021-10-26)
 
 
