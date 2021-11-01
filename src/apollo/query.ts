@@ -60,10 +60,49 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
         idType
         idValue
       }
-      #partyLookupEvents
-      #quoteEvents
-      #transferEvents
-      #settlementEvents
+      partyLookupEvents
+      quoteEvents
+      transferEvents
+      settlementEvents
+    }
+  }
+`;
+
+export const GET_TRANSFER_SUMMARY = gql`
+  query GetTransferSummary($startDate: DateTimeFlexible, $endDate: DateTimeFlexible) {
+    transferSummary(filter: { startDate: $startDate, endDate: $endDate }) {
+      count
+      errorCode
+    }
+  }
+`;
+
+export const GET_TRANSFER_SUMMARY_BY_CURRENCY = gql`
+  query GetTransferSummaryByCurrency($startDate: DateTimeFlexible, $endDate: DateTimeFlexible) {
+    transferSummary(filter: { startDate: $startDate, endDate: $endDate }) {
+      count
+      errorCode
+      currency
+    }
+  }
+`;
+
+export const GET_TRANSFER_SUMMARY_BY_PAYER_DFSP = gql`
+  query GetTransferSummaryByPayerDFSP($startDate: DateTimeFlexible, $endDate: DateTimeFlexible) {
+    transferSummary(filter: { startDate: $startDate, endDate: $endDate }) {
+      count
+      errorCode
+      payerDFSP
+    }
+  }
+`;
+
+export const GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP = gql`
+  query GetTransferSummaryByPayeeDFSP($startDate: DateTimeFlexible, $endDate: DateTimeFlexible) {
+    transferSummary(filter: { startDate: $startDate, endDate: $endDate }) {
+      count
+      errorCode
+      payeeDFSP
     }
   }
 `;

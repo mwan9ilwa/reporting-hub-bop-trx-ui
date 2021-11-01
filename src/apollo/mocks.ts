@@ -1,8 +1,22 @@
 import * as Factory from 'factory.ts';
 import faker from 'faker';
-import { MockedResponse } from '@apollo/client/testing';
-import { GET_TRANSFERS_WITH_EVENTS } from './query';
-import { Transfer, Query, DFSP, Party, PartyIdType, TransactionType, TransferState } from './types';
+import { MATCH_ANY_PARAMETERS, WildcardMockedResponse } from 'wildcard-mock-link';
+import {
+  GET_TRANSFERS_WITH_EVENTS,
+  GET_TRANSFER_SUMMARY_BY_CURRENCY,
+  GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP,
+  GET_TRANSFER_SUMMARY_BY_PAYER_DFSP,
+  GET_TRANSFER_SUMMARY,
+} from './query';
+import {
+  Transfer,
+  DFSP,
+  Party,
+  PartyIdType,
+  TransactionType,
+  TransferState,
+  TransferSummary,
+} from './types';
 
 export const PartyMock = Factory.Sync.makeFactory<Party>({
   __typename: 'Party',
@@ -80,9 +94,46 @@ export const TransferMock = Factory.Sync.makeFactory<Transfer>({
   }),
 });
 
-export const transfersQueryMock: MockedResponse<Query> = {
+export const TransferSummaryMock = Factory.Sync.makeFactory<TransferSummary>({
+  __typename: 'TransferSummary',
+  count: Factory.each(() => faker.datatype.number()),
+  payerDFSP: Factory.each(() => faker.company.companyName()),
+  payeeDFSP: Factory.each(() => faker.company.companyName()),
+  currency: Factory.each(() => faker.random.arrayElement(['USD', 'EUR', 'CNY', 'MMK', 'TZS'])),
+  errorCode: Factory.each(() => faker.datatype.number()),
+});
+
+export const TransferSummaryMockByErrorCode = Factory.Sync.makeFactory<TransferSummary>({
+  __typename: 'TransferSummary',
+  count: Factory.each(() => faker.datatype.number()),
+  errorCode: Factory.each(() => faker.datatype.number()),
+});
+
+export const TransferSummaryMockByCurrency = Factory.Sync.makeFactory<TransferSummary>({
+  __typename: 'TransferSummary',
+  count: Factory.each(() => faker.datatype.number()),
+  currency: Factory.each(() => faker.datatype.string(3)),
+  errorCode: Factory.each(() => faker.datatype.number()),
+});
+
+export const TransferSummaryMockByPayeeDFSP = Factory.Sync.makeFactory<TransferSummary>({
+  __typename: 'TransferSummary',
+  count: Factory.each(() => faker.datatype.number()),
+  payeeDFSP: Factory.each(() => faker.company.companyName()),
+  errorCode: Factory.each(() => faker.datatype.number()),
+});
+
+export const TransferSummaryMockByPayerDFSP = Factory.Sync.makeFactory<TransferSummary>({
+  __typename: 'TransferSummary',
+  count: Factory.each(() => faker.datatype.number()),
+  payerDFSP: Factory.each(() => faker.company.companyName()),
+  errorCode: Factory.each(() => faker.datatype.number()),
+});
+
+export const transfersQueryMock: WildcardMockedResponse = {
   request: {
     query: GET_TRANSFERS_WITH_EVENTS,
+    variables: MATCH_ANY_PARAMETERS,
   },
   result: {
     data: {
@@ -91,4 +142,112 @@ export const transfersQueryMock: MockedResponse<Query> = {
       transferSummary: [],
     },
   },
+  nMatches: Number.POSITIVE_INFINITY,
+};
+
+export const transferSummary: WildcardMockedResponse = {
+  request: {
+    query: GET_TRANSFER_SUMMARY,
+    variables: MATCH_ANY_PARAMETERS,
+  },
+  result: {
+    data: {
+      transfers: [],
+      dfsps: [],
+      transferSummary: [
+        {
+          count: 1000000,
+          errorCode: null,
+        },
+        ...TransferSummaryMock.buildList(10),
+      ],
+    },
+  },
+  nMatches: Number.POSITIVE_INFINITY,
+};
+
+export const transferSummaryByCurrencyQueryMock: WildcardMockedResponse = {
+  request: {
+    query: GET_TRANSFER_SUMMARY_BY_CURRENCY,
+    variables: MATCH_ANY_PARAMETERS,
+  },
+  result: {
+    data: {
+      transfers: [],
+      dfsps: [],
+      transferSummary: [
+        {
+          count: 1000000,
+          currency: 'USD',
+          errorCode: null,
+        },
+        {
+          count: 1000000,
+          currency: 'EUR',
+          errorCode: null,
+        },
+        {
+          count: 40000,
+          currency: 'USD',
+          errorCode: 3100,
+        },
+        ...TransferSummaryMockByCurrency.buildList(10),
+      ],
+    },
+  },
+  nMatches: Number.POSITIVE_INFINITY,
+};
+
+export const transferSummaryByPayerDFSPQueryMock: WildcardMockedResponse = {
+  request: {
+    query: GET_TRANSFER_SUMMARY_BY_PAYER_DFSP,
+    variables: MATCH_ANY_PARAMETERS,
+  },
+  result: {
+    data: {
+      transfers: [],
+      dfsps: [],
+      transferSummary: [
+        {
+          count: 1000000,
+          payerDFSP: 'dfspa',
+          errorCode: null,
+        },
+        {
+          count: 1000000,
+          payerDFSP: 'dfspb',
+          errorCode: null,
+        },
+        ...TransferSummaryMockByPayerDFSP.buildList(10),
+      ],
+    },
+  },
+  nMatches: Number.POSITIVE_INFINITY,
+};
+
+export const transferSummaryByPayeeDFSPQueryMock: WildcardMockedResponse = {
+  request: {
+    query: GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP,
+    variables: MATCH_ANY_PARAMETERS,
+  },
+  result: {
+    data: {
+      transfers: [],
+      dfsps: [],
+      transferSummary: [
+        {
+          count: 1000000,
+          payeeDFSP: 'payeea',
+          errorCode: null,
+        },
+        {
+          count: 1000000,
+          payeeDFSP: 'payeeb',
+          errorCode: null,
+        },
+        ...TransferSummaryMockByPayeeDFSP.buildList(10),
+      ],
+    },
+  },
+  nMatches: Number.POSITIVE_INFINITY,
 };

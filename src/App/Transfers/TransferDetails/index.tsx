@@ -3,9 +3,9 @@ import { Modal, Tabs, Tab, TabPanel, FormField, Button } from 'components';
 import { connect } from 'react-redux';
 import { State, Dispatch } from 'store/types';
 import { ReduxContext } from 'store';
+import { Transfer } from 'apollo/types';
 import { actions } from '../slice';
 import * as selectors from '../selectors';
-import { Transfer } from '../../../apollo/types';
 import { JsonModalData, PartyType, PartyModalData } from '../types';
 
 const stateProps = (state: State) => ({
@@ -149,7 +149,7 @@ const TransferDetails: FC<ConnectorProps> = ({
             disabled
             type="text"
             label="Payee"
-            value={`${transferDetails.payeeParty?.firstName} ${transferDetails.payerParty?.lastName}`}
+            value={`${transferDetails.payeeParty?.firstName} ${transferDetails.payeeParty?.lastName}`}
           />
           <FormField
             disabled

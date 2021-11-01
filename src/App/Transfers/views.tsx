@@ -16,6 +16,8 @@ import { ReduxContext } from 'store';
 import { useLazyQuery } from '@apollo/client';
 import { GET_TRANSFERS_WITH_EVENTS } from 'apollo/query';
 import { DFSP, Party, Transfer } from 'apollo/types';
+import { Collapse } from 'antd';
+import moment from 'moment';
 import { TransfersFilter, FilterChangeValue } from './types';
 import { actions } from './slice';
 import * as selectors from './selectors';
@@ -23,7 +25,9 @@ import './Transfers.scss';
 import TransferDetailsModal from './TransferDetails';
 import JsonModal from './JsonModal';
 import PartyModal from './PartyModal';
+import Dashboard from './Dashboard';
 
+const { Panel } = Collapse;
 const transfersColumns = [
   {
     label: 'Transfer ID',
@@ -155,19 +159,112 @@ interface ConnectorProps {
   partyObject: Party | undefined;
   valueTransfer: Transfer | undefined;
   transfers: Transfer[];
-  transfersError: string | null;
   filtersModel: TransfersFilter;
   onClearFiltersClick: () => void;
   onTransferSelect: (transfer: Transfer) => void;
   onFilterChange: (field: string, value: FilterChangeValue | string) => void;
 }
 
-const Filters: FC<TransferFiltersProps> = ({
-  model,
-  onFilterChange,
-  onClearFiltersClick,
-  onFindTransfersClick,
-}) => {
+const DateFilters: FC<DateFiltersProps> = ({ model, onFilterChange, onClearFiltersClick }) => {
+  return (
+    <div className="transfers__filters__filter-row">
+      <Select
+        className="transfers__filters__date-filter"
+        kind="primary"
+        size="small"
+        onChange={(value) => {
+          if (value === 'today') {
+            onFilterChange('from', fromDate(moment().startOf('day').toDate()));
+            onFilterChange('to', fromDate(moment().endOf('day').toDate()));
+          }
+          if (value === '48hours') {
+            onFilterChange('from', fromDate(moment().subtract(1, 'days').toDate()));
+            onFilterChange('to', fromDate(moment().toDate()));
+          }
+          if (value === '1week') {
+            onFilterChange('from', fromDate(moment().subtract(1, 'week').toDate()));
+            onFilterChange('to', fromDate(moment().toDate()));
+          }
+          if (value === '1month') {
+            onFilterChange('from', fromDate(moment().subtract(1, 'month').toDate()));
+            onFilterChange('to', fromDate(moment().toDate()));
+          }
+          if (value === '1year') {
+            onFilterChange('from', fromDate(moment().subtract(1, 'year').toDate()));
+            onFilterChange('to', fromDate(moment().toDate()));
+          }
+        }}
+        value={model.timeframeSelect}
+        options={[
+          {
+            label: 'Today',
+            value: 'today',
+          },
+          {
+            label: 'Past 48 Hours',
+            value: '48hours',
+          },
+          {
+            label: '1 Week',
+            value: '1week',
+          },
+          {
+            label: '1 Month',
+            value: '1month',
+          },
+          {
+            label: '1 Year',
+            value: '1year',
+          },
+          {
+            label: 'Custom Range',
+            value: 'custom',
+          },
+        ]}
+        placeholder="Choose a value"
+      />
+      <DatePicker
+        className="transfers__filters__date-filter"
+        size="small"
+        id="filter_date_from"
+        format="yyyy-MM-dd'T'HH:mm:ss xxx"
+        value={model && model.from ? new Date(model.from).toISOString() : undefined}
+        placeholder="From"
+        onChange={(value) => {
+          onFilterChange('from', fromDate(value));
+          onFilterChange('timeframeSelect', 'custom');
+        }}
+        withTime
+      />
+      <DatePicker
+        className="transfers__filters__date-filter"
+        size="small"
+        id="filter_date_to"
+        format="yyyy-MM-dd'T'HH:mm:ss xxx"
+        value={model && model.to ? new Date(model.to).toISOString() : undefined}
+        placeholder="To"
+        onChange={(value) => {
+          onFilterChange('to', fromDate(value));
+          onFilterChange('timeframeSelect', 'custom');
+        }}
+        withTime
+      />
+      <Button
+        noFill
+        className="transfers__filters__date-filter"
+        size="small"
+        kind="danger"
+        label="Clear Filters"
+        onClick={() => {
+          onClearFiltersClick();
+          onFilterChange('timeframeSelect', 'today');
+        }}
+      />
+    </div>
+  );
+};
+
+const Filters: FC<TransferFiltersProps> = ({ model, onFilterChange, onFindTransfersClick }) => {
   return (
     <div className="transfers__filters">
       <div className="transfers__filters__filter-row">
@@ -221,28 +318,6 @@ const Filters: FC<TransferFiltersProps> = ({
         />
       </div>
       <div className="transfers__filters__filter-row">
-        <DatePicker
-          className="transfers__filters__date-filter"
-          size="small"
-          id="filter_date_from"
-          format="yyyy-MM-dd'T'HH:mm:ss xxx"
-          value={model && model.from ? new Date(model.from).toISOString() : undefined}
-          placeholder="From"
-          onChange={(value) => onFilterChange('from', fromDate(value))}
-          withTime
-        />
-        <DatePicker
-          className="transfers__filters__date-filter"
-          size="small"
-          id="filter_date_to"
-          format="yyyy-MM-dd'T'HH:mm:ss xxx"
-          value={model && model.to ? new Date(model.to).toISOString() : undefined}
-          placeholder="To"
-          onChange={(value) => onFilterChange('to', fromDate(value))}
-          withTime
-        />
-      </div>
-      <div className="transfers__filters__filter-row">
         <TextField
           className="transfers__filters__textfield"
           placeholder="Currency"
@@ -258,22 +333,12 @@ const Filters: FC<TransferFiltersProps> = ({
           value={model?.transferState}
           onChange={(value) => onFilterChange('transferState', value as string)}
         />
-      </div>
-      <div className="transfers__filters__filter-row">
         <Button
           className="transfers__filters__find"
           size="small"
           kind="primary"
           label="Find Transfers"
           onClick={onFindTransfersClick}
-        />
-        <Button
-          noFill
-          className="transfers__filters__date-filter"
-          size="small"
-          kind="danger"
-          label="Clear Filters"
-          onClick={onClearFiltersClick}
         />
       </div>
     </div>
@@ -283,7 +348,6 @@ const Filters: FC<TransferFiltersProps> = ({
 const Transfers: FC<ConnectorProps> = ({
   valueTransfer,
   transfers,
-  transfersError,
   filtersModel,
   jsonObject,
   partyObject,
@@ -306,8 +370,9 @@ const Transfers: FC<ConnectorProps> = ({
       payerIdValue: filtersModel.payerIdValue,
     },
   });
+
   if (error) {
-    content = <MessageBox kind="danger">Error fetching transfers: {transfersError}</MessageBox>;
+    content = <MessageBox kind="danger">Error fetching transfers: {error.message}</MessageBox>;
   } else if (loading) {
     content = <Spinner center />;
   } else {
@@ -349,14 +414,27 @@ const Transfers: FC<ConnectorProps> = ({
   }
 
   return (
-    <div className="transfers-tracing-app">
+    <div>
       <Heading size="3">Find Transfers</Heading>
-      <Filters
+      <DateFilters
         model={filtersModel}
         onFilterChange={onFilterChange}
         onClearFiltersClick={onClearFiltersClick}
-        onFindTransfersClick={getTransfers}
       />
+      <Collapse defaultActiveKey={['1']}>
+        <Panel header="Overview for Date Range" key={1}>
+          <Dashboard />
+        </Panel>
+      </Collapse>
+      <Collapse defaultActiveKey={['1']}>
+        <Panel header="Transfer List Filters" key={1}>
+          <Filters
+            model={filtersModel}
+            onFilterChange={onFilterChange}
+            onFindTransfersClick={getTransfers}
+          />
+        </Panel>
+      </Collapse>
       {warning}
       {content}
       {detailModal}
@@ -369,8 +447,13 @@ const Transfers: FC<ConnectorProps> = ({
 interface TransferFiltersProps {
   model: TransfersFilter;
   onFilterChange: (field: string, value: FilterChangeValue) => void;
-  onClearFiltersClick: () => void;
   onFindTransfersClick: () => void;
+}
+
+interface DateFiltersProps {
+  model: TransfersFilter;
+  onFilterChange: (field: string, value: FilterChangeValue) => void;
+  onClearFiltersClick: () => void;
 }
 
 export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(
