@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-trx-ui](https://github.com/mojaloop/reporting-hub-bop-trx-ui)
+### [1.5.1](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.5.0...v1.5.1) (2021-11-11)
+
+
+### Bug Fixes
+
+* resolve graphql and charts bug, perform housekeeping ([#14](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/14)) ([faac640](https://github.com/mojaloop/reporting-hub-bop-trx-ui/commit/faac64063c944512f09be35591ba9b58b8ce5e02))
+
 ## [1.5.0](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.4.3...v1.5.0) (2021-11-01)
 
 
