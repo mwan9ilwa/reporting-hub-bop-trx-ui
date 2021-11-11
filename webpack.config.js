@@ -47,6 +47,15 @@ module.exports = {
     port: config.DEV_PORT,
     host: '0.0.0.0',
     publicPath: '/',
+    proxy: {
+      '/reporting-api': {
+        // For local testing update `target` to point to your
+        // locally hosted or port-forwarded `reporting-hub-bop-api-svc` service
+        target: 'http://localhost:port',
+        pathRewrite: { '^/reporting-api': '' },
+        secure: false,
+      },
+    },
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -117,7 +126,7 @@ module.exports = {
     }),
     new EslintWebpackPlugin({
       extensions: ['ts', 'js', 'tsx', 'jsx'],
-      exclude: [`/node_modules/`],
+      exclude: ['node_modules'],
     }),
     new DotenvPlugin({
       systemvars: true,
