@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-trx-ui](https://github.com/mojaloop/reporting-hub-bop-trx-ui)
+### [1.5.2](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.5.1...v1.5.2) (2021-11-11)
+
+
+### Bug Fixes
+
+* adjust modal size and date filters ([#15](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/15)) ([f60518a](https://github.com/mojaloop/reporting-hub-bop-trx-ui/commit/f60518a5af0db34d4632acb7010ba6e43dd1b324))
+
 ### [1.5.1](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.5.0...v1.5.1) (2021-11-11)
 
 
