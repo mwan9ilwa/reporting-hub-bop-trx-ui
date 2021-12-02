@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-trx-ui](https://github.com/mojaloop/reporting-hub-bop-trx-ui)
+### [1.6.2](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.6.1...v1.6.2) (2021-12-02)
+
+
+### Tests
+
+* add test harness and integration tests ([#18](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/18)) ([733f031](https://github.com/mojaloop/reporting-hub-bop-trx-ui/commit/733f0310f20a408ff4ddd5364f41f1f80d05de00))
+
 ### [1.6.1](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.6.0...v1.6.1) (2021-12-02)
 
 
