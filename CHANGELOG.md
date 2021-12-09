@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-trx-ui](https://github.com/mojaloop/reporting-hub-bop-trx-ui)
+## [1.7.0](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.6.2...v1.7.0) (2021-12-09)
+
+
+### Features
+
+* add cache busting and misc changes ([#19](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/19)) ([4ba3597](https://github.com/mojaloop/reporting-hub-bop-trx-ui/commit/4ba3597fe695a16aec7def03b6da6e3b40a71a1c))
+
 ### [1.6.2](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.6.1...v1.6.2) (2021-12-02)
 
 
