@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-trx-ui](https://github.com/mojaloop/reporting-hub-bop-trx-ui)
+### [1.7.2](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.7.1...v1.7.2) (2022-01-17)
+
+
+### Bug Fixes
+
+* group error charts by fsp ([#20](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/20)) ([5596d86](https://github.com/mojaloop/reporting-hub-bop-trx-ui/commit/5596d86286d01640b43085fd21549d1ff13e3409))
+
 ### [1.7.1](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.7.0...v1.7.1) (2022-01-17)
 
 
