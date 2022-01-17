@@ -1,4 +1,11 @@
 # Changelog: [mojaloop/reporting-hub-bop-trx-ui](https://github.com/mojaloop/reporting-hub-bop-trx-ui)
+### [1.7.1](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.7.0...v1.7.1) (2022-01-17)
+
+
+### Maintenance
+
+* **deps:** bump follow-redirects from 1.14.3 to 1.14.7 ([#21](https://github.com/mojaloop/reporting-hub-bop-trx-ui/issues/21)) ([9846217](https://github.com/mojaloop/reporting-hub-bop-trx-ui/commit/9846217772b18b8ef3686a6bca2cc3d95d1b6152))
+
 ## [1.7.0](https://github.com/mojaloop/reporting-hub-bop-trx-ui/compare/v1.6.2...v1.7.0) (2021-12-09)
 
 
