@@ -6,25 +6,38 @@ export const GET_TRANSFER = gql`
     transfer(transferId: $transferId) {
       transferId
       transferState
+      baseUseCase
       transactionType
       currency
       amount
+      sourceAmount
+      sourceCurrency
+      conversionType
+      conversionState
       settlementId
+      conversionSettlementBatchID
+      submittedDate
+      conversionSubmittedDate
       createdAt
       quoteId
       partyLookupEvents
       quoteEvents
       transferEvents
       settlementEvents
+      transferSettlementBatchID
+      fxp
+      fxpProxy
       payeeDFSP {
         id
         name
         description
+        proxy
       }
       payerDFSP {
         id
         name
         description
+        proxy
       }
       payerParty {
         id
@@ -43,6 +56,43 @@ export const GET_TRANSFER = gql`
         dateOfBirth
         idType
         idValue
+      }
+      transferTerms {
+        quoteAmount
+        quoteAmountType
+        transferAmount
+        payeeReceiveAmount
+        payeeFspFee
+        payeeFspCommission
+        expirationDate
+        geoCode
+        ilpPacket
+        transactionId
+      }
+      conversions {
+        conversionRequestId
+        conversionId
+        conversionCommitRequestId
+        conversionState
+        conversionStateChanges
+        counterPartyFSP
+        conversionSettlementWindowId
+      }
+      conversionTerms {
+        conversionId
+        determiningTransferId
+        initiatingFsp
+        counterPartyFsp
+        amountType
+        transferAmount
+        expiration
+        charges
+      }
+      fxQuotes {
+        Amount
+      }
+      fxTransfers {
+        Amount
       }
     }
   }
@@ -111,6 +161,43 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
         dateOfBirth
         idType
         idValue
+      }
+      transferTerms {
+        quoteAmount
+        quoteAmountType
+        transferAmount
+        payeeReceiveAmount
+        payeeFspFee
+        payeeFspCommission
+        expirationDate
+        geoCode
+        ilpPacket
+        transactionId
+      }
+      conversions {
+        conversionRequestId
+        conversionId
+        conversionCommitRequestId
+        conversionState
+        conversionStateChanges
+        counterPartyFSP
+        conversionSettlementWindowId
+      }
+      conversionTerms {
+        conversionId
+        determiningTransferId
+        initiatingFsp
+        counterPartyFsp
+        amountType
+        transferAmount
+        expiration
+        charges
+      }
+      fxQuotes {
+        Amount
+      }
+      fxTransfers {
+        Amount
       }
     }
   }
