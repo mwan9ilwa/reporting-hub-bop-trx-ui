@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { FC } from 'react';
 import { Modal, Tabs, Tab, TabPanel, FormField, Button } from 'components';
 import { connect } from 'react-redux';
@@ -235,14 +236,116 @@ const TransferDetails: FC<ConnectorProps> = ({
     </TabPanel>
   );
 
+  const TransferPartiesTab = (
+    <TabPanel className="transferPartiesTab">
+      <FormField.Container direction="row" align="top left">
+        <FormField.Container direction="column">
+          <FormField disabled type="text" label="Transfer ID" value={transferDetails.transferId!} />
+        </FormField.Container>
+
+        <FormField.Container direction="column">
+          <FormField
+            disabled
+            type="text"
+            label="Transfer State"
+            value={transferDetails.transferState || ''}
+          />
+        </FormField.Container>
+
+        <FormField.Container direction="column">
+          <FormField
+            disabled
+            type="text"
+            label="Transfer Type"
+            value={transferDetails.transactionType || ''}
+          />
+        </FormField.Container>
+      </FormField.Container>
+
+      <div
+        style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', gap: '20px' }}
+      >
+        <div style={{ flex: '0 0 48%', border: '1px solid #ccc', padding: '10px' }}>
+          <FormField.Container direction="column">
+            <h6>Payer Details</h6>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '30px' }}>Payer Identifier</label>
+              <FormField disabled type="text" value={transferDetails.payerParty?.idValue || ''} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '0px' }}>Payer Identifier Type</label>
+              <FormField disabled type="text" value={transferDetails.payerParty?.idType || ''} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '60px' }}>Payer DFSP</label>
+              <FormField
+                disabled
+                type="text"
+                value={String(transferDetails.payerParty?.id || '')}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '60px' }}>First Name</label>
+              <FormField disabled type="text" value={transferDetails.payerParty?.firstName || ''} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '60px' }}>Last Name</label>
+              <FormField disabled type="text" value={transferDetails.payerParty?.lastName || ''} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '1px' }}>Supported Currencies</label>
+              <FormField disabled type="text" value={transferDetails || ''} />
+            </div>
+          </FormField.Container>
+        </div>
+
+        <div style={{ flex: '0 0 48%', border: '1px solid #ccc', padding: '10px' }}>
+          <FormField.Container direction="column">
+            <h6>Payee Details</h6>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '35px' }}>Payee Identifier</label>
+              <FormField disabled type="text" value={transferDetails.payeeParty?.idValue || ''} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '10px' }}>Payee Identifier Type</label>
+              <FormField disabled type="text" value={transferDetails.payeeParty?.idType || ''} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '60px' }}>Payee DFSP</label>
+              <FormField
+                disabled
+                type="text"
+                value={String(transferDetails.payerParty?.id || '')}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '60px' }}>First Name</label>
+              <FormField disabled type="text" value={transferDetails.payeeParty?.firstName || ''} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '60px' }}>Last Name</label>
+              <FormField disabled type="text" value={transferDetails.payeeParty?.lastName || ''} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '1px' }}>Supported Currencies</label>
+              <FormField disabled type="text" value={transferDetails || ''} />
+            </div>
+          </FormField.Container>
+        </div>
+      </div>
+    </TabPanel>
+  );
+
   return (
     <Modal title={`Transfer ${transferDetails.transferId} Details`} onClose={onModalCloseClick}>
       <div>
         <Tabs>
           <Tab>Basic Information</Tab>
           <Tab>Technical Details</Tab>
+          <Tab>Transfer Parties</Tab>
           {BasicInformationTab}
           {TechnicalDetailsTab}
+          {TransferPartiesTab}
         </Tabs>
       </div>
     </Modal>
