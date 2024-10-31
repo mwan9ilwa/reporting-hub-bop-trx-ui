@@ -294,7 +294,11 @@ const TransferDetails: FC<ConnectorProps> = ({
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '1px' }}>Supported Currencies</label>
-              <FormField disabled type="text" value={transferDetails || ''} />
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payerParty?.supportedCurrency || ''}
+              />
             </div>
           </FormField.Container>
         </div>
@@ -328,7 +332,11 @@ const TransferDetails: FC<ConnectorProps> = ({
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '1px' }}>Supported Currencies</label>
-              <FormField disabled type="text" value={transferDetails || ''} />
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payeeParty?.supportedCurrency || ''}
+              />
             </div>
           </FormField.Container>
         </div>

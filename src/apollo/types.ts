@@ -119,6 +119,7 @@ export type Party = {
   dateOfBirth?: Maybe<Scalars['Date']>;
   idType?: Maybe<PartyIdType>;
   idValue?: Maybe<Scalars['String']>;
+  supportedCurrency?: Maybe<Scalars['String']>;
 };
 
 export enum PartyIdType {

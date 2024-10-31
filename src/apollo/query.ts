@@ -47,6 +47,7 @@ export const GET_TRANSFER = gql`
         dateOfBirth
         idType
         idValue
+        supportedCurrency
       }
       payeeParty {
         id
@@ -56,6 +57,7 @@ export const GET_TRANSFER = gql`
         dateOfBirth
         idType
         idValue
+        supportedCurrency
       }
       transferTerms {
         quoteAmount
