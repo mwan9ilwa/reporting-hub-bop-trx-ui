@@ -80,6 +80,9 @@ export const TransferMock = Factory.Sync.makeFactory<Transfer>({
   payeeDFSP: Factory.each(() => DfspMock.build()),
   payerParty: Factory.each(() => PartyMock.build()),
   payeeParty: Factory.each(() => PartyMock.build()),
+  sourceCurrency: Factory.each(() =>
+    faker.random.arrayElement(['USD', 'EUR', 'CNY', 'MMK', 'TZS']),
+  ),
   quoteEvents: Factory.each(() => {
     return JSON.parse(JSON.stringify({ data: faker.datatype.string(1000) }));
   }),
@@ -102,12 +105,14 @@ export const TransferSummaryMock = Factory.Sync.makeFactory<TransferSummary>({
   payeeDFSP: Factory.each(() => faker.company.companyName()),
   currency: Factory.each(() => faker.random.arrayElement(['USD', 'EUR', 'CNY', 'MMK', 'TZS'])),
   errorCode: Factory.each(() => faker.datatype.number()),
+  id: 0,
 });
 
 export const TransferSummaryMockByErrorCode = Factory.Sync.makeFactory<TransferSummary>({
   __typename: 'TransferSummary',
   count: Factory.each(() => faker.datatype.number()),
   errorCode: Factory.each(() => faker.datatype.number()),
+  id: 0,
 });
 
 export const TransferSummaryMockByCurrency = Factory.Sync.makeFactory<TransferSummary>({
@@ -115,6 +120,7 @@ export const TransferSummaryMockByCurrency = Factory.Sync.makeFactory<TransferSu
   count: Factory.each(() => faker.datatype.number()),
   currency: Factory.each(() => faker.datatype.string(3)),
   errorCode: Factory.each(() => faker.datatype.number()),
+  id: 0,
 });
 
 export const TransferSummaryMockByPayeeDFSP = Factory.Sync.makeFactory<TransferSummary>({
@@ -122,6 +128,7 @@ export const TransferSummaryMockByPayeeDFSP = Factory.Sync.makeFactory<TransferS
   count: Factory.each(() => faker.datatype.number()),
   payeeDFSP: Factory.each(() => faker.company.companyName()),
   errorCode: Factory.each(() => faker.datatype.number()),
+  id: 0,
 });
 
 export const TransferSummaryMockByPayerDFSP = Factory.Sync.makeFactory<TransferSummary>({
@@ -129,6 +136,7 @@ export const TransferSummaryMockByPayerDFSP = Factory.Sync.makeFactory<TransferS
   count: Factory.each(() => faker.datatype.number()),
   payerDFSP: Factory.each(() => faker.company.companyName()),
   errorCode: Factory.each(() => faker.datatype.number()),
+  id: 0,
 });
 
 export const transfersQueryMock: WildcardMockedResponse = {

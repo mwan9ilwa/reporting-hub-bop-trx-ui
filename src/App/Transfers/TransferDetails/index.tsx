@@ -62,6 +62,24 @@ const TransferDetails: FC<ConnectorProps> = ({
             label="Transfer State"
             value={transferDetails.transferState || ''}
           />
+          <FormField
+            disabled
+            type="text"
+            label="Fx Transfer ID"
+            value={transferDetails.transferId!}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Fx Quote Id"
+            value={transferDetails.quoteId?.toString() || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Fx Transfer State"
+            value={transferDetails.transferState || ''}
+          />
           {errorCodeField || <div />}
         </FormField.Container>
 
@@ -108,6 +126,39 @@ const TransferDetails: FC<ConnectorProps> = ({
           <Button
             size="small"
             kind="primary"
+            label="Fx Quote Events"
+            onClick={() => {
+              onsetJsonModalData({
+                title: 'Fx Quote Events',
+                json: transferDetails.quoteEvents || {},
+              });
+            }}
+          />
+          <Button
+            size="small"
+            kind="primary"
+            label="Fx Transfer Events"
+            onClick={() => {
+              onsetJsonModalData({
+                title: 'Fx Transfer Events',
+                json: transferDetails.transferEvents || {},
+              });
+            }}
+          />
+          <Button
+            size="small"
+            kind="primary"
+            label="Fx Settlement Events"
+            onClick={() => {
+              onsetJsonModalData({
+                title: 'Fx Settlement Events',
+                json: transferDetails.settlementEvents || {},
+              });
+            }}
+          />
+          <Button
+            size="small"
+            kind="primary"
             label="Quote Events"
             onClick={() => {
               onsetJsonModalData({
@@ -143,8 +194,8 @@ const TransferDetails: FC<ConnectorProps> = ({
     </TabPanel>
   );
 
-  const BasicInformationTab = (
-    <TabPanel className="basicInformationTab">
+  const TransferDetailsTab = (
+    <TabPanel className="transferDetailsTab">
       <FormField.Container direction="row" align="top left">
         <FormField.Container direction="column">
           <FormField disabled type="text" label="Transfer ID" value={transferDetails.transferId!} />
@@ -157,7 +208,19 @@ const TransferDetails: FC<ConnectorProps> = ({
           <FormField
             disabled
             type="text"
-            label="Payer"
+            label="Source Amount"
+            value={transferDetails.amount?.toString() || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="FXP"
+            value={transferDetails.conversions?.counterPartyFSP || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Payer Identifier"
             value={`${transferDetails.payerParty?.firstName || ''} ${
               transferDetails.payerParty?.lastName || ''
             }`}
@@ -165,16 +228,10 @@ const TransferDetails: FC<ConnectorProps> = ({
           <FormField
             disabled
             type="text"
-            label="Payee"
+            label="Payee Identifier"
             value={`${transferDetails.payeeParty?.firstName || ''} ${
-              transferDetails.payeeParty?.lastName || ''
+              transferDetails.toString() || ''
             }`}
-          />
-          <FormField
-            disabled
-            type="text"
-            label="Settlement Batch Id"
-            value={transferDetails.settlementId?.toString() || ''}
           />
         </FormField.Container>
 
@@ -189,7 +246,19 @@ const TransferDetails: FC<ConnectorProps> = ({
           <FormField
             disabled
             type="text"
-            label="Payer Details"
+            label="Source Currency"
+            value={transferDetails.currency || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Conversion Type"
+            value={transferDetails.settlementId?.toString() || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Payer Identifier Type"
             value={`${transferDetails.payerParty?.idType || ''} ${
               transferDetails.payerParty?.idValue?.toString() || ''
             }`}
@@ -197,7 +266,7 @@ const TransferDetails: FC<ConnectorProps> = ({
           <FormField
             disabled
             type="text"
-            label="Payee Details"
+            label="Payee Identifier Type"
             value={`${transferDetails.payeeParty?.idType || ''} ${
               transferDetails.payeeParty?.idValue?.toString() || ''
             }`}
@@ -208,13 +277,21 @@ const TransferDetails: FC<ConnectorProps> = ({
           <FormField
             disabled
             type="text"
-            label="Transfer Type"
+            label="Base Use Case"
             value={transferDetails.transactionType || ''}
           />
           <FormField
             disabled
             type="text"
-            label="Date Submitted"
+            label="Submitted Date"
+            value={
+              transferDetails.createdAt ? moment(transferDetails.createdAt).local().format() : ''
+            }
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Conversion Submitted Date"
             value={
               transferDetails.createdAt ? moment(transferDetails.createdAt).local().format() : ''
             }
@@ -231,6 +308,392 @@ const TransferDetails: FC<ConnectorProps> = ({
             label="Payee DFSP"
             value={transferDetails.payeeDFSP?.name?.toString() || ''}
           />
+        </FormField.Container>
+        <FormField.Container direction="column">
+          <FormField
+            disabled
+            type="text"
+            label="Transaction Type"
+            value={transferDetails.transactionType || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Transfer Settlement Batch ID"
+            value={transferDetails.settlementWindowId?.toString() || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Conversion Settlement Batch ID"
+            value={transferDetails.conversions?.conversionSettlementWindowId?.toString() || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Payer DFSP Proxy"
+            value={transferDetails.transaction?.payerDFSPProxy?.toString() || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Payee DFSP Proxy"
+            value={transferDetails.transaction?.payeeDFSPProxy?.toString() || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="FXP Proxy"
+            value={transferDetails.toString() || ''}
+          />
+        </FormField.Container>
+      </FormField.Container>
+    </TabPanel>
+  );
+
+  const TransferTermsTab = (
+    <TabPanel className="transferTermsTab">
+      <FormField.Container
+        direction="row"
+        align="top left"
+        style={{
+          flexWrap: 'wrap',
+          gap: '40px',
+        }}
+      >
+        <FormField.Container direction="column">
+          <FormField
+            disabled={true}
+            type="text"
+            label="Transfer ID"
+            value={transferDetails.transferId!}
+            style={{
+              width: '100%',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          />
+        </FormField.Container>
+
+        <FormField.Container direction="column">
+          <FormField
+            disabled={true}
+            style={{
+              width: '100%',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              marginRight: 5,
+            }}
+            type="text"
+            label="Transfer State"
+            value={transferDetails.transferState || ''}
+          />
+        </FormField.Container>
+
+        <FormField.Container direction="column">
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <FormField
+              disabled={true}
+              type="text"
+              label="Quote Amount"
+              // value={model.transferTerms?.quoteAmount?.amount?.toString() || ''}
+            />
+          </div>
+        </FormField.Container>
+
+        <FormField.Container direction="column">
+          <FormField
+            disabled={true}
+            type="text"
+            label="Quote Currency"
+            // value={model.transferTerms?.quoteAmount?.currency || ''}
+          />
+        </FormField.Container>
+
+        <FormField.Container direction="column">
+          <FormField
+            disabled={true}
+            type="text"
+            label="Quote Amount Type"
+            // value={model.transferTerms?.quoteAmountType || ''}
+          />
+        </FormField.Container>
+        <FormField.Container direction="column">
+          <FormField
+            disabled={true}
+            type="text"
+            label="Conversion Type"
+            // value={model.transferTerms?.quoteAmountType || ''}
+          />
+        </FormField.Container>
+      </FormField.Container>
+      <FormField.Container direction="row" style={{ width: '100%', height: '100%' }}>
+        <FormField.Container style={{ width: '100%', flexGrow: 1 }} direction="column">
+          <FormField.Container
+            style={{
+              width: '100%',
+              marginTop: '10px',
+              border: '1px solid #ccc',
+              padding: '10px',
+              borderRadius: '5px',
+              boxSizing: 'border-box',
+              flexGrow: 1,
+              display: 'flex',
+              height: '350px',
+              flexDirection: 'column',
+            }}
+            direction="column"
+          >
+            <div style={{ fontWeight: 'bold', marginBottom: '5px', textAlign: 'center' }}>
+              Transfer Terms
+            </div>
+            <FormField.Container
+              direction="row"
+              style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
+            >
+              <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
+                Transfer Amount
+              </div>
+              <FormField
+                disabled
+                type="text"
+                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+                value={transferDetails.amount?.toString() || ''}
+              />
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.currency || ''}
+                // style={{ width: '100%', marginRight: '10px', marginBottom: 0 }}
+                style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
+              />
+            </FormField.Container>
+
+            <FormField.Container
+              direction="row"
+              style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
+            >
+              <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
+                Payee Receive Amount
+              </div>
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payerParty?.lastName || ''}
+                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+              />
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payerParty?.lastName || ''}
+                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+              />
+
+              {/* <div style={{ display: 'flex', alignItems: 'center' }}>
+                <FormField
+                  disabled
+                  type="text"
+                  value={transferDetails.payerParty?.lastName || ''}
+                  style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
+                />
+              </div> */}
+            </FormField.Container>
+
+            <FormField.Container
+              direction="row"
+              style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
+            >
+              <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
+                Payee DFSP Fee
+              </div>
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payerParty?.lastName || ''}
+                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+              />
+
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <FormField
+                  disabled
+                  type="text"
+                  value={transferDetails.payerParty?.lastName || ''}
+                  style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
+                />
+              </div>
+            </FormField.Container>
+
+            <FormField.Container
+              direction="row"
+              style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
+            >
+              <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
+                Payee DFSP Commission
+              </div>
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payerParty?.lastName || ''}
+                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+              />
+
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <FormField
+                  disabled
+                  type="text"
+                  value={transferDetails.payerParty?.lastName || ''}
+                  style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
+                />
+              </div>
+            </FormField.Container>
+
+            <FormField.Container
+              direction="row"
+              style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
+            >
+              <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
+                Expriry Date Time
+              </div>
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payerParty?.lastName || ''}
+                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+              />
+            </FormField.Container>
+          </FormField.Container>
+        </FormField.Container>
+
+        <FormField.Container style={{ width: '100%', flexGrow: 1 }} direction="column">
+          <FormField.Container
+            style={{
+              width: '100%',
+              marginTop: '10px',
+              border: '1px solid #ccc',
+              padding: '10px',
+              borderRadius: '5px',
+              boxSizing: 'border-box',
+              flexGrow: 1,
+              display: 'flex',
+              height: '350px',
+              flexDirection: 'column',
+            }}
+            direction="column"
+          >
+            <div style={{ fontWeight: 'bold', marginBottom: '5px', textAlign: 'center' }}>
+              Conversion Terms
+            </div>
+
+            <FormField.Container
+              direction="row"
+              style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
+            >
+              <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
+                Transfer Amount
+              </div>
+              <FormField
+                disabled
+                type="text"
+                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+                value={transferDetails.amount?.toString() || ''}
+              />
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.currency || ''}
+                style={{ width: '100%', marginRight: '10px', marginBottom: 0 }}
+              />
+            </FormField.Container>
+
+            <FormField.Container
+              direction="row"
+              style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
+            >
+              <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
+                Payee Receive Amount
+              </div>
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payerParty?.lastName || ''}
+                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+              />
+
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <FormField
+                  disabled
+                  type="text"
+                  value={transferDetails.payerParty?.lastName || ''}
+                  style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
+                />
+              </div>
+            </FormField.Container>
+
+            <FormField.Container
+              direction="row"
+              style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
+            >
+              <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
+                Payee DFSP Fee
+              </div>
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payerParty?.lastName || ''}
+                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+              />
+
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <FormField
+                  disabled
+                  type="text"
+                  value={transferDetails.payerParty?.lastName || ''}
+                  style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
+                />
+              </div>
+            </FormField.Container>
+
+            <FormField.Container
+              direction="row"
+              style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
+            >
+              <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
+                Payee DFSP Commission
+              </div>
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payerParty?.lastName || ''}
+                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+              />
+
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <FormField
+                  disabled
+                  type="text"
+                  value={transferDetails.payerParty?.lastName || ''}
+                  style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
+                />
+              </div>
+            </FormField.Container>
+
+            <FormField.Container
+              direction="row"
+              style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
+            >
+              <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
+                Expriry Date Time
+              </div>
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payerParty?.lastName || ''}
+                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+              />
+            </FormField.Container>
+          </FormField.Container>
         </FormField.Container>
       </FormField.Container>
     </TabPanel>
@@ -348,12 +811,14 @@ const TransferDetails: FC<ConnectorProps> = ({
     <Modal title={`Transfer ${transferDetails.transferId} Details`} onClose={onModalCloseClick}>
       <div>
         <Tabs>
-          <Tab>Basic Information</Tab>
-          <Tab>Technical Details</Tab>
+          <Tab>Transfer Details</Tab>
+          <Tab>Transfer Terms</Tab>
           <Tab>Transfer Parties</Tab>
-          {BasicInformationTab}
-          {TechnicalDetailsTab}
+          <Tab>Technical Details</Tab>
+          {TransferDetailsTab}
+          {TransferTermsTab}
           {TransferPartiesTab}
+          {TechnicalDetailsTab}
         </Tabs>
       </div>
     </Modal>

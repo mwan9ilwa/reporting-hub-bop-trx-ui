@@ -33,6 +33,7 @@ const transfersColumns = [
   {
     label: 'Transfer ID',
     key: 'transferId',
+    width: '250px',
   },
   {
     label: 'State',
@@ -43,11 +44,19 @@ const transfersColumns = [
     key: 'transactionType',
   },
   {
-    label: 'Currency',
+    label: 'Source Currency',
+    key: 'sourceCurrency',
+  },
+  {
+    label: 'Target Currency',
     key: 'currency',
   },
   {
-    label: 'Amount',
+    label: 'Source Amount',
+    key: 'amount',
+  },
+  {
+    label: 'Target Amount',
     key: 'amount',
     fn: (rawValue: Number) => {
       return `${rawValue ? rawValue.toString() : ''}`;
@@ -210,16 +219,16 @@ const DateFilters: FC<DateFiltersProps> = ({ model, onFilterChange, onClearFilte
 const Filters: FC<TransferFiltersProps> = ({ model, onFilterChange, onFindTransfersClick }) => {
   return (
     <div className="transfers__filters">
-      <div className="transfers__filters__filter-row">
+      <div className="transfers_filters_filter-row">
         <TextField
-          className="transfers__filters__textfield"
+          className="transfers_filters_textfield"
           placeholder="Payer FSPID"
           size="small"
           value={model?.payerFSPId}
           onChange={(value) => onFilterChange('payerFSPId', value)}
         />
         <Select
-          className="transfers__filters__select"
+          className="transfers_filters_select"
           size="small"
           id="filter_payerIdType"
           placeholder="Payer ID Type"
@@ -229,23 +238,30 @@ const Filters: FC<TransferFiltersProps> = ({ model, onFilterChange, onFindTransf
           onChange={(value) => onFilterChange('payerIdType', value as string)}
         />
         <TextField
-          className="transfers__filters__textfield"
+          className="transfers_filters_textfield"
           placeholder="Payer ID Value"
           size="small"
           value={model?.payerIdValue}
           onChange={(value) => onFilterChange('payerIdValue', value)}
         />
-      </div>
-      <div className="transfers__filters__filter-row">
         <TextField
-          className="transfers__filters__textfield"
+          className="transfers_filters_textfield"
+          placeholder="Transaction Type"
+          size="small"
+          value={model?.transactionType}
+          onChange={(value) => onFilterChange('transactionType', value)}
+        />
+      </div>
+      <div className="transfers_filters_filter-row">
+        <TextField
+          className="transfers_filters_textfield"
           placeholder="Payee FSPID"
           size="small"
           value={model?.payeeFSPId}
           onChange={(value) => onFilterChange('payeeFSPId', value)}
         />
         <Select
-          className="transfers__filters__select"
+          className="transfers_filters_select"
           size="small"
           id="filter_payeeIdType"
           placeholder="Payee ID Type"
@@ -255,23 +271,37 @@ const Filters: FC<TransferFiltersProps> = ({ model, onFilterChange, onFindTransf
           onChange={(value) => onFilterChange('payeeIdType', value as string)}
         />
         <TextField
-          className="transfers__filters__textfield"
+          className="transfers_filters_textfield"
           placeholder="Payee ID Value"
           size="small"
           value={model?.payeeIdValue}
           onChange={(value) => onFilterChange('payeeIdValue', value)}
         />
-      </div>
-      <div className="transfers__filters__filter-row">
         <TextField
-          className="transfers__filters__textfield"
-          placeholder="Currency"
+          className="transfers_filters_textfield"
+          placeholder="Conversion State"
+          size="small"
+          value={model?.conversionState}
+          onChange={(value) => onFilterChange('conversionState', value)}
+        />
+      </div>
+      <div className="transfers_filters_filter-row">
+        <TextField
+          className="transfers_filters_textfield"
+          placeholder="Source Currency"
+          size="small"
+          value={model?.sourceCurrency}
+          onChange={(value) => onFilterChange('sourceCurrency', value)}
+        />
+        <TextField
+          className="transfers_filters_textfield"
+          placeholder="Target Currency"
           size="small"
           value={model?.currency}
           onChange={(value) => onFilterChange('currency', value)}
         />
         <Select
-          className="transfers__filters__select"
+          className="transfers_filters_select"
           size="small"
           placeholder="Transfer State"
           options={transferStateOptions}
@@ -280,7 +310,7 @@ const Filters: FC<TransferFiltersProps> = ({ model, onFilterChange, onFindTransf
           onChange={(value) => onFilterChange('transferState', value as string)}
         />
         <Button
-          className="transfers__filters__find"
+          className="transfers_filters_find"
           size="small"
           kind="primary"
           label="Find Transfers"
