@@ -108,6 +108,7 @@ export type TransferTerms = {
   transferAmount?: Maybe<Amount>;
   payeeReceiveAmount?: Maybe<Amount>;
   payeeFspCommission?: Maybe<Amount>;
+  payeeFspFee?: Maybe<Amount>;
   expirationDate?: Maybe<Scalars['DateTimeFlexible']>;
   geoCode?: Maybe<GeoCode>;
   ilpPacket?: Maybe<Scalars['Currency']>;
@@ -134,6 +135,9 @@ export type ConversionTerms = {
   charges?: Maybe<Charges>;
   ilpPacket?: Maybe<Scalars['String']>;
   conversionIdRef?: Maybe<Scalars['Int']>;
+  payeeReceiveAmount?: Maybe<Amount>;
+  payeeFspCommission?: Maybe<Amount>;
+  payeeFspFee?: Maybe<Amount>;
 };
 
 export type Amount = {
