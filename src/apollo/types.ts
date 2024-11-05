@@ -94,11 +94,14 @@ export type Transfer = {
   conversionTerms?: Maybe<ConversionTerms>;
   transaction?: Maybe<Transaction>;
   fxQuotes?: Maybe<Amount>;
-  fxTransfers?: Maybe<Amount>;
+  fxTransfers?: Maybe<FxTransfers>;
   partyLookupEvents?: Maybe<Scalars['JSONObject']>;
   quoteEvents?: Maybe<Scalars['JSONObject']>;
   transferEvents?: Maybe<Scalars['JSONObject']>;
   settlementEvents?: Maybe<Scalars['JSONObject']>;
+  fxQuoteEvents?: Maybe<Scalars['JSONObject']>;
+  fxTransferEvents?: Maybe<Scalars['JSONObject']>;
+  fxSettlementEvents?: Maybe<Scalars['JSONObject']>;
   sourceCurrency: Maybe<Scalars['String']>;
 };
 
@@ -135,7 +138,11 @@ export type ConversionTerms = {
   ilpPacket?: Maybe<Scalars['String']>;
   conversionIdRef?: Maybe<Scalars['Int']>;
 };
-
+export type FxTransfers = {
+  fxTransferId: Scalars['String'];
+  fxQuoteId: Scalars['String'];
+  fxTransferState?: Maybe<Scalars['String']>;
+};
 export type Amount = {
   amount?: Maybe<Scalars['Int']>;
   currency?: Maybe<Scalars['Currency']>;

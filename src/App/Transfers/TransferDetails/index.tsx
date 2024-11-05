@@ -63,22 +63,22 @@ const TransferDetails: FC<ConnectorProps> = ({
             value={transferDetails.transferState || ''}
           />
           <FormField
-            disabled
+            disabled={!transferDetails.fxTransfers}
             type="text"
             label="Fx Transfer ID"
-            value={transferDetails.transferId!}
+            value={transferDetails.fxTransfers?.fxTransferId || ''}
           />
           <FormField
-            disabled
+            disabled={!transferDetails.fxTransfers}
             type="text"
             label="Fx Quote Id"
-            value={transferDetails.quoteId?.toString() || ''}
+            value={transferDetails.fxTransfers?.fxQuoteId?.toString() || ''}
           />
           <FormField
-            disabled
+            disabled={!transferDetails.fxTransfers}
             type="text"
             label="Fx Transfer State"
-            value={transferDetails.transferState || ''}
+            value={transferDetails.fxTransfers?.fxTransferState || ''}
           />
           {errorCodeField || <div />}
         </FormField.Container>
@@ -126,39 +126,6 @@ const TransferDetails: FC<ConnectorProps> = ({
           <Button
             size="small"
             kind="primary"
-            label="Fx Quote Events"
-            onClick={() => {
-              onsetJsonModalData({
-                title: 'Fx Quote Events',
-                json: transferDetails.quoteEvents || {},
-              });
-            }}
-          />
-          <Button
-            size="small"
-            kind="primary"
-            label="Fx Transfer Events"
-            onClick={() => {
-              onsetJsonModalData({
-                title: 'Fx Transfer Events',
-                json: transferDetails.transferEvents || {},
-              });
-            }}
-          />
-          <Button
-            size="small"
-            kind="primary"
-            label="Fx Settlement Events"
-            onClick={() => {
-              onsetJsonModalData({
-                title: 'Fx Settlement Events',
-                json: transferDetails.settlementEvents || {},
-              });
-            }}
-          />
-          <Button
-            size="small"
-            kind="primary"
             label="Quote Events"
             onClick={() => {
               onsetJsonModalData({
@@ -186,6 +153,42 @@ const TransferDetails: FC<ConnectorProps> = ({
               onsetJsonModalData({
                 title: 'Settlement Events',
                 json: transferDetails.settlementEvents || {},
+              });
+            }}
+          />
+          <Button
+            size="small"
+            kind="primary"
+            label="Fx Quote Events"
+            disabled={!transferDetails.fxQuoteEvents}
+            onClick={() => {
+              onsetJsonModalData({
+                title: 'Fx Quote Events',
+                json: transferDetails.fxQuoteEvents || {},
+              });
+            }}
+          />
+          <Button
+            size="small"
+            kind="primary"
+            label="Fx Transfer Events"
+            disabled={!transferDetails.fxTransferEvents}
+            onClick={() => {
+              onsetJsonModalData({
+                title: 'Fx Transfer Events',
+                json: transferDetails.fxTransferEvents || {},
+              });
+            }}
+          />
+          <Button
+            size="small"
+            kind="primary"
+            label="Fx Settlement Events"
+            disabled={!transferDetails.fxSettlementEvents}
+            onClick={() => {
+              onsetJsonModalData({
+                title: 'Fx Settlement Events',
+                json: transferDetails.fxSettlementEvents || {},
               });
             }}
           />
