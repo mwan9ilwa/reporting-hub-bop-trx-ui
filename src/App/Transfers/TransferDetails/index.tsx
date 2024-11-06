@@ -814,7 +814,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
             >
               <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
-                Transfer Amount
+                Source Amount
               </div>
               <FormField
                 disabled
@@ -835,7 +835,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
             >
               <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
-                Payee Receive Amount
+                Target Amount
               </div>
               <FormField
                 disabled
@@ -859,7 +859,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
             >
               <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
-                Payee DFSP Fee
+                Source Charges
               </div>
               <FormField
                 disabled
@@ -883,7 +883,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               style={{ overflow: 'hidden', gap: '50px', marginLeft: '5px' }}
             >
               <div style={{ flex: '0 0 150px', textAlign: 'left', marginRight: '10px' }}>
-                Payee DFSP Commission
+                Target Charges
               </div>
               <FormField
                 disabled
