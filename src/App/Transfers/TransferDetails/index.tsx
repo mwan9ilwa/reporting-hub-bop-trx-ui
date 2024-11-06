@@ -321,7 +321,14 @@ const TransferDetails: FC<ConnectorProps> = ({
     <TabPanel className="transferDetailsTab">
       <FormField.Container direction="row" align="top left">
         <FormField.Container direction="column">
-          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+          <div
+            style={{
+              position: 'relative',
+              display: 'inline-block',
+              width: '100%',
+              marginBottom: '10px',
+            }}
+          >
             <FormField
               disabled
               type="text"
@@ -357,19 +364,19 @@ const TransferDetails: FC<ConnectorProps> = ({
           <FormField
             disabled
             type="text"
-            label="Amount"
-            value={transferDetails.amount?.toString() || ''}
-          />
-          <FormField
-            disabled
-            type="text"
             label="Source Amount"
             value={transferDetails.amount?.toString() || ''}
           />
           <FormField
             disabled
             type="text"
-            label="FXP"
+            label="Target Amount"
+            value={transferDetails.amount?.toString() || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Counter Party"
             value={transferDetails.conversions?.counterPartyFSP || ''}
           />
           <FormField
@@ -389,7 +396,6 @@ const TransferDetails: FC<ConnectorProps> = ({
             }`}
           />
         </FormField.Container>
-
         <FormField.Container direction="column">
           <FormField
             disabled
@@ -397,11 +403,16 @@ const TransferDetails: FC<ConnectorProps> = ({
             label="Transfer State"
             value={transferDetails.transferState || ''}
           />
-          <FormField disabled type="text" label="Currency" value={transferDetails.currency || ''} />
           <FormField
             disabled
             type="text"
             label="Source Currency"
+            value={transferDetails.currency || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Target Currency"
             value={transferDetails.currency || ''}
           />
           <FormField
@@ -427,7 +438,6 @@ const TransferDetails: FC<ConnectorProps> = ({
             }`}
           />
         </FormField.Container>
-
         <FormField.Container direction="column">
           <FormField
             disabled
@@ -450,6 +460,12 @@ const TransferDetails: FC<ConnectorProps> = ({
             value={
               transferDetails.createdAt ? moment(transferDetails.createdAt).local().format() : ''
             }
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Conversion State"
+            value={transferDetails.conversions?.conversionState?.toString() || ''}
           />
           <FormField
             disabled
@@ -483,6 +499,7 @@ const TransferDetails: FC<ConnectorProps> = ({
             label="Conversion Settlement Batch ID"
             value={transferDetails.conversions?.conversionSettlementWindowId?.toString() || ''}
           />
+          <FormField disabled type="text" label="FXP Proxy" value="FXP Proxy" />
           <FormField
             disabled
             type="text"
@@ -495,7 +512,6 @@ const TransferDetails: FC<ConnectorProps> = ({
             label="Payee DFSP Proxy"
             value={transferDetails.transaction?.payeeDFSPProxy?.toString() || ''}
           />
-          <FormField disabled type="text" label="FXP Proxy" value="FXP Proxy" />
         </FormField.Container>
       </FormField.Container>
     </TabPanel>
