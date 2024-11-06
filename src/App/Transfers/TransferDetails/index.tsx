@@ -334,7 +334,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               type="text"
               label="Transfer ID"
               value={transferDetails.transferId!}
-              style={{ paddingRight: '30px' }}
+              // style={{ paddingRight: '30px' }}
             />
             <button
               onClick={() => handleCopy(transferDetails.transferId!)}
@@ -499,7 +499,7 @@ const TransferDetails: FC<ConnectorProps> = ({
             label="Conversion Settlement Batch ID"
             value={transferDetails.conversions?.conversionSettlementWindowId?.toString() || ''}
           />
-          <FormField disabled type="text" label="FXP Proxy" value="FXP Proxy" />
+          <FormField disabled type="text" label="Counter Party Proxy" value="Counter Party Proxy" />
           <FormField
             disabled
             type="text"
