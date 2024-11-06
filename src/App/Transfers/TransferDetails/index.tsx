@@ -55,7 +55,7 @@ const TransferDetails: FC<ConnectorProps> = ({
             disabled={!transferDetails.fxTransfers}
             type="text"
             label="Transaction ID"
-            value={transferDetails.fxTransfers?.fxTransferId || ''}
+            value={transferDetails.transactionId?.toString() || ''}
           />
           <FormField
             disabled
@@ -70,22 +70,22 @@ const TransferDetails: FC<ConnectorProps> = ({
             value={transferDetails.transferState || ''}
           />
           <FormField
-            disabled={!transferDetails.fxTransfers}
+            disabled={!transferDetails.conversions}
             type="text"
             label="Conversion Request ID"
-            value={transferDetails.fxTransfers?.fxQuoteId?.toString() || ''}
+            value={transferDetails.conversions?.conversionRequestId?.toString() || ''}
           />
           <FormField
-            disabled={!transferDetails.fxTransfers}
+            disabled={!transferDetails.conversions}
             type="text"
             label="Conversion State"
-            value={transferDetails.fxTransfers?.fxTransferState || ''}
+            value={transferDetails.conversions?.conversionState || ''}
           />
           <FormField
-            disabled={!transferDetails.fxTransfers}
+            disabled={!transferDetails.conversions}
             type="text"
             label="Commit Request ID"
-            value={transferDetails.fxTransfers?.fxQuoteId?.toString() || ''}
+            value={transferDetails.conversions?.conversionCommitRequestId?.toString() || ''}
           />
           {errorCodeField || <div />}
         </FormField.Container>
