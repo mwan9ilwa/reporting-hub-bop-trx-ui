@@ -87,6 +87,9 @@ export const GET_TRANSFER = gql`
         counterPartyFsp
         amountType
         transferAmount
+        payeeReceiveAmount
+        payeeFspFee
+        payeeFspCommission
         expiration
         charges
       }

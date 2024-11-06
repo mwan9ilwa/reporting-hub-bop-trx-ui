@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
+/* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Modal, Tabs, Tab, TabPanel, FormField, Button } from 'components';
 import { connect } from 'react-redux';
 import { State, Dispatch } from 'store/types';
@@ -33,6 +35,14 @@ const TransferDetails: FC<ConnectorProps> = ({
   onsetJsonModalData,
   onsetPartyModalData,
 }) => {
+  const [copyColor, setCopyColor] = useState('#acacac');
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopyColor('#4fc7e7');
+    setTimeout(() => setCopyColor('#acacac'), 2000);
+  };
+
   let errorCodeField;
   if (transferDetails.errorCode) {
     errorCodeField = (
@@ -49,31 +59,144 @@ const TransferDetails: FC<ConnectorProps> = ({
     <TabPanel className="technicalDetailsTab">
       <FormField.Container direction="row" align="top left">
         <FormField.Container direction="column">
-          <FormField disabled type="text" label="Transfer ID" value={transferDetails.transferId!} />
-          <FormField
-            disabled
-            type="text"
-            label="Quote Id"
-            value={transferDetails.quoteId?.toString() || ''}
-          />
+          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+            <FormField
+              disabled
+              type="text"
+              label="Transfer ID"
+              value={transferDetails.transferId!}
+              style={{ paddingRight: '30px' }}
+            />
+            <button
+              onClick={() => handleCopy(transferDetails.transferId!)}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                right: '10px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0',
+              }}
+              aria-label="Copy Transfer ID"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="22"
+                viewBox="0 0 24 24"
+                width="22"
+                fill={copyColor}
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
+          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+            <FormField
+              disabled
+              type="text"
+              label="Quote ID"
+              value={transferDetails.quoteId?.toString() || ''}
+              style={{ paddingRight: '30px' }}
+            />
+            <button
+              onClick={() => handleCopy(transferDetails.quoteId?.toString() || '')}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                right: '10px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0',
+              }}
+              aria-label="Copy Transfer ID"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="22"
+                viewBox="0 0 24 24"
+                width="22"
+                fill={copyColor}
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
           <FormField
             disabled
             type="text"
             label="Transfer State"
             value={transferDetails.transferState || ''}
           />
-          <FormField
-            disabled
-            type="text"
-            label="Fx Transfer ID"
-            value={transferDetails.transferId!}
-          />
-          <FormField
-            disabled
-            type="text"
-            label="Fx Quote Id"
-            value={transferDetails.quoteId?.toString() || ''}
-          />
+          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+            <FormField
+              disabled
+              type="text"
+              label="Fx Transfer ID"
+              value={transferDetails.transferId!}
+              style={{ paddingRight: '30px' }}
+            />
+            <button
+              onClick={() => handleCopy(transferDetails.transferId!)}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                right: '10px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0',
+              }}
+              aria-label="Copy ID"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="22"
+                viewBox="0 0 24 24"
+                width="22"
+                fill={copyColor}
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
+          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+            <FormField
+              disabled
+              type="text"
+              label="Fx Quote ID"
+              value={transferDetails.quoteId?.toString() || ''}
+              style={{ paddingRight: '30px' }}
+            />
+            <button
+              onClick={() => handleCopy(transferDetails.quoteId?.toString() || '')}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                right: '10px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0',
+              }}
+              aria-label="Copy Transfer ID"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="22"
+                viewBox="0 0 24 24"
+                width="22"
+                fill={copyColor}
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
           <FormField
             disabled
             type="text"
@@ -198,13 +321,46 @@ const TransferDetails: FC<ConnectorProps> = ({
     <TabPanel className="transferDetailsTab">
       <FormField.Container direction="row" align="top left">
         <FormField.Container direction="column">
-          <FormField disabled type="text" label="Transfer ID" value={transferDetails.transferId!} />
-          <FormField
-            disabled
-            type="text"
-            label="Amount"
-            value={transferDetails.amount?.toString() || ''}
-          />
+          <div
+            style={{
+              position: 'relative',
+              display: 'inline-block',
+              width: '100%',
+              marginBottom: '10px',
+            }}
+          >
+            <FormField
+              disabled
+              type="text"
+              label="Transfer ID"
+              value={transferDetails.transferId!}
+              style={{ paddingRight: '30px' }}
+            />
+            <button
+              onClick={() => handleCopy(transferDetails.transferId!)}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                right: '10px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0',
+              }}
+              aria-label="Copy Transfer ID"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="22"
+                viewBox="0 0 24 24"
+                width="22"
+                fill={copyColor}
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
           <FormField
             disabled
             type="text"
@@ -214,7 +370,13 @@ const TransferDetails: FC<ConnectorProps> = ({
           <FormField
             disabled
             type="text"
-            label="FXP"
+            label="Target Amount"
+            value={transferDetails.amount?.toString() || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Counter Party"
             value={transferDetails.conversions?.counterPartyFSP || ''}
           />
           <FormField
@@ -230,11 +392,10 @@ const TransferDetails: FC<ConnectorProps> = ({
             type="text"
             label="Payee Identifier"
             value={`${transferDetails.payeeParty?.firstName || ''} ${
-              transferDetails.toString() || ''
+              transferDetails.payeeParty?.lastName || ''
             }`}
           />
         </FormField.Container>
-
         <FormField.Container direction="column">
           <FormField
             disabled
@@ -242,11 +403,16 @@ const TransferDetails: FC<ConnectorProps> = ({
             label="Transfer State"
             value={transferDetails.transferState || ''}
           />
-          <FormField disabled type="text" label="Currency" value={transferDetails.currency || ''} />
           <FormField
             disabled
             type="text"
             label="Source Currency"
+            value={transferDetails.currency || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Target Currency"
             value={transferDetails.currency || ''}
           />
           <FormField
@@ -260,7 +426,7 @@ const TransferDetails: FC<ConnectorProps> = ({
             type="text"
             label="Payer Identifier Type"
             value={`${transferDetails.payerParty?.idType || ''} ${
-              transferDetails.payerParty?.idValue?.toString() || ''
+              transferDetails.payerParty?.idValue || ''
             }`}
           />
           <FormField
@@ -268,11 +434,10 @@ const TransferDetails: FC<ConnectorProps> = ({
             type="text"
             label="Payee Identifier Type"
             value={`${transferDetails.payeeParty?.idType || ''} ${
-              transferDetails.payeeParty?.idValue?.toString() || ''
+              transferDetails.payeeParty?.idValue || ''
             }`}
           />
         </FormField.Container>
-
         <FormField.Container direction="column">
           <FormField
             disabled
@@ -295,6 +460,12 @@ const TransferDetails: FC<ConnectorProps> = ({
             value={
               transferDetails.createdAt ? moment(transferDetails.createdAt).local().format() : ''
             }
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Conversion State"
+            value={transferDetails.conversions?.conversionState?.toString() || ''}
           />
           <FormField
             disabled
@@ -328,6 +499,7 @@ const TransferDetails: FC<ConnectorProps> = ({
             label="Conversion Settlement Batch ID"
             value={transferDetails.conversions?.conversionSettlementWindowId?.toString() || ''}
           />
+          <FormField disabled type="text" label="FXP Proxy" value="FXP Proxy" />
           <FormField
             disabled
             type="text"
@@ -339,12 +511,6 @@ const TransferDetails: FC<ConnectorProps> = ({
             type="text"
             label="Payee DFSP Proxy"
             value={transferDetails.transaction?.payeeDFSPProxy?.toString() || ''}
-          />
-          <FormField
-            disabled
-            type="text"
-            label="FXP Proxy"
-            value={transferDetails.toString() || ''}
           />
         </FormField.Container>
       </FormField.Container>
@@ -358,74 +524,131 @@ const TransferDetails: FC<ConnectorProps> = ({
         align="top left"
         style={{
           flexWrap: 'wrap',
-          gap: '40px',
+          gap: '1px',
         }}
       >
-        <FormField.Container direction="column">
-          <FormField
-            disabled={true}
-            type="text"
-            label="Transfer ID"
-            value={transferDetails.transferId!}
-            style={{
-              width: '100%',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          />
-        </FormField.Container>
-
-        <FormField.Container direction="column">
-          <FormField
-            disabled={true}
-            style={{
-              width: '100%',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              marginRight: 5,
-            }}
-            type="text"
-            label="Transfer State"
-            value={transferDetails.transferState || ''}
-          />
-        </FormField.Container>
-
-        <FormField.Container direction="column">
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+        <FormField.Container
+          direction="column"
+          style={{
+            width: '200px',
+          }}
+        >
+          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
             <FormField
-              disabled={true}
+              disabled
               type="text"
-              label="Quote Amount"
-              // value={model.transferTerms?.quoteAmount?.amount?.toString() || ''}
+              label="Transfer ID"
+              value={transferDetails.transferId!}
+              style={{ paddingRight: '30px', width: '100px' }}
             />
+            <button
+              onClick={() => handleCopy(transferDetails.transferId!)}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                right: '10px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0',
+              }}
+              aria-label="Copy Transfer ID"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="22"
+                viewBox="0 0 24 24"
+                width="22"
+                fill={copyColor}
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
           </div>
         </FormField.Container>
 
-        <FormField.Container direction="column">
+        <FormField.Container
+          direction="column"
+          style={{
+            width: '200px',
+          }}
+        >
+          <FormField
+            disabled
+            type="text"
+            label="Transfer State"
+            value={transferDetails.transferState || ''}
+            style={{
+              width: '100px',
+            }}
+          />
+        </FormField.Container>
+
+        <FormField.Container
+          direction="column"
+          style={{
+            width: '200px', // Container width
+          }}
+        >
+          <FormField
+            disabled={true}
+            type="text"
+            label="Quote Amount"
+            value={transferDetails.transferTerms?.quoteAmount || ''}
+            style={{
+              width: '100px', // Adjusted width for FormField
+            }}
+          />
+        </FormField.Container>
+
+        <FormField.Container
+          direction="column"
+          style={{
+            width: '200px',
+          }}
+        >
           <FormField
             disabled={true}
             type="text"
             label="Quote Currency"
-            // value={model.transferTerms?.quoteAmount?.currency || ''}
+            value={transferDetails.transferTerms?.quoteCurrency || ''}
+            style={{
+              width: '80px',
+            }}
           />
         </FormField.Container>
 
-        <FormField.Container direction="column">
+        <FormField.Container
+          direction="column"
+          style={{
+            width: '200px',
+          }}
+        >
           <FormField
             disabled={true}
             type="text"
             label="Quote Amount Type"
-            // value={model.transferTerms?.quoteAmountType || ''}
+            value={transferDetails.transferTerms?.quoteAmountType || ''}
+            style={{
+              width: '80px',
+            }}
           />
         </FormField.Container>
-        <FormField.Container direction="column">
+        <FormField.Container
+          direction="column"
+          style={{
+            width: '200px',
+          }}
+        >
           <FormField
             disabled={true}
             type="text"
             label="Conversion Type"
-            // value={model.transferTerms?.quoteAmountType || ''}
+            value={transferDetails.conversions?.conversionType || ''}
+            style={{
+              width: '80px',
+            }}
           />
         </FormField.Container>
       </FormField.Container>
@@ -481,13 +704,13 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.payerParty?.lastName || ''}
+                value={transferDetails.transferTerms?.payeeReceiveAmount || ''}
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.payerParty?.lastName || ''}
+                value={transferDetails.currency || ''}
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
 
@@ -511,7 +734,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.payerParty?.lastName || ''}
+                value={transferDetails.transferTerms || ''}
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
 
@@ -519,7 +742,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                 <FormField
                   disabled
                   type="text"
-                  value={transferDetails.payerParty?.lastName || ''}
+                  value={transferDetails.currency || ''}
                   style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
                 />
               </div>
@@ -535,7 +758,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.payerParty?.lastName || ''}
+                value={transferDetails.transferTerms?.payeeFspCommission || ''}
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
 
@@ -543,7 +766,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                 <FormField
                   disabled
                   type="text"
-                  value={transferDetails.payerParty?.lastName || ''}
+                  value={transferDetails.currency || ''}
                   style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
                 />
               </div>
@@ -559,7 +782,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.payerParty?.lastName || ''}
+                value={transferDetails.transferTerms?.expirationDate || ''}
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
             </FormField.Container>
@@ -617,7 +840,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.payerParty?.lastName || ''}
+                value={transferDetails.conversionTerms?.transferAmount || ''}
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
 
@@ -625,7 +848,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                 <FormField
                   disabled
                   type="text"
-                  value={transferDetails.payerParty?.lastName || ''}
+                  value={transferDetails.currency}
                   style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
                 />
               </div>
@@ -641,7 +864,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.payerParty?.lastName || ''}
+                value={transferDetails.conversionTerms?.payeeFspFee || ''}
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
 
@@ -649,7 +872,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                 <FormField
                   disabled
                   type="text"
-                  value={transferDetails.payerParty?.lastName || ''}
+                  value={transferDetails.currency || ''}
                   style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
                 />
               </div>
@@ -665,7 +888,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.payerParty?.lastName || ''}
+                value={transferDetails.conversionTerms?.payeeFspCommission || ''}
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
 
@@ -673,7 +896,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                 <FormField
                   disabled
                   type="text"
-                  value={transferDetails.payerParty?.lastName || ''}
+                  value={transferDetails.currency}
                   style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
                 />
               </div>
@@ -689,7 +912,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.payerParty?.lastName || ''}
+                value={transferDetails.conversionTerms?.expiration || ''}
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
             </FormField.Container>
@@ -703,7 +926,39 @@ const TransferDetails: FC<ConnectorProps> = ({
     <TabPanel className="transferPartiesTab">
       <FormField.Container direction="row" align="top left">
         <FormField.Container direction="column">
-          <FormField disabled type="text" label="Transfer ID" value={transferDetails.transferId!} />
+          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+            <FormField
+              disabled
+              type="text"
+              label="Transfer ID"
+              value={transferDetails.transferId!}
+              style={{ paddingRight: '30px' }}
+            />
+            <button
+              onClick={() => handleCopy(transferDetails.transferId!)}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                right: '10px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0',
+              }}
+              aria-label="Copy ID"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="22"
+                viewBox="0 0 24 24"
+                width="22"
+                fill={copyColor}
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
         </FormField.Container>
 
         <FormField.Container direction="column">
@@ -732,31 +987,31 @@ const TransferDetails: FC<ConnectorProps> = ({
           <FormField.Container direction="column">
             <h6>Payer Details</h6>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '30px' }}>Payer Identifier</label>
+              <label style={{ marginRight: '10px', width: '100px' }}>Payer Identifier</label>
               <FormField disabled type="text" value={transferDetails.payerParty?.idValue || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '0px' }}>Payer Identifier Type</label>
+              <label style={{ marginRight: '10px', width: '100px' }}>Payer Identifier Type</label>
               <FormField disabled type="text" value={transferDetails.payerParty?.idType || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '60px' }}>Payer DFSP</label>
-              <FormField
-                disabled
-                type="text"
-                value={String(transferDetails.payerParty?.id || '')}
-              />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '60px' }}>First Name</label>
+              <label style={{ marginRight: '10px', width: '100px' }}>First Name</label>
               <FormField disabled type="text" value={transferDetails.payerParty?.firstName || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '60px' }}>Last Name</label>
+              <label style={{ marginRight: '10px', width: '100px' }}>Middle Name</label>
+              <FormField
+                disabled
+                type="text"
+                value={String(transferDetails.payerParty?.middleName || '')}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '10px', width: '100px' }}>Last Name</label>
               <FormField disabled type="text" value={transferDetails.payerParty?.lastName || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '1px' }}>Supported Currencies</label>
+              <label style={{ marginRight: '10px', width: '100px' }}>Supported Currencies</label>
               <FormField
                 disabled
                 type="text"
@@ -770,31 +1025,31 @@ const TransferDetails: FC<ConnectorProps> = ({
           <FormField.Container direction="column">
             <h6>Payee Details</h6>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '35px' }}>Payee Identifier</label>
+              <label style={{ marginRight: '10px', width: '100px' }}>Payee Identifier</label>
               <FormField disabled type="text" value={transferDetails.payeeParty?.idValue || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '10px' }}>Payee Identifier Type</label>
+              <label style={{ marginRight: '10px', width: '100px' }}>Payee Identifier Type</label>
               <FormField disabled type="text" value={transferDetails.payeeParty?.idType || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '60px' }}>Payee DFSP</label>
-              <FormField
-                disabled
-                type="text"
-                value={String(transferDetails.payerParty?.id || '')}
-              />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '60px' }}>First Name</label>
+              <label style={{ marginRight: '10px', width: '100px' }}>First Name</label>
               <FormField disabled type="text" value={transferDetails.payeeParty?.firstName || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '60px' }}>Last Name</label>
+              <label style={{ marginRight: '10px', width: '100px' }}>Middle Name</label>
+              <FormField
+                disabled
+                type="text"
+                value={String(transferDetails.payeeParty?.middleName)}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '10px', width: '100px' }}>Last Name</label>
               <FormField disabled type="text" value={transferDetails.payeeParty?.lastName || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '1px' }}>Supported Currencies</label>
+              <label style={{ marginRight: '10px', width: '100px' }}>Supported Currencies</label>
               <FormField
                 disabled
                 type="text"
