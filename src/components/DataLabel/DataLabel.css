@@ -29,3 +29,11 @@
 .data-label--bold {
   font-weight: bold;
 }
+
+.disabled-field {
+  color: gray; /* Applies gray color to text, including label */
+}
+
+.disabled-field label {
+  color: gray;
+}

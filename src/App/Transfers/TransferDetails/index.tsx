@@ -51,9 +51,16 @@ const TransferDetails: FC<ConnectorProps> = ({
         <FormField.Container direction="column">
           <FormField disabled type="text" label="Transfer ID" value={transferDetails.transferId!} />
           <FormField
+            className={!transferDetails.fxTransfers ? 'disabled-field' : ''}
+            disabled={!transferDetails.fxTransfers}
+            type="text"
+            label="Transaction ID"
+            value={transferDetails.fxTransfers?.fxTransferId || ''}
+          />
+          <FormField
             disabled
             type="text"
-            label="Quote Id"
+            label="Quote ID"
             value={transferDetails.quoteId?.toString() || ''}
           />
           <FormField
@@ -65,20 +72,20 @@ const TransferDetails: FC<ConnectorProps> = ({
           <FormField
             disabled={!transferDetails.fxTransfers}
             type="text"
-            label="Fx Transfer ID"
-            value={transferDetails.fxTransfers?.fxTransferId || ''}
-          />
-          <FormField
-            disabled={!transferDetails.fxTransfers}
-            type="text"
-            label="Fx Quote Id"
+            label="Conversion Request ID"
             value={transferDetails.fxTransfers?.fxQuoteId?.toString() || ''}
           />
           <FormField
             disabled={!transferDetails.fxTransfers}
             type="text"
-            label="Fx Transfer State"
+            label="Conversion State"
             value={transferDetails.fxTransfers?.fxTransferState || ''}
+          />
+          <FormField
+            disabled={!transferDetails.fxTransfers}
+            type="text"
+            label="Commit Request ID"
+            value={transferDetails.fxTransfers?.fxQuoteId?.toString() || ''}
           />
           {errorCodeField || <div />}
         </FormField.Container>

@@ -3,7 +3,7 @@
 # Reporting Hub BizOps Transaction Tracing Microfrontend
 
 This is a microfrontend built to trace a transaction using the Reporting Api.
-
+ 
 It's built in React / Redux / Typescript and it includes some other libraries.
 
 This project follows [JAMStack](https://jamstack.org/) architecture and attempts to follow it's best practices.
