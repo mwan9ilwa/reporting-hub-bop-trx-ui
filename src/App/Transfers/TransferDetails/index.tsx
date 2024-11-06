@@ -820,7 +820,10 @@ const TransferDetails: FC<ConnectorProps> = ({
                 disabled
                 type="text"
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
-                value={transferDetails.amount?.toString() || ''}
+                value={
+                  transferDetails.conversionTerms?.transferAmount?.sourceAmount?.amount?.toString() ||
+                  ''
+                }
               />
               <FormField
                 disabled
@@ -840,7 +843,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.conversionTerms?.transferAmount || ''}
+                value={transferDetails.conversionTerms?.transferAmount?.TargetAmount?.amount || ''}
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
 
@@ -864,7 +867,9 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.conversionTerms?.payeeFspFee || ''}
+                value={
+                  transferDetails.conversionTerms?.charges?.totalSourceCurrencyCharges?.amount || ''
+                }
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
 
@@ -888,7 +893,9 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.conversionTerms?.payeeFspCommission || ''}
+                value={
+                  transferDetails.conversionTerms?.charges?.totalTargetCurrencyCharges?.amount || ''
+                }
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
 
