@@ -48,12 +48,12 @@ const transfersColumns = [
     key: 'sourceCurrency',
   },
   {
-    label: 'Target Currency',
-    key: 'currency',
-  },
-  {
     label: 'Source Amount',
     key: 'amount',
+  },
+  {
+    label: 'Target Currency',
+    key: 'currency',
   },
   {
     label: 'Target Amount',

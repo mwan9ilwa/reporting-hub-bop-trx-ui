@@ -96,6 +96,39 @@ const TransferDetails: FC<ConnectorProps> = ({
             <FormField
               disabled
               type="text"
+              label="Transaction ID"
+              value={transferDetails.transactionId!}
+              style={{ paddingRight: '30px' }}
+            />
+            <button
+              onClick={() => handleCopy(transferDetails.transactionId!)}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                right: '10px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0',
+              }}
+              aria-label="Copy ID"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="22"
+                viewBox="0 0 24 24"
+                width="22"
+                fill={copyColor}
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+              </svg>
+            </button>
+          </div>
+          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+            <FormField
+              disabled
+              type="text"
               label="Quote ID"
               value={transferDetails.quoteId?.toString() || ''}
               style={{ paddingRight: '30px' }}
@@ -135,45 +168,13 @@ const TransferDetails: FC<ConnectorProps> = ({
             <FormField
               disabled
               type="text"
-              label="Fx Transfer ID"
-              value={transferDetails.transferId!}
+              label="Conversion Request ID"
+              value={transferDetails.conversions?.conversionRequestId?.toString() || ''}
               style={{ paddingRight: '30px' }}
             />
             <button
-              onClick={() => handleCopy(transferDetails.transferId!)}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                right: '10px',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '0',
-              }}
-              aria-label="Copy ID"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="22"
-                viewBox="0 0 24 24"
-                width="22"
-                fill={copyColor}
-              >
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
-              </svg>
-            </button>
-          </div>
-          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
-            <FormField
-              disabled
-              type="text"
-              label="Fx Quote ID"
-              value={transferDetails.quoteId?.toString() || ''}
-              style={{ paddingRight: '30px' }}
-            />
-            <button
-              onClick={() => handleCopy(transferDetails.quoteId?.toString() || '')}
+              onClick={() =>
+                handleCopy(transferDetails.conversions?.conversionRequestId?.toString() || '')}
               style={{
                 position: 'absolute',
                 top: '50%',
@@ -200,8 +201,14 @@ const TransferDetails: FC<ConnectorProps> = ({
           <FormField
             disabled
             type="text"
-            label="Fx Transfer State"
-            value={transferDetails.transferState || ''}
+            label="Conversion State"
+            value={transferDetails.conversions?.conversionState || ''}
+          />
+          <FormField
+            disabled
+            type="text"
+            label="Commit Request ID"
+            value={transferDetails.conversions?.conversionCommitRequestId || ''}
           />
           {errorCodeField || <div />}
         </FormField.Container>
@@ -249,39 +256,6 @@ const TransferDetails: FC<ConnectorProps> = ({
           <Button
             size="small"
             kind="primary"
-            label="Fx Quote Events"
-            onClick={() => {
-              onsetJsonModalData({
-                title: 'Fx Quote Events',
-                json: transferDetails.quoteEvents || {},
-              });
-            }}
-          />
-          <Button
-            size="small"
-            kind="primary"
-            label="Fx Transfer Events"
-            onClick={() => {
-              onsetJsonModalData({
-                title: 'Fx Transfer Events',
-                json: transferDetails.transferEvents || {},
-              });
-            }}
-          />
-          <Button
-            size="small"
-            kind="primary"
-            label="Fx Settlement Events"
-            onClick={() => {
-              onsetJsonModalData({
-                title: 'Fx Settlement Events',
-                json: transferDetails.settlementEvents || {},
-              });
-            }}
-          />
-          <Button
-            size="small"
-            kind="primary"
             label="Quote Events"
             onClick={() => {
               onsetJsonModalData({
@@ -308,6 +282,39 @@ const TransferDetails: FC<ConnectorProps> = ({
             onClick={() => {
               onsetJsonModalData({
                 title: 'Settlement Events',
+                json: transferDetails.settlementEvents || {},
+              });
+            }}
+          />
+          <Button
+            size="small"
+            kind="primary"
+            label="Fx Quote Events"
+            onClick={() => {
+              onsetJsonModalData({
+                title: 'Fx Quote Events',
+                json: transferDetails.quoteEvents || {},
+              });
+            }}
+          />
+          <Button
+            size="small"
+            kind="primary"
+            label="Fx Transfer Events"
+            onClick={() => {
+              onsetJsonModalData({
+                title: 'Fx Transfer Events',
+                json: transferDetails.transferEvents || {},
+              });
+            }}
+          />
+          <Button
+            size="small"
+            kind="primary"
+            label="Fx Settlement Events"
+            onClick={() => {
+              onsetJsonModalData({
+                title: 'Fx Settlement Events',
                 json: transferDetails.settlementEvents || {},
               });
             }}
