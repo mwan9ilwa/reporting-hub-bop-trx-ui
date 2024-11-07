@@ -386,7 +386,7 @@ const TransferDetails: FC<ConnectorProps> = ({
             disabled
             type="text"
             label="Counter Party"
-            value={transferDetails.conversions?.counterPartyFSP || ''}
+            value={transferDetails.conversions?.counterPartyFSP?.toString() || ''}
           />
           <FormField
             disabled

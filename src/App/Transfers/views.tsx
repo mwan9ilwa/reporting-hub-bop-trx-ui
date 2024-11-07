@@ -33,7 +33,6 @@ const transfersColumns = [
   {
     label: 'Transfer ID',
     key: 'transferId',
-    width: '250px',
   },
   {
     label: 'State',
@@ -49,20 +48,20 @@ const transfersColumns = [
   },
   {
     label: 'Source Amount',
-    key: 'amount',
+    key: 'sourceAmount',
   },
   {
     label: 'Target Currency',
-    key: 'currency',
+    key: 'targetCurrency',
   },
   {
     label: 'Target Amount',
-    key: 'amount',
+    key: 'targetAmount',
     fn: (rawValue: Number) => {
       return `${rawValue ? rawValue.toString() : ''}`;
     },
     sort: (lValue: Transfer, rValue: Transfer) => {
-      return (lValue.amount || 0) - (rValue.amount || 0);
+      return (lValue.sourceAmount || 0) - (rValue.sourceAmount || 0);
     },
   },
   {

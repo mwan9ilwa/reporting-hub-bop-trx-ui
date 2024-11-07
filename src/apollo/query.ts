@@ -15,7 +15,7 @@ export const GET_TRANSFER = gql`
       conversionType
       conversionState
       settlementId
-      conversionSettlementBatchID
+      conversionSettlementWindowId
       submittedDate
       conversionSubmittedDate
       createdAt
@@ -24,7 +24,7 @@ export const GET_TRANSFER = gql`
       quoteEvents
       transferEvents
       settlementEvents
-      transferSettlementBatchID
+      transferSettlementWindowId
       fxp
       fxpProxy
       payeeDFSP {
@@ -66,7 +66,7 @@ export const GET_TRANSFER = gql`
         payeeReceiveAmount
         payeeFspFee
         payeeFspCommission
-        expirationDate
+        expiration
         geoCode
         ilpPacket
         transactionId
@@ -91,7 +91,16 @@ export const GET_TRANSFER = gql`
         payeeFspFee
         payeeFspCommission
         expiration
-        charges
+        charges {
+          totalSourceCurrencyCharges {
+            amount
+            currency
+          }
+          totalTargetCurrencyCharges {
+            amount
+            currency
+          }
+        }
       }
       fxQuotes {
         Amount
@@ -174,7 +183,7 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
         payeeReceiveAmount
         payeeFspFee
         payeeFspCommission
-        expirationDate
+        expiration
         geoCode
         ilpPacket
         transactionId
@@ -195,8 +204,20 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
         counterPartyFsp
         amountType
         transferAmount
+        payeeReceiveAmount
+        payeeFspFee
+        payeeFspCommission
         expiration
-        charges
+        charges {
+          totalSourceCurrencyCharges {
+            amount
+            currency
+          }
+          totalTargetCurrencyCharges {
+            amount
+            currency
+          }
+        }
       }
       fxQuotes {
         Amount
