@@ -8,10 +8,10 @@ export const GET_TRANSFER = gql`
       transferState
       baseUseCase
       transactionType
-      currency
-      amount
       sourceAmount
       sourceCurrency
+      targetAmount
+      targetCurrency
       conversionType
       conversionState
       settlementId
