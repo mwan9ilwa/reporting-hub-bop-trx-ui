@@ -222,18 +222,21 @@ export type TransferSummaryFilter = {
   errorCode?: Maybe<Scalars['Int']>;
   payerDFSP?: Maybe<Scalars['String']>;
   payeeDFSP?: Maybe<Scalars['String']>;
-  currency?: Maybe<Scalars['Currency']>;
+  sourceCurrency?: Maybe<Scalars['Currency']>;
+  targetCurrency?: Maybe<Scalars['Currency']>;
 };
 
 export type TransferSummary = {
   __typename?: 'TransferSummary';
   count: Scalars['Int'];
   id: Scalars['Int'];
-  amount?: Maybe<Scalars['Int']>;
+  sourceAmount?: Maybe<Scalars['Int']>;
+  targetAmount?: Maybe<Scalars['Int']>;
   errorCode?: Maybe<Scalars['Int']>;
   payerDFSP?: Maybe<Scalars['String']>;
   payeeDFSP?: Maybe<Scalars['String']>;
-  currency?: Maybe<Scalars['Currency']>;
+  sourceCurrency?: Maybe<Scalars['Currency']>;
+  targetCurrency?: Maybe<Scalars['Currency']>;
 };
 
 export type TransferStateChange = {

@@ -183,7 +183,12 @@ export const TransferSummaryMock = Factory.Sync.makeFactory<TransferSummary>({
   count: Factory.each(() => faker.datatype.number()),
   payerDFSP: Factory.each(() => faker.company.companyName()),
   payeeDFSP: Factory.each(() => faker.company.companyName()),
-  currency: Factory.each(() => faker.random.arrayElement(['USD', 'EUR', 'CNY', 'MMK', 'TZS'])),
+  sourceCurrency: Factory.each(() =>
+    faker.random.arrayElement(['USD', 'EUR', 'CNY', 'MMK', 'TZS']),
+  ),
+  targetCurrency: Factory.each(() =>
+    faker.random.arrayElement(['USD', 'EUR', 'CNY', 'MMK', 'TZS']),
+  ),
   errorCode: Factory.each(() => faker.datatype.number()),
   id: 0,
 });
@@ -198,7 +203,8 @@ export const TransferSummaryMockByErrorCode = Factory.Sync.makeFactory<TransferS
 export const TransferSummaryMockByCurrency = Factory.Sync.makeFactory<TransferSummary>({
   __typename: 'TransferSummary',
   count: Factory.each(() => faker.datatype.number()),
-  currency: Factory.each(() => faker.datatype.string(3)),
+  sourceCurrency: Factory.each(() => faker.datatype.string(3)),
+  targetCurrency: Factory.each(() => faker.datatype.string(3)),
   errorCode: Factory.each(() => faker.datatype.number()),
   id: 0,
 });
@@ -267,17 +273,20 @@ export const transferSummaryByCurrencyQueryMock: WildcardMockedResponse = {
       transferSummary: [
         {
           count: 1000000,
-          currency: 'USD',
+          sourceCurrency: 'USD',
+          targetCurrency: 'USD',
           errorCode: null,
         },
         {
-          count: 1000000,
-          currency: 'EUR',
+          count: 2000000,
+          sourceCurrency: 'EUR',
+          targetCurrency: 'EUR',
           errorCode: null,
         },
         {
           count: 40000,
-          currency: 'USD',
+          sourceCurrency: 'USD',
+          targetCurrency: 'USD',
           errorCode: 3100,
         },
         ...TransferSummaryMockByCurrency.buildList(10),

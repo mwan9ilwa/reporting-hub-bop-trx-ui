@@ -243,7 +243,8 @@ export const GET_TRANSFER_SUMMARY_BY_CURRENCY = gql`
     transferSummary(filter: { startDate: $startDate, endDate: $endDate }) {
       count
       errorCode
-      currency
+      sourceCurrency
+      targetCurrency
     }
   }
 `;

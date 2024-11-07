@@ -296,8 +296,8 @@ const Filters: FC<TransferFiltersProps> = ({ model, onFilterChange, onFindTransf
           className="transfers_filters_textfield"
           placeholder="Target Currency"
           size="small"
-          value={model?.currency}
-          onChange={(value) => onFilterChange('currency', value)}
+          value={model?.targetCurrency}
+          onChange={(value) => onFilterChange('targetCurrency', value)}
         />
         <Select
           className="transfers_filters_select"
@@ -340,7 +340,7 @@ const Transfers: FC<ConnectorProps> = ({
         : {
             startDate: filtersModel.from,
             endDate: filtersModel.to,
-            currency: filtersModel.currency,
+            sourceCurrency: filtersModel.sourceCurrency,
             transferState: filtersModel.transferState,
             payeeFSPId: filtersModel.payeeFSPId,
             payerFSPId: filtersModel.payerFSPId,
