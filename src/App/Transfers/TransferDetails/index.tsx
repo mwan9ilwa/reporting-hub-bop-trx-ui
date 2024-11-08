@@ -783,7 +783,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                 disabled
                 type="text"
                 value={transferDetails.transferTerms?.expirationDate || ''}
-                style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
+                // style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
               />
             </FormField.Container>
           </FormField.Container>
