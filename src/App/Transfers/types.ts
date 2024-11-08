@@ -10,7 +10,7 @@ export interface TransfersFilter {
   payeeIdValue: string | undefined;
   from: string | undefined;
   to: string | undefined;
-  currency: string | undefined;
+  targetCurrency: string | undefined;
   transferState: string | undefined;
   transactionType: string | undefined;
   conversionState: string | undefined;

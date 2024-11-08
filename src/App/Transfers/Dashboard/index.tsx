@@ -22,19 +22,27 @@ interface ConnectorProps {}
 const Dashboard: FC<ConnectorProps> = () => {
   return (
     <div>
-      <Row style={{ marginBottom: 10 }}>
+      <Row style={{ marginBottom: 10, gap: 20 }}>
         <TransferTotalSummary />
         <BySourceCurrencyChart />
         <ByTargetCurrencyChart />
-        <TransfersByPayerChart />
-        <TransfersByPayeeChart />
+        <div style={{ marginLeft: '55px' }}>
+          <TransfersByPayerChart />
+        </div>
+        <div style={{ marginLeft: '-50px' }}>
+          <TransfersByPayeeChart />
+        </div>
       </Row>
-      <Row style={{ marginBottom: 10 }}>
+      <Row style={{ marginBottom: 30, gap: 20 }}>
         <ErrorSummary />
         <ErrorsBySourceCurrencyChart />
         <ErrorsByTargetCurrencyChart />
-        <ErrorsByPayerChart />
-        <ErrorsByPayeeChart />
+        <div style={{ marginLeft: '55px' }}>
+          <ErrorsByPayerChart />
+        </div>
+        <div style={{ marginLeft: '-50px' }}>
+          <ErrorsByPayeeChart />
+        </div>
       </Row>
     </div>
   );

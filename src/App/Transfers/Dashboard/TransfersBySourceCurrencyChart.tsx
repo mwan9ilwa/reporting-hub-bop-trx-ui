@@ -52,7 +52,7 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
       .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
     const firstThree = summary.slice(0, 3);
     const remainingSummary = {
-      currency: 'Other',
+      sourceCurrency: 'Other',
       count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
     };
     if (remainingSummary.count > 0) {
@@ -74,13 +74,13 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
         <Pie
           data={firstThree}
           dataKey="count"
-          nameKey="currency"
+          nameKey="sourceCurrency"
           innerRadius={30}
           outerRadius={50}
           blendStroke
           onClick={(value) => {
             if (value.name !== 'Other') {
-              onFilterChange('currency', value.name);
+              onFilterChange('sourceCurrency', value.name);
             }
           }}
           activeIndex={activeIndex}
@@ -90,7 +90,7 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
         >
           {firstThree.map((_entry: any, index: number) => (
             <Cell
-              key={`${_entry.currency}`}
+              key={`${_entry.sourceCurrency}`}
               fill={GREEN_CHART_GRADIENT_COLORS[index % GREEN_CHART_GRADIENT_COLORS.length]}
             />
           ))}
