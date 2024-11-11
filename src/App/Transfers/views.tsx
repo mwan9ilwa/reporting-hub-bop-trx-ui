@@ -33,7 +33,7 @@ const transfersColumns = [
   {
     label: 'Transfer ID',
     key: 'transferId',
-    width: '250px',
+    minWidth: 150,
   },
   {
     label: 'State',
@@ -48,21 +48,21 @@ const transfersColumns = [
     key: 'sourceCurrency',
   },
   {
-    label: 'Target Currency',
-    key: 'currency',
+    label: 'Source Amount',
+    key: 'sourceAmount',
   },
   {
-    label: 'Source Amount',
-    key: 'amount',
+    label: 'Target Currency',
+    key: 'targetCurrency',
   },
   {
     label: 'Target Amount',
-    key: 'amount',
+    key: 'targetAmount',
     fn: (rawValue: Number) => {
       return `${rawValue ? rawValue.toString() : ''}`;
     },
     sort: (lValue: Transfer, rValue: Transfer) => {
-      return (lValue.amount || 0) - (rValue.amount || 0);
+      return (lValue.sourceAmount || 0) - (rValue.sourceAmount || 0);
     },
   },
   {
@@ -297,8 +297,8 @@ const Filters: FC<TransferFiltersProps> = ({ model, onFilterChange, onFindTransf
           className="transfers_filters_textfield"
           placeholder="Target Currency"
           size="small"
-          value={model?.currency}
-          onChange={(value) => onFilterChange('currency', value)}
+          value={model?.targetCurrency}
+          onChange={(value) => onFilterChange('targetCurrency', value)}
         />
         <Select
           className="transfers_filters_select"
@@ -341,7 +341,7 @@ const Transfers: FC<ConnectorProps> = ({
         : {
             startDate: filtersModel.from,
             endDate: filtersModel.to,
-            currency: filtersModel.currency,
+            sourceCurrency: filtersModel.sourceCurrency,
             transferState: filtersModel.transferState,
             payeeFSPId: filtersModel.payeeFSPId,
             payerFSPId: filtersModel.payerFSPId,

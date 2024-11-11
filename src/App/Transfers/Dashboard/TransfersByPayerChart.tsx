@@ -72,10 +72,14 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           layout="vertical"
           verticalAlign="middle"
           align="right"
-          width={50}
+          width={165}
           height={100}
           iconSize={0}
           content={renderGreenLegend}
+          wrapperStyle={{
+            paddingLeft: '30px',
+            marginLeft: '30px',
+          }}
         />
         <Pie
           data={firstThree}

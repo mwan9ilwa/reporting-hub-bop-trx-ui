@@ -8,14 +8,14 @@ export const GET_TRANSFER = gql`
       transferState
       baseUseCase
       transactionType
-      currency
-      amount
       sourceAmount
       sourceCurrency
+      targetAmount
+      targetCurrency
       conversionType
       conversionState
       settlementId
-      conversionSettlementBatchID
+      conversionSettlementWindowId
       submittedDate
       conversionSubmittedDate
       createdAt
@@ -24,7 +24,7 @@ export const GET_TRANSFER = gql`
       quoteEvents
       transferEvents
       settlementEvents
-      transferSettlementBatchID
+      transferSettlementWindowId
       fxp
       fxpProxy
       payeeDFSP {
@@ -66,7 +66,7 @@ export const GET_TRANSFER = gql`
         payeeReceiveAmount
         payeeFspFee
         payeeFspCommission
-        expirationDate
+        expiration
         geoCode
         ilpPacket
         transactionId
@@ -91,7 +91,16 @@ export const GET_TRANSFER = gql`
         payeeFspFee
         payeeFspCommission
         expiration
-        charges
+        charges {
+          totalSourceCurrencyCharges {
+            amount
+            currency
+          }
+          totalTargetCurrencyCharges {
+            amount
+            currency
+          }
+        }
       }
       fxQuotes {
         Amount
@@ -174,7 +183,7 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
         payeeReceiveAmount
         payeeFspFee
         payeeFspCommission
-        expirationDate
+        expiration
         geoCode
         ilpPacket
         transactionId
@@ -195,8 +204,20 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
         counterPartyFsp
         amountType
         transferAmount
+        payeeReceiveAmount
+        payeeFspFee
+        payeeFspCommission
         expiration
-        charges
+        charges {
+          totalSourceCurrencyCharges {
+            amount
+            currency
+          }
+          totalTargetCurrencyCharges {
+            amount
+            currency
+          }
+        }
       }
       fxQuotes {
         Amount
@@ -222,7 +243,8 @@ export const GET_TRANSFER_SUMMARY_BY_CURRENCY = gql`
     transferSummary(filter: { startDate: $startDate, endDate: $endDate }) {
       count
       errorCode
-      currency
+      sourceCurrency
+      targetCurrency
     }
   }
 `;

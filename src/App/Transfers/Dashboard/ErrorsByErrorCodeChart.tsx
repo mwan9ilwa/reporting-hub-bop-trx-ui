@@ -69,7 +69,7 @@ const ByCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
           layout="vertical"
           verticalAlign="middle"
           align="right"
-          width={50}
+          width={100}
           height={100}
           iconSize={0}
           content={renderRedLegend}
