@@ -5,21 +5,35 @@ export const GET_TRANSFER = gql`
   query GetTransfer($transferId: String!) {
     transfer(transferId: $transferId) {
       transferId
-      transferState
-      baseUseCase
-      transactionType
+      transactionId
       sourceAmount
       sourceCurrency
       targetAmount
       targetCurrency
-      conversionType
+      createdAt
+      lastUpdated
+      baseUseCase
+      transferState
+      transferStateChanges
+      transactionType
       conversionState
       settlementId
+      settlementWindowId
       conversionSettlementWindowId
       submittedDate
       conversionSubmittedDate
-      createdAt
-      quoteId
+      quoteRequest {
+        quoteId
+        amountType
+        amount {
+          amount
+          currency
+        }
+        fees {
+          amount
+          currency
+        }
+      }
       partyLookupEvents
       quoteEvents
       transferEvents
@@ -31,14 +45,14 @@ export const GET_TRANSFER = gql`
         id
         name
         description
-        proxy
       }
+      payeeDFSPProxy
       payerDFSP {
         id
         name
         description
-        proxy
       }
+      payerDFSPProxy
       payerParty {
         id
         firstName
@@ -60,8 +74,6 @@ export const GET_TRANSFER = gql`
         supportedCurrency
       }
       transferTerms {
-        quoteAmount
-        quoteAmountType
         transferAmount
         payeeReceiveAmount
         payeeFspFee
@@ -78,35 +90,32 @@ export const GET_TRANSFER = gql`
         conversionState
         conversionStateChanges
         counterPartyFSP
+        conversionType
+        createdAt
         conversionSettlementWindowId
-      }
-      conversionTerms {
-        conversionId
-        determiningTransferId
-        initiatingFsp
-        counterPartyFsp
-        amountType
-        transferAmount
-        payeeReceiveAmount
-        payeeFspFee
-        payeeFspCommission
-        expiration
-        charges {
-          totalSourceCurrencyCharges {
-            amount
-            currency
+        counterPartyProxy
+        conversionTerms {
+          conversionId
+          determiningTransferId
+          initiatingFsp
+          counterPartyFsp
+          amountType
+          sourceAmount
+          targetAmount
+          expiration
+          charges {
+            chargeType
+            sourceAmount {
+              amount
+              currency
+            }
+            targetAmount {
+              amount
+              currency
+            }
           }
-          totalTargetCurrencyCharges {
-            amount
-            currency
-          }
+          ilpPacket
         }
-      }
-      fxQuotes {
-        Amount
-      }
-      fxTransfers {
-        Amount
       }
     }
   }
@@ -139,11 +148,24 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
       transferId
       transferState
       transactionType
-      currency
-      amount
+      sourceAmount
+      sourceCurrency
+      targetAmount
+      targetCurrency
       settlementId
       createdAt
-      quoteId
+      quoteRequest {
+        quoteId
+        amountType
+        amount {
+          amount
+          currency
+        }
+        fees {
+          amount
+          currency
+        }
+      }
       partyLookupEvents
       quoteEvents
       transferEvents
@@ -177,8 +199,6 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
         idValue
       }
       transferTerms {
-        quoteAmount
-        quoteAmountType
         transferAmount
         payeeReceiveAmount
         payeeFspFee
@@ -195,35 +215,32 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
         conversionState
         conversionStateChanges
         counterPartyFSP
+        conversionType
+        createdAt
         conversionSettlementWindowId
-      }
-      conversionTerms {
-        conversionId
-        determiningTransferId
-        initiatingFsp
-        counterPartyFsp
-        amountType
-        transferAmount
-        payeeReceiveAmount
-        payeeFspFee
-        payeeFspCommission
-        expiration
-        charges {
-          totalSourceCurrencyCharges {
-            amount
-            currency
+        counterPartyProxy
+        conversionTerms {
+          conversionId
+          determiningTransferId
+          initiatingFsp
+          counterPartyFsp
+          amountType
+          sourceAmount
+          targetAmount
+          expiration
+          charges {
+            chargeType
+            sourceAmount {
+              amount
+              currency
+            }
+            targetAmount {
+              amount
+              currency
+            }
           }
-          totalTargetCurrencyCharges {
-            amount
-            currency
-          }
+          ilpPacket
         }
-      }
-      fxQuotes {
-        Amount
-      }
-      fxTransfers {
-        Amount
       }
     }
   }

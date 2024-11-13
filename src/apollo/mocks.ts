@@ -19,6 +19,9 @@ import {
   TransferTerms,
   Conversion,
   ConversionTerms,
+  PositionChange,
+  QuoteRequest,
+  ConversionStateChanges,
 } from './types';
 
 export const PartyMock = Factory.Sync.makeFactory<Party>({
@@ -46,12 +49,28 @@ export const PartyMock = Factory.Sync.makeFactory<Party>({
   ),
 });
 
+export const PositionChangesMock = Factory.Sync.makeFactory<PositionChange>({
+  id: Factory.each(() => faker.datatype.number()),
+  participantName: Factory.each(() => faker.datatype.string()),
+  currency: Factory.each(() => faker.datatype.string()),
+  ledgerType: Factory.each(() => faker.datatype.string()),
+  dateTime: Factory.each(() => faker.datatype.datetime().toJSON()),
+  updatedPosition: Factory.each(() => faker.datatype.string()),
+  change: Factory.each(() => faker.datatype.string()),
+});
+
+export const QuoteRequestMock = Factory.Sync.makeFactory<QuoteRequest>({
+  quoteId: Factory.each(() => faker.datatype.number()),
+  amountType: Factory.each(() => faker.datatype.string()),
+  amount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
+  fees: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
+});
+
 export const TransferTermsMock = Factory.Sync.makeFactory<TransferTerms>({
-  quoteAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
-  quoteAmountType: Factory.each(() => faker.random.arrayElement(['fixed', 'variable'])),
   transferAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
-  payeeReceiveAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
+  // quoteAmountType: Factory.each(() => faker.random.arrayElement(['fixed', 'variable'])),
   payeeFspCommission: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
+  payeeReceiveAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
   payeeFspFee: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
   expiration: Factory.each(() => faker.datatype.datetime().toJSON()),
   geoCode: Factory.each(() => ({
@@ -61,6 +80,32 @@ export const TransferTermsMock = Factory.Sync.makeFactory<TransferTerms>({
   ilpPacket: Factory.each(() => faker.random.arrayElement(['USD', 'EUR'])),
 });
 
+export const ConversionStateChangesMock = Factory.Sync.makeFactory<ConversionStateChanges>({
+  conversionState: Factory.each(() => faker.datatype.string()),
+  date: Factory.each(() => faker.datatype.datetime().toJSON()),
+  reason: Factory.each(() => faker.datatype.string()),
+});
+
+export const ConversionTermsMock = Factory.Sync.makeFactory<ConversionTerms>({
+  conversionId: Factory.each(() => faker.datatype.uuid()),
+  determiningTransferId: Factory.each(() => faker.datatype.uuid()),
+  initiatingFsp: Factory.each(() => faker.company.companyName()),
+  counterPartyFsp: Factory.each(() => faker.datatype.string()),
+  amountType: Factory.each(() => faker.random.arrayElement(['fixed', 'variable'])),
+  sourceAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
+  targetAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
+  expiration: Factory.each(() => faker.datatype.datetime().toJSON()),
+  charges: Factory.each(() => ({
+    sourceAmount: { amount: faker.datatype.number(), currency: 'USD' },
+    targetAmount: { amount: faker.datatype.number(), currency: 'USD' },
+  })),
+  ilpPacket: Factory.each(() => faker.datatype.string()),
+  // conversionIdRef: Factory.each(() => faker.datatype.number()),
+  // payeeReceiveAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
+  // payeeFspCommission: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
+  // payeeFspFee: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
+});
+
 export const ConversionMock = Factory.Sync.makeFactory<Conversion>({
   conversionRequestId: Factory.each(() => faker.datatype.uuid()),
   conversionId: Factory.each(() => faker.datatype.uuid()),
@@ -68,30 +113,13 @@ export const ConversionMock = Factory.Sync.makeFactory<Conversion>({
   conversionState: Factory.each(() =>
     faker.random.arrayElement(['pending', 'completed', 'failed']),
   ),
+  conversionStateChanges: Factory.each(() => ConversionStateChangesMock.build()),
   counterPartyFSP: Factory.each(() => faker.datatype.string()),
+  conversionType: Factory.each(() => faker.random.arrayElement(['type1', 'type2'])),
   createdAt: Factory.each(() => faker.datatype.datetime().toJSON()),
   conversionSettlementWindowId: Factory.each(() => faker.datatype.number()),
-  conversionType: Factory.each(() => faker.random.arrayElement(['type1', 'type2'])),
   counterPartyProxy: Factory.each(() => faker.datatype.string()),
-});
-
-export const ConversionTermsMock = Factory.Sync.makeFactory<ConversionTerms>({
-  determiningTransferId: Factory.each(() => faker.datatype.uuid()),
-  initiatingFsp: Factory.each(() => faker.company.companyName()),
-  counterPartyFsp: Factory.each(() => faker.datatype.string()),
-  amountType: Factory.each(() => faker.random.arrayElement(['fixed', 'variable'])),
-  expiration: Factory.each(() => faker.datatype.datetime().toJSON()),
-  charges: Factory.each(() => ({
-    totalSourceCurrencyCharges: { amount: faker.datatype.number(), currency: 'USD' },
-    totalTargetCurrencyCharges: { amount: faker.datatype.number(), currency: 'USD' },
-  })),
-  ilpPacket: Factory.each(() => faker.datatype.string()),
-  conversionIdRef: Factory.each(() => faker.datatype.number()),
-  payeeReceiveAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
-  payeeFspCommission: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
-  sourceAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
-  targetAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
-  payeeFspFee: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
+  conversionTerms: Factory.each(() => ConversionTermsMock.build()),
 });
 
 export const DfspMock = Factory.Sync.makeFactory<DFSP>({
@@ -107,7 +135,7 @@ export const TransferMock = Factory.Sync.makeFactory<Transfer>({
   __typename: 'Transfer',
   transferId: Factory.each(() => faker.datatype.uuid()),
   transactionId: Factory.each(() => faker.datatype.uuid()),
-  quoteId: Factory.each(() => faker.datatype.uuid()),
+  // quoteId: Factory.each(() => faker.datatype.uuid()),
   sourceAmount: Factory.each(() => faker.datatype.float()),
   targetAmount: Factory.each(() => faker.datatype.float()),
   sourceCurrency: Factory.each(() =>
@@ -117,6 +145,7 @@ export const TransferMock = Factory.Sync.makeFactory<Transfer>({
     faker.random.arrayElement(['USD', 'EUR', 'CNY', 'MMK', 'TZS']),
   ),
   createdAt: Factory.each(() => faker.datatype.datetime().toJSON()),
+  lastUpdated: Factory.each(() => faker.datatype.datetime().toJSON()),
   baseUseCase: Factory.each(() => faker.datatype.string()),
   transferState: Factory.each(() =>
     faker.random.arrayElement([
@@ -126,6 +155,7 @@ export const TransferMock = Factory.Sync.makeFactory<Transfer>({
       TransferState.Settled,
     ]),
   ),
+  transferStateChanges: Factory.each(() => faker.datatype.string()),
   transactionType: Factory.each(() =>
     faker.random.arrayElement([
       TransactionType.Transfer,
@@ -137,14 +167,17 @@ export const TransferMock = Factory.Sync.makeFactory<Transfer>({
   ),
   errorCode: Factory.each(() => faker.datatype.number()),
   settlementWindowId: Factory.each(() => faker.datatype.number()),
-  settlementId: Factory.each(() => faker.datatype.number()),
+  // settlementId: Factory.each(() => faker.datatype.number()),
   payerDFSP: Factory.each(() => DfspMock.build()),
+  payerDFSPProxy: Factory.each(() => faker.datatype.string()),
   payeeDFSP: Factory.each(() => DfspMock.build()),
+  payeeDFSPProxy: Factory.each(() => faker.datatype.string()),
+  positionChanges: Factory.each(() => PositionChangesMock.build()),
   payerParty: Factory.each(() => PartyMock.build()),
   payeeParty: Factory.each(() => PartyMock.build()),
+  quoteRequest: Factory.each(() => QuoteRequestMock.build()),
   transferTerms: Factory.each(() => TransferTermsMock.build()),
   conversions: Factory.each(() => ConversionMock.build()),
-  conversionTerms: Factory.each(() => ConversionTermsMock.build()),
   partyLookupEvents: Factory.each(() => {
     return JSON.parse(faker.datatype.json());
   }),
@@ -157,14 +190,8 @@ export const TransferMock = Factory.Sync.makeFactory<Transfer>({
   settlementEvents: Factory.each(() => {
     return JSON.parse(faker.datatype.json());
   }),
-  lastUpdated: Factory.each(() => faker.datatype.datetime().toJSON()),
-  transferStateChanges: Factory.each(() => faker.datatype.string()),
   transferSettlementWindowId: Factory.each(() => faker.datatype.number()),
-  payerDFSPProxy: Factory.each(() => faker.datatype.string()),
-  payeeDFSPProxy: Factory.each(() => faker.datatype.string()),
-  positionChanges: Factory.each(() => faker.datatype.number()),
   quoteRequestId: Factory.each(() => faker.datatype.number()),
-  quoteRequest: Factory.each(() => TransferTermsMock.build()),
   transferTermsId: Factory.each(() => faker.datatype.number()),
   fxQuoteEvents: Factory.each(() => {
     return JSON.parse(faker.datatype.json());
