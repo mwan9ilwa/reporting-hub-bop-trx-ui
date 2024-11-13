@@ -131,11 +131,11 @@ const TransferDetails: FC<ConnectorProps> = ({
               disabled
               type="text"
               label="Quote ID"
-              value={transferDetails.quoteId?.toString() || ''}
+              value={transferDetails.quoteRequest?.quoteId?.toString() || ''}
               style={{ paddingRight: '30px' }}
             />
             <button
-              onClick={() => handleCopy(transferDetails.quoteId?.toString() || '')}
+              onClick={() => handleCopy(transferDetails.quoteRequest?.quoteId?.toString() || '')}
               style={{
                 position: 'absolute',
                 top: '50%',
@@ -612,7 +612,7 @@ const TransferDetails: FC<ConnectorProps> = ({
             disabled={true}
             type="text"
             label="Quote Amount"
-            value={transferDetails.transferTerms?.quoteAmount?.amount?.toString() || ''}
+            value={transferDetails.quoteRequest?.amount?.amount?.toString() || ''}
             style={{
               width: '100px',
             }}
@@ -629,7 +629,7 @@ const TransferDetails: FC<ConnectorProps> = ({
             disabled={true}
             type="text"
             label="Quote Currency"
-            value={transferDetails.transferTerms?.quoteAmount?.currency}
+            value={transferDetails.quoteRequest?.amount?.currency}
             style={{
               width: '80px',
             }}
@@ -646,7 +646,7 @@ const TransferDetails: FC<ConnectorProps> = ({
             disabled={true}
             type="text"
             label="Quote Amount Type"
-            value={transferDetails.transferTerms?.quoteAmountType?.toString() || ''}
+            value={transferDetails.quoteRequest?.amountType?.toString() || ''}
             style={{
               width: '80px',
             }}
@@ -882,7 +882,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                 disabled
                 type="text"
                 value={
-                  transferDetails.conversions?.conversionTerms?.charges?.totalSourceCurrencyCharges?.amount?.toString() ||
+                  transferDetails.conversions?.conversionTerms?.charges?.sourceAmount?.amount?.toString() ||
                   ''
                 }
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
@@ -893,8 +893,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                   disabled
                   type="text"
                   value={
-                    transferDetails.conversions?.conversionTerms?.charges
-                      ?.totalSourceCurrencyCharges?.currency
+                    transferDetails.conversions?.conversionTerms?.charges?.sourceAmount?.currency
                   }
                   style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
                 />
@@ -912,7 +911,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                 disabled
                 type="text"
                 value={
-                  transferDetails.conversions?.conversionTerms?.charges?.totalTargetCurrencyCharges?.amount?.toString() ||
+                  transferDetails.conversions?.conversionTerms?.charges?.targetAmount?.amount?.toString() ||
                   ''
                 }
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
@@ -923,8 +922,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                   disabled
                   type="text"
                   value={
-                    transferDetails.conversions?.conversionTerms?.charges
-                      ?.totalTargetCurrencyCharges?.currency
+                    transferDetails.conversions?.conversionTerms?.charges?.targetAmount?.currency
                   }
                   style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
                 />
