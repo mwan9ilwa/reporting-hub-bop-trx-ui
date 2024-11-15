@@ -51,13 +51,10 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    const prunedSummary = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode !== null;
-      })
-      .slice();
+    // Processing the transfer summary data based on the updated structure
+    const prunedSummary = data.transferSummary.filter((obj: TransferSummary) => obj.group.payerDFSP && obj.count > 0);
 
-    const summary = map(groupBy(prunedSummary, 'payerDFSP'), (ts: any, payerDFSP: string) => {
+    const summary = map(groupBy(prunedSummary, (ts: any) => ts.group.payerDFSP), (ts: any, payerDFSP: string) => {
       return {
         payerDFSP,
         count: sumBy(ts, 'count'),
@@ -73,6 +70,7 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
       firstThree.push(remainingSummary);
     }
 
+    // Pie chart content rendering
     content = (
       <PieChart id="ErrorsByPayerChart" width={300} height={120}>
         <Legend
@@ -92,7 +90,7 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
         />
         <Pie
           data={firstThree}
-          dataKey="count"
+          dataKey="count" // You can replace this with "sum.sourceAmount" or "sum.targetAmount" as needed
           nameKey="payerDFSP"
           innerRadius={30}
           outerRadius={50}
@@ -118,6 +116,7 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
       </PieChart>
     );
   }
+
   return content;
 };
 

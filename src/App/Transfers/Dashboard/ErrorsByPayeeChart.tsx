@@ -51,27 +51,23 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    const prunedSummary = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode !== null;
-      })
-      .slice();
+      const prunedSummary = data.transferSummary.filter((obj: TransferSummary) => obj.group.payeeDFSP && obj.count > 0);
 
-    const summary = map(groupBy(prunedSummary, 'payerDFSP'), (ts: any, payeeDFSP: string) => {
-      return {
-        payeeDFSP,
-        count: sumBy(ts, 'count'),
+      const summary = map(groupBy(prunedSummary, (ts: any) => ts.group.payeeDFSP), (ts: any, payeeDFSP: string) => {
+        return {
+          payeeDFSP,
+          count: sumBy(ts, 'count'),
+        };
+      }).sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
+  
+      const firstThree = summary.slice(0, 3);
+      const remainingSummary = {
+        payeeDFSP: 'Other',
+        count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
       };
-    }).sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
-
-    const firstThree = summary.slice(0, 3);
-    const remainingSummary = {
-      payeeDFSP: 'Other',
-      count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
-    };
-    if (remainingSummary.count > 0) {
-      firstThree.push(remainingSummary);
-    }
+      if (remainingSummary.count > 0) {
+        firstThree.push(remainingSummary);
+      }
 
     content = (
       <PieChart id="ErrorsByPayeeChart" width={300} height={120}>

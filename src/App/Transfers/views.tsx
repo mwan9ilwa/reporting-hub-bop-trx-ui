@@ -68,31 +68,44 @@ const transfersColumns = [
   {
     label: 'Payer DFSP',
     key: 'payerDFSP',
-    fn: (rawValue: DFSP) => {
-      return `${rawValue ? rawValue.name : ''}`;
+    // fn: (rawValue: DFSP) => {
+    //   return `${rawValue ? rawValue.name : ''}`;
+    // },
+    fn: (rawValue: string) => {
+      return rawValue ? rawValue : '';
     },
   },
   {
     label: 'Payee DFSP',
     key: 'payeeDFSP',
-    fn: (rawValue: DFSP) => {
-      return `${rawValue ? rawValue.name : ''}`;
+    // fn: (rawValue: DFSP) => {
+    //   return `${rawValue ? rawValue.name : ''}`;
+    // },
+    fn: (rawValue: string) => {
+      return rawValue ? rawValue : '';
     },
   },
-  {
-    label: 'Settlement Batch',
-    key: 'settlementId',
-    fn: (rawValue: Number) => {
-      return `${rawValue ? rawValue.toString() : ''}`;
-    },
-  },
+  // {
+  //   label: 'Settlement Batch',
+  //   key: 'settlementId',
+  //   fn: (rawValue: Number) => {
+  //     return `${rawValue ? rawValue.toString() : ''}`;
+  //   },
+  // },
   {
     label: 'Date Submitted',
     key: 'createdAt',
-    fn: (rawValue: Number) => {
-      return `${rawValue ? moment(rawValue.toString()).local().format() : ''}`;
+    fn: (rawValue: string) => {
+      return rawValue ? moment(Number(rawValue)).local().format() : '';
     },
-  },
+  }
+  // {
+  //   label: 'Date Submitted',
+  //   key: 'createdAt',
+  //   fn: (rawValue: Number) => {
+  //     return `${rawValue ? moment(rawValue.toString()).local().format() : ''}`;
+  //   },
+  // },
 ];
 
 function fromDate(value: Date | undefined): string | undefined {
@@ -241,8 +254,8 @@ const Filters: FC<TransferFiltersProps> = ({ model, onFilterChange, onFindTransf
           className="transfers_filters_textfield"
           placeholder="Payer ID Value"
           size="small"
-          value={model?.payerIdValue}
-          onChange={(value) => onFilterChange('payerIdValue', value)}
+          value={model?.payerIdentifier}
+          onChange={(value) => onFilterChange('payerIdentifier', value)}
         />
         <TextField
           className="transfers_filters_textfield"
@@ -274,8 +287,8 @@ const Filters: FC<TransferFiltersProps> = ({ model, onFilterChange, onFindTransf
           className="transfers_filters_textfield"
           placeholder="Payee ID Value"
           size="small"
-          value={model?.payeeIdValue}
-          onChange={(value) => onFilterChange('payeeIdValue', value)}
+          value={model?.payeeIdentifier}
+          onChange={(value) => onFilterChange('payeeIdentifier', value)}
         />
         <TextField
           className="transfers_filters_textfield"
@@ -342,13 +355,16 @@ const Transfers: FC<ConnectorProps> = ({
             startDate: filtersModel.from,
             endDate: filtersModel.to,
             sourceCurrency: filtersModel.sourceCurrency,
+            targetCurrency: filtersModel.targetCurrency,
             transferState: filtersModel.transferState,
+            transactionType: filtersModel.transactionType,
+            conversionState: filtersModel.conversionState,
             payeeFSPId: filtersModel.payeeFSPId,
             payerFSPId: filtersModel.payerFSPId,
             payeeIdType: filtersModel.payeeIdType,
             payerIdType: filtersModel.payerIdType,
-            payeeIdValue: filtersModel.payeeIdValue,
-            payerIdValue: filtersModel.payerIdValue,
+            payerIdentifier: filtersModel.payerIdentifier,
+            payeeIdentifier: filtersModel.payeeIdentifier,
           },
     },
   );

@@ -5,9 +5,9 @@ export interface TransfersFilter {
   payerFSPId: string | undefined;
   payeeFSPId: string | undefined;
   payerIdType: string | undefined;
-  payerIdValue: string | undefined;
+  payerIdentifier: string | undefined;
   payeeIdType: string | undefined;
-  payeeIdValue: string | undefined;
+  payeeIdentifier: string | undefined;
   from: string | undefined;
   to: string | undefined;
   targetCurrency: string | undefined;

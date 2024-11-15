@@ -43,6 +43,7 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   const onPieLeave = () => {
     setActiveIndex(undefined);
   };
+
   let content = null;
   if (error) {
     content = <MessageBox kind="danger">Error fetching transfers: {error.message}</MessageBox>;
@@ -50,16 +51,16 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
     content = <Spinner center />;
   } else {
     const summary = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode === null;
-      })
+      .filter((obj: TransferSummary) => obj.group.errorCode === null)
       .slice()
       .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
+
     const firstThree = summary.slice(0, 3);
     const remainingSummary = {
       payerDFSP: 'Other',
       count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
     };
+
     if (remainingSummary.count > 0) {
       firstThree.push(remainingSummary);
     }
@@ -109,6 +110,7 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
       </PieChart>
     );
   }
+
   return content;
 };
 

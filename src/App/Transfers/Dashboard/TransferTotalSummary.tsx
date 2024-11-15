@@ -1,4 +1,4 @@
-import { GET_TRANSFER_SUMMARY } from 'apollo/query';
+import { GET_TRANSFER_SUMMARY_TOTAL } from 'apollo/query';
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch, ReduxContext, State } from 'store';
@@ -28,7 +28,7 @@ interface ConnectorProps {
 }
 
 const TransferTotalSummary: FC<ConnectorProps> = ({ filtersModel }) => {
-  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY, {
+  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_TOTAL, {
     fetchPolicy: 'no-cache',
     variables: {
       startDate: filtersModel.from,
@@ -51,9 +51,10 @@ const TransferTotalSummary: FC<ConnectorProps> = ({ filtersModel }) => {
     const totalTransfers = data.transferSummary.filter((obj: TransferSummary) => {
       return obj.errorCode === null;
     });
-    if (totalTransfers.length > 0) {
-      totalTransferCount = totalTransfers[0].count;
-    }
+    // if (totalTransfers.length > 0) {
+    //   totalTransferCount = totalTransfers[0].count;
+    // }
+    totalTransferCount = totalTransfers ? totalTransfers.count : 0;
     content = (
       <div className="transfer-summary">
         <Statistic

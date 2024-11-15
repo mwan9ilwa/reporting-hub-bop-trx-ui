@@ -37,6 +37,7 @@
     "@modusbox/react-components": "0.1.9",
     "@modusbox/redux-utils": "^0.0.9",
     "@modusbox/ts-utils": "^0.0.5",
+    "@mojaloop/reporting-hub-bop-trx-ui": "file:",
     "@reduxjs/toolkit": "^1.4.0",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.14.1",
