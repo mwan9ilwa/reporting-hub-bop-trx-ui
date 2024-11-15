@@ -329,8 +329,59 @@ export const GET_TRANSFER_SUMMARY_BY_CURRENCY = gql`
   }
 `;
 
+export const GET_TRANSFER_SUMMARY_BY_SOURCE_CURRENCY = gql`
+  query GetTransferSummaryByCurrency(
+    $limit: Int = 100
+    $offset: Int = 0
+    $startDate: DateTimeFlexible!
+    $endDate: DateTimeFlexible!
+  ) {
+    transferSummary(
+      limit: $limit
+      offset: $offset
+      filter: { startDate: $startDate, endDate: $endDate }
+      groupBy: ["sourceCurrency"]
+    ) {
+      count
+      group {
+        sourceCurrency
+      }
+      sum {
+        sourceAmount
+        targetAmount
+      }
+    }
+  }
+`;
+
+
+export const GET_TRANSFER_SUMMARY_BY_TARGET_CURRENCY = gql`
+  query GetTransferSummaryByCurrency(
+    $limit: Int = 100
+    $offset: Int = 0
+    $startDate: DateTimeFlexible!
+    $endDate: DateTimeFlexible!
+  ) {
+    transferSummary(
+      limit: $limit
+      offset: $offset
+      filter: { startDate: $startDate, endDate: $endDate }
+      groupBy: ["targetCurrency"]
+    ) {
+      count
+      group {
+        targetCurrency
+      }
+      sum {
+        sourceAmount
+        targetAmount
+      }
+    }
+  }
+`;
+
 export const GET_TRANSFER_SUMMARY_BY_PAYER_DFSP = gql`
- query GetTransferSummaryByPayerDFSP(
+  query GetTransferSummaryByPayerDFSP(
     $limit: Int = 100
     $offset: Int = 0
     $startDate: DateTimeFlexible!

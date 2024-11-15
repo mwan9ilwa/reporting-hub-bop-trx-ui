@@ -15,7 +15,7 @@ import { State, Dispatch } from 'store/types';
 import { ReduxContext } from 'store';
 import { useLazyQuery } from '@apollo/client';
 import { GET_TRANSFER, GET_TRANSFERS_WITH_EVENTS } from 'apollo/query';
-import { DFSP, Party, Transfer } from 'apollo/types';
+import { Party, Transfer } from 'apollo/types';
 import { Collapse } from 'antd';
 import moment from 'moment';
 import { TransfersFilter, FilterChangeValue, DateRanges } from './types';

@@ -43,16 +43,15 @@ const ErrorSummary: FC<ConnectorProps> = ({ filtersModel }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    const filteredSummary = data.transferSummary.filter((obj: TransferSummary) => obj.errorCode !== null);
-
-    const totalErrorCount = filteredSummary.reduce((n: number, { count }: TransferSummary) => n + count, 0);
-
-    // Find the total count of non-error transfers
-    const totalTransfers = data.transferSummary.filter((obj: TransferSummary) => obj.errorCode === null);
-    const totalTransferCount = totalTransfers.length > 0 ? totalTransfers[0].count : 0;
-
-    // Prevent division by zero if there are no transfers
-    const errorPercentage = totalTransferCount > 0 ? (totalErrorCount / totalTransferCount) * 100 : 0;
+    const totalTransactionCount = data.transferSummary.reduce(
+      (total: number, { count }: TransferSummary) => total + count,
+      0,
+    );
+    const totalErrorCount = data.transferSummary
+      .filter((obj: TransferSummary) => obj.group.errorCode !== null)
+      .reduce((total: number, { count }: TransferSummary) => total + count, 0);
+    const errorPercentage =
+      totalTransactionCount > 0 ? (totalErrorCount / totalTransactionCount) * 100 : 0;
 
     content = (
       <div className="transfer-summary">

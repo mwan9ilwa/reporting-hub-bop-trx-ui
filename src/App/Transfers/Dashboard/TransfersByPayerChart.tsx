@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
 import { ReduxContext, Dispatch, State } from 'store';
 import { TransferSummary } from 'apollo/types';
+import { map, groupBy, sumBy } from 'lodash';
 import { FilterChangeValue, TransfersFilter } from '../types';
 import { actions } from '../slice';
 import * as selectors from '../selectors';
@@ -50,18 +51,27 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    const summary = data.transferSummary
-      .filter((obj: TransferSummary) => obj.group.errorCode === null)
-      .slice()
-      .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
+    const prunedSummary = data.transferSummary.filter(
+      (obj: TransferSummary) => obj.group.payerDFSP && obj.sum.sourceAmount > 0,
+    );
+
+    const summary = map(
+      groupBy(prunedSummary, (ts: any) => ts.group.payerDFSP),
+      (ts: any, payerDFSP: string) => {
+        return {
+          payerDFSP,
+          sourceAmount: sumBy(ts, (t: any) => t.sum.sourceAmount), 
+        };
+      },
+    ).sort((a: any, b: any) => b.sourceAmount - a.sourceAmount);
 
     const firstThree = summary.slice(0, 3);
     const remainingSummary = {
       payerDFSP: 'Other',
-      count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
+      sourceAmount: summary.slice(3).reduce((n: number, { sourceAmount }: any) => n + sourceAmount, 0),
     };
 
-    if (remainingSummary.count > 0) {
+    if (remainingSummary.sourceAmount > 0) {
       firstThree.push(remainingSummary);
     }
 
@@ -84,8 +94,8 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
         />
         <Pie
           data={firstThree}
-          dataKey="count"
-          nameKey="payerDFSP"
+          dataKey="sourceAmount"  
+          nameKey="payerDFSP" 
           innerRadius={30}
           outerRadius={50}
           blendStroke
@@ -106,7 +116,10 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
             />
           ))}
         </Pie>
-        <Tooltip />
+        <Tooltip
+          formatter={(value: any) => value.toFixed(2)} 
+          labelFormatter={(label: string) => `${label}`} 
+        />
       </PieChart>
     );
   }

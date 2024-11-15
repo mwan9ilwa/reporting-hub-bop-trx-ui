@@ -51,23 +51,28 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
-      const prunedSummary = data.transferSummary.filter((obj: TransferSummary) => obj.group.payeeDFSP && obj.count > 0);
+    const prunedSummary = data.transferSummary.filter(
+      (obj: TransferSummary) => obj.group.payeeDFSP && obj.sum.targetAmount > 0,
+    );
 
-      const summary = map(groupBy(prunedSummary, (ts: any) => ts.group.payeeDFSP), (ts: any, payeeDFSP: string) => {
+    const summary = map(
+      groupBy(prunedSummary, (ts: any) => ts.group.payeeDFSP),
+      (ts: any, payeeDFSP: string) => {
         return {
           payeeDFSP,
-          count: sumBy(ts, 'count'),
+          targetAmount: sumBy(ts, 'sum.targetAmount'),
         };
-      }).sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
-  
-      const firstThree = summary.slice(0, 3);
-      const remainingSummary = {
-        payeeDFSP: 'Other',
-        count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
-      };
-      if (remainingSummary.count > 0) {
-        firstThree.push(remainingSummary);
-      }
+      },
+    ).sort((a: TransferSummary, b: TransferSummary) => b.targetAmount - a.targetAmount);
+
+    const firstThree = summary.slice(0, 3);
+    const remainingSummary = {
+      payeeDFSP: 'Other',
+      targetAmount: summary.slice(3).reduce((n: number, { targetAmount }: TransferSummary) => n + targetAmount, 0),
+    };
+    if (remainingSummary.targetAmount > 0) {
+      firstThree.push(remainingSummary);
+    }
 
     content = (
       <PieChart id="ErrorsByPayeeChart" width={300} height={120}>
@@ -84,7 +89,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
         />
         <Pie
           data={firstThree}
-          dataKey="count"
+          dataKey="targetAmount"
           nameKey="payeeDFSP"
           innerRadius={30}
           outerRadius={50}

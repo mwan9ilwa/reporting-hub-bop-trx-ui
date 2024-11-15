@@ -51,26 +51,26 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    // Processing the transfer summary data based on the updated structure
-    const prunedSummary = data.transferSummary.filter((obj: TransferSummary) => obj.group.payerDFSP && obj.count > 0);
+    const prunedSummary = data.transferSummary.filter(
+      (obj: TransferSummary) => obj.group.payerDFSP && obj.sum.sourceAmount > 0
+    );
 
     const summary = map(groupBy(prunedSummary, (ts: any) => ts.group.payerDFSP), (ts: any, payerDFSP: string) => {
       return {
         payerDFSP,
-        count: sumBy(ts, 'count'),
+        count: sumBy(ts, 'sum.sourceAmount'), 
       };
-    }).sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
+    }).sort((a: any, b: any) => b.count - a.count);
 
     const firstThree = summary.slice(0, 3);
     const remainingSummary = {
       payerDFSP: 'Other',
-      count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
+      count: summary.slice(3).reduce((n: number, { count }: any) => n + count, 0),
     };
     if (remainingSummary.count > 0) {
       firstThree.push(remainingSummary);
     }
 
-    // Pie chart content rendering
     content = (
       <PieChart id="ErrorsByPayerChart" width={300} height={120}>
         <Legend
@@ -90,7 +90,7 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
         />
         <Pie
           data={firstThree}
-          dataKey="count" // You can replace this with "sum.sourceAmount" or "sum.targetAmount" as needed
+          dataKey="count"
           nameKey="payerDFSP"
           innerRadius={30}
           outerRadius={50}

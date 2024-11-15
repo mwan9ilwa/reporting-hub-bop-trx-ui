@@ -5,7 +5,7 @@ import { ReduxContext, State } from 'store';
 import { MessageBox, Spinner } from 'components';
 import { useQuery } from '@apollo/client';
 import { TransferSummary } from 'apollo/types';
-import { GET_TRANSFER_SUMMARY } from 'apollo/query';
+import { GET_TRANSFER_SUMMARY_BY_SOURCE_CURRENCY } from 'apollo/query';
 import * as selectors from '../selectors';
 import { TransfersFilter } from '../types';
 import { RED_CHART_GRADIENT_COLORS, renderActiveShape, renderRedLegend } from './utils';
@@ -18,7 +18,7 @@ interface ConnectorProps {
   filtersModel: TransfersFilter;
 }
 const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
-  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY, {
+  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_SOURCE_CURRENCY, {
     fetchPolicy: 'no-cache',
     variables: {
       startDate: filtersModel.from,
