@@ -47,13 +47,12 @@ const TransferTotalSummary: FC<ConnectorProps> = ({ filtersModel }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    let totalTransferCount = 0;
-    const totalTransfers = data.transferSummary.filter((obj: TransferSummary) => {
-      return obj.errorCode === null;
-    });
-    if (totalTransfers.length > 0) {
-      totalTransferCount = totalTransfers[0].count;
-    }
+    const successfulTransferGroup = data.transferSummary.find(
+      (obj: TransferSummary) => obj.group.errorCode === null,
+    );
+
+    const totalTransferCount = successfulTransferGroup ? successfulTransferGroup.count : 0;
+
     content = (
       <div className="transfer-summary">
         <Statistic

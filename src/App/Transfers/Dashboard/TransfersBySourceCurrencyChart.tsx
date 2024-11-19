@@ -15,14 +15,17 @@ import { GREEN_CHART_GRADIENT_COLORS, renderActiveShape, renderGreenLegend } fro
 const stateProps = (state: State) => ({
   filtersModel: selectors.getTransfersFilter(state),
 });
+
 const dispatchProps = (dispatch: Dispatch) => ({
   onFilterChange: (field: string, value: FilterChangeValue | string) =>
     dispatch(actions.setTransferFinderFilter({ field, value })),
 });
+
 interface ConnectorProps {
   filtersModel: TransfersFilter;
   onFilterChange: (field: string, value: FilterChangeValue | string) => void;
 }
+
 const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_CURRENCY, {
     fetchPolicy: 'no-cache',
@@ -31,13 +34,17 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
       endDate: filtersModel.to,
     },
   });
+
   const [activeIndex, setActiveIndex] = useState<number>();
+
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index);
   };
+
   const onPieLeave = () => {
     setActiveIndex(undefined);
   };
+
   let content = null;
   if (error) {
     content = <MessageBox kind="danger">Error fetching transfers: {error.message}</MessageBox>;
@@ -45,16 +52,16 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
     content = <Spinner center />;
   } else {
     const summary = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode === null;
-      })
+      .filter((obj: TransferSummary) => obj.group.sourceCurrency)
       .slice()
       .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
+
     const firstThree = summary.slice(0, 3);
     const remainingSummary = {
       sourceCurrency: 'Other',
       count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
     };
+
     if (remainingSummary.count > 0) {
       firstThree.push(remainingSummary);
     }

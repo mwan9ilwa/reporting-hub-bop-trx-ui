@@ -32,24 +32,27 @@ const ByTargetCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
     },
   });
   const [activeIndex, setActiveIndex] = useState<number>();
+
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index);
   };
+
   const onPieLeave = () => {
     setActiveIndex(undefined);
   };
+
   let content = null;
+
   if (error) {
     content = <MessageBox kind="danger">Error fetching transfers: {error.message}</MessageBox>;
   } else if (loading) {
     content = <Spinner center />;
   } else {
     const summary = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode === null;
-      })
+      .filter((obj: TransferSummary) => obj.group.targetCurrency)
       .slice()
       .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
+
     const firstThree = summary.slice(0, 3);
     const remainingSummary = {
       targetCurrency: 'Other',

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
 import { ReduxContext, State, Dispatch } from 'store';
 import { GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP } from 'apollo/query';
+import { map, groupBy, sumBy } from 'lodash';
 import * as selectors from '../selectors';
 import { FilterChangeValue, TransfersFilter } from '../types';
 import { actions } from '../slice';
@@ -50,18 +51,30 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    const summary = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode === null;
-      })
-      .slice()
-      .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
+    const prunedSummary = data.transferSummary.filter(
+      (obj: TransferSummary) => obj.group.payeeDFSP && obj.sum.targetAmount > 0,
+    );
+
+    const summary = map(
+      groupBy(prunedSummary, (ts: any) => ts.group.payeeDFSP),
+      (ts: any, payeeDFSP: string) => {
+        return {
+          payeeDFSP,
+          targetAmount: sumBy(ts, (item: any) => item.sum.targetAmount),
+        };
+      },
+    ).sort(
+      (a: { targetAmount: number }, b: { targetAmount: number }) => b.targetAmount - a.targetAmount,
+    );
+
     const firstThree = summary.slice(0, 3);
     const remainingSummary = {
       payeeDFSP: 'Other',
-      count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
+      targetAmount: summary
+        .slice(3)
+        .reduce((n: number, { targetAmount }: { targetAmount: number }) => n + targetAmount, 0),
     };
-    if (remainingSummary.count > 0) {
+    if (remainingSummary.targetAmount > 0) {
       firstThree.push(remainingSummary);
     }
 

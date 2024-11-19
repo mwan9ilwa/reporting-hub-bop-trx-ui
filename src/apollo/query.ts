@@ -12,16 +12,26 @@ export const GET_TRANSFER = gql`
       targetCurrency
       createdAt
       lastUpdated
-      baseUseCase
       transferState
-      transferStateChanges
       transactionType
-      conversionState
-      settlementId
-      settlementWindowId
-      conversionSettlementWindowId
-      submittedDate
-      conversionSubmittedDate
+      errorCode
+      transferSettlementWindowId
+      payerDFSP
+      payerDFSPProxy
+      payeeDFSP
+      payeeDFSPProxy
+      payerParty {
+        partyIdType
+        partyIdentifier
+        partyName
+        supportedCurrencies
+      }
+      payeeParty {
+        partyIdType
+        partyIdentifier
+        partyName
+        supportedCurrencies
+      }
       quoteRequest {
         quoteId
         amountType
@@ -34,74 +44,57 @@ export const GET_TRANSFER = gql`
           currency
         }
       }
-      partyLookupEvents
-      quoteEvents
-      transferEvents
-      settlementEvents
-      transferSettlementWindowId
-      fxp
-      fxpProxy
-      payeeDFSP {
-        id
-        name
-        description
-      }
-      payeeDFSPProxy
-      payerDFSP {
-        id
-        name
-        description
-      }
-      payerDFSPProxy
-      payerParty {
-        id
-        firstName
-        lastName
-        middleName
-        dateOfBirth
-        idType
-        idValue
-        supportedCurrency
-      }
-      payeeParty {
-        id
-        firstName
-        lastName
-        middleName
-        dateOfBirth
-        idType
-        idValue
-        supportedCurrency
-      }
       transferTerms {
-        transferAmount
-        payeeReceiveAmount
-        payeeFspFee
-        payeeFspCommission
+        transferAmount {
+          amount
+          currency
+        }
+        payeeFspFee {
+          amount
+          currency
+        }
+        payeeFspCommission {
+          amount
+          currency
+        }
+        payeeReceiveAmount {
+          amount
+          currency
+        }
+        geoCode {
+          latitude
+          longitude
+        }
         expiration
-        geoCode
         ilpPacket
-        transactionId
       }
       conversions {
         conversionRequestId
         conversionId
         conversionCommitRequestId
         conversionState
-        conversionStateChanges
-        counterPartyFSP
         conversionType
-        createdAt
+        conversionStateChanges {
+          conversionState
+          dateTime
+          reason
+        }
+        counterPartyFSP
         conversionSettlementWindowId
-        counterPartyProxy
         conversionTerms {
           conversionId
           determiningTransferId
           initiatingFsp
           counterPartyFsp
           amountType
-          sourceAmount
-          targetAmount
+          sourceAmount {
+            amount
+            currency
+          }
+          targetAmount {
+            amount
+            currency
+          }
           expiration
           charges {
             chargeType
@@ -123,37 +116,63 @@ export const GET_TRANSFER = gql`
 
 export const GET_TRANSFERS_WITH_EVENTS = gql`
   query GetTransfersWithEvents(
+    $limit: Int = 100
+    $offset: Int = 0
     $startDate: DateTimeFlexible!
     $endDate: DateTimeFlexible!
-    $currency: Currency
-    $transferState: TransferState
-    $payeeFSPId: String
-    $payerFSPId: String
-    $payeeIdType: PartyIDType
-    $payerIdType: PartyIDType
-    $payeeIdValue: String
-    $payerIdValue: String
+    $transactionType: String
+    $transferState: String
+    $conversionState: String
+    $targetCurrency: String
+    $sourceCurrency: String
+    $payerIdType: String
+    $payerIdentifier: String
+    $payeeIdType: String
+    $payeeIdentifier: String
   ) {
     transfers(
+      limit: $limit
+      offset: $offset
       filter: {
         startDate: $startDate
         endDate: $endDate
-        currency: $currency
+        transactionType: $transactionType
         transferState: $transferState
-        payer: { dfsp: $payerFSPId, idType: $payerIdType, idValue: $payerIdValue }
-        payee: { dfsp: $payeeFSPId, idType: $payeeIdType, idValue: $payeeIdValue }
+        conversionState: $conversionState
+        targetCurrency: $targetCurrency
+        sourceCurrency: $sourceCurrency
+        payer: { partyIdType: $payerIdType, partyIdentifier: $payerIdentifier }
+        payee: { partyIdType: $payeeIdType, partyIdentifier: $payeeIdentifier }
       }
     ) {
-      errorCode
       transferId
-      transferState
-      transactionType
+      transactionId
       sourceAmount
       sourceCurrency
       targetAmount
       targetCurrency
-      settlementId
       createdAt
+      lastUpdated
+      transferState
+      transactionType
+      errorCode
+      transferSettlementWindowId
+      payerDFSP
+      payerDFSPProxy
+      payeeDFSP
+      payeeDFSPProxy
+      payerParty {
+        partyIdType
+        partyIdentifier
+        partyName
+        supportedCurrencies
+      }
+      payeeParty {
+        partyIdType
+        partyIdentifier
+        partyName
+        supportedCurrencies
+      }
       quoteRequest {
         quoteId
         amountType
@@ -166,67 +185,57 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
           currency
         }
       }
-      partyLookupEvents
-      quoteEvents
-      transferEvents
-      settlementEvents
-      payeeDFSP {
-        id
-        name
-        description
-      }
-      payerDFSP {
-        id
-        name
-        description
-      }
-      payerParty {
-        id
-        firstName
-        lastName
-        middleName
-        dateOfBirth
-        idType
-        idValue
-      }
-      payeeParty {
-        id
-        firstName
-        lastName
-        middleName
-        dateOfBirth
-        idType
-        idValue
-      }
       transferTerms {
-        transferAmount
-        payeeReceiveAmount
-        payeeFspFee
-        payeeFspCommission
+        transferAmount {
+          amount
+          currency
+        }
+        payeeFspFee {
+          amount
+          currency
+        }
+        payeeFspCommission {
+          amount
+          currency
+        }
+        payeeReceiveAmount {
+          amount
+          currency
+        }
+        geoCode {
+          latitude
+          longitude
+        }
         expiration
-        geoCode
         ilpPacket
-        transactionId
       }
       conversions {
         conversionRequestId
         conversionId
         conversionCommitRequestId
         conversionState
-        conversionStateChanges
-        counterPartyFSP
         conversionType
-        createdAt
+        conversionStateChanges {
+          conversionState
+          dateTime
+          reason
+        }
+        counterPartyFSP
         conversionSettlementWindowId
-        counterPartyProxy
         conversionTerms {
           conversionId
           determiningTransferId
           initiatingFsp
           counterPartyFsp
           amountType
-          sourceAmount
-          targetAmount
+          sourceAmount {
+            amount
+            currency
+          }
+          targetAmount {
+            amount
+            currency
+          }
           expiration
           charges {
             chargeType
@@ -246,42 +255,176 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
   }
 `;
 
-export const GET_TRANSFER_SUMMARY = gql`
-  query GetTransferSummary($startDate: DateTimeFlexible, $endDate: DateTimeFlexible) {
-    transferSummary(filter: { startDate: $startDate, endDate: $endDate }) {
+export const GET_TRANSFER_SUMMARY_TOTAL = gql`
+  query GetTransferSummary(
+    $limit: Int = 100
+    $offset: Int = 0
+    $startDate: DateTimeFlexible!
+    $endDate: DateTimeFlexible!
+  ) {
+    transferSummary(
+      limit: $limit
+      offset: $offset
+      filter: { startDate: $startDate, endDate: $endDate }
+    ) {
       count
-      errorCode
+      group {
+        errorCode
+      }
+      sum {
+        sourceAmount
+        targetAmount
+      }
+    }
+  }
+`;
+export const GET_TRANSFER_SUMMARY = gql`
+  query GetTransferSummary(
+    $limit: Int = 100
+    $offset: Int = 0
+    $startDate: DateTimeFlexible!
+    $endDate: DateTimeFlexible!
+  ) {
+    transferSummary(
+      limit: $limit
+      offset: $offset
+      filter: { startDate: $startDate, endDate: $endDate }
+      groupBy: ["errorCode"]
+    ) {
+      count
+      group {
+        errorCode
+      }
+      sum {
+        sourceAmount
+        targetAmount
+      }
     }
   }
 `;
 
 export const GET_TRANSFER_SUMMARY_BY_CURRENCY = gql`
-  query GetTransferSummaryByCurrency($startDate: DateTimeFlexible, $endDate: DateTimeFlexible) {
-    transferSummary(filter: { startDate: $startDate, endDate: $endDate }) {
+  query GetTransferSummaryByCurrency(
+    $limit: Int = 100
+    $offset: Int = 0
+    $startDate: DateTimeFlexible!
+    $endDate: DateTimeFlexible!
+  ) {
+    transferSummary(
+      limit: $limit
+      offset: $offset
+      filter: { startDate: $startDate, endDate: $endDate }
+      groupBy: ["sourceCurrency", "targetCurrency"]
+    ) {
       count
-      errorCode
-      sourceCurrency
-      targetCurrency
+      group {
+        sourceCurrency
+        targetCurrency
+      }
+      sum {
+        sourceAmount
+        targetAmount
+      }
+    }
+  }
+`;
+
+export const GET_TRANSFER_SUMMARY_BY_SOURCE_CURRENCY = gql`
+  query GetTransferSummaryByCurrency(
+    $limit: Int = 100
+    $offset: Int = 0
+    $startDate: DateTimeFlexible!
+    $endDate: DateTimeFlexible!
+  ) {
+    transferSummary(
+      limit: $limit
+      offset: $offset
+      filter: { startDate: $startDate, endDate: $endDate }
+      groupBy: ["sourceCurrency"]
+    ) {
+      count
+      group {
+        sourceCurrency
+      }
+      sum {
+        sourceAmount
+        targetAmount
+      }
+    }
+  }
+`;
+
+export const GET_TRANSFER_SUMMARY_BY_TARGET_CURRENCY = gql`
+  query GetTransferSummaryByCurrency(
+    $limit: Int = 100
+    $offset: Int = 0
+    $startDate: DateTimeFlexible!
+    $endDate: DateTimeFlexible!
+  ) {
+    transferSummary(
+      limit: $limit
+      offset: $offset
+      filter: { startDate: $startDate, endDate: $endDate }
+      groupBy: ["targetCurrency"]
+    ) {
+      count
+      group {
+        targetCurrency
+      }
+      sum {
+        sourceAmount
+        targetAmount
+      }
     }
   }
 `;
 
 export const GET_TRANSFER_SUMMARY_BY_PAYER_DFSP = gql`
-  query GetTransferSummaryByPayerDFSP($startDate: DateTimeFlexible, $endDate: DateTimeFlexible) {
-    transferSummary(filter: { startDate: $startDate, endDate: $endDate }) {
+  query GetTransferSummaryByPayerDFSP(
+    $limit: Int = 100
+    $offset: Int = 0
+    $startDate: DateTimeFlexible!
+    $endDate: DateTimeFlexible!
+  ) {
+    transferSummary(
+      limit: $limit
+      offset: $offset
+      filter: { startDate: $startDate, endDate: $endDate }
+      groupBy: ["payerDFSP"]
+    ) {
       count
-      errorCode
-      payerDFSP
+      group {
+        payerDFSP
+      }
+      sum {
+        sourceAmount
+        targetAmount
+      }
     }
   }
 `;
 
 export const GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP = gql`
-  query GetTransferSummaryByPayeeDFSP($startDate: DateTimeFlexible, $endDate: DateTimeFlexible) {
-    transferSummary(filter: { startDate: $startDate, endDate: $endDate }) {
+  query GetTransferSummaryByPayeeDFSP(
+    $limit: Int = 100
+    $offset: Int = 0
+    $startDate: DateTimeFlexible!
+    $endDate: DateTimeFlexible!
+  ) {
+    transferSummary(
+      limit: $limit
+      offset: $offset
+      filter: { startDate: $startDate, endDate: $endDate }
+      groupBy: ["payeeDFSP"]
+    ) {
       count
-      errorCode
-      payeeDFSP
+      group {
+        payeeDFSP
+      }
+      sum {
+        sourceAmount
+        targetAmount
+      }
     }
   }
 `;
