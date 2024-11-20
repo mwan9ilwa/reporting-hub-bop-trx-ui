@@ -7,11 +7,10 @@ import ErrorsByPayerChart from './ErrorsByPayerChart';
 import TransfersByPayeeChart from './TransfersByPayeeChart';
 import TransfersByPayerChart from './TransfersByPayerChart';
 import TransferTotalSummary from './TransferTotalSummary';
-import BySourceCurrencyChart from './TransfersBySourceCurrencyChart';
-import ByTargetCurrencyChart from './TransfersByTargetCurrencyChart';
-import ErrorsBySourceCurrencyChart from './ErrorsBySourceCurrencyChart';
-import ErrorsByTargetCurrencyChart from './ErrorsByTargetCurrencyChart';
+import TransfersBySourceCurrencyChart from './TransfersBySourceCurrencyChart';
+import TransfersByTargetCurrencyChart from './TransfersByTargetCurrencyChart';
 import ErrorSummary from './ErrorSummary';
+import ErrorsByErrorCodeChart from './ErrorsByErrorCodeChart';
 
 const stateProps = () => ({});
 
@@ -24,23 +23,18 @@ const Dashboard: FC<ConnectorProps> = () => {
     <div>
       <Row style={{ marginBottom: 10, gap: 20 }}>
         <TransferTotalSummary />
-        <BySourceCurrencyChart />
-        <ByTargetCurrencyChart />
+        <TransfersBySourceCurrencyChart />
+        <TransfersByTargetCurrencyChart />
         <div style={{ marginLeft: '55px' }}>
           <TransfersByPayerChart />
         </div>
-        <div style={{ marginLeft: '-50px' }}>
-          <TransfersByPayeeChart />
-        </div>
+        <TransfersByPayeeChart />
       </Row>
       <Row style={{ marginBottom: 30, gap: 20 }}>
         <ErrorSummary />
-        <ErrorsBySourceCurrencyChart />
-        <ErrorsByTargetCurrencyChart />
+        <ErrorsByErrorCodeChart />
+        <ErrorsByPayerChart />
         <div style={{ marginLeft: '55px' }}>
-          <ErrorsByPayerChart />
-        </div>
-        <div style={{ marginLeft: '-50px' }}>
           <ErrorsByPayeeChart />
         </div>
       </Row>
