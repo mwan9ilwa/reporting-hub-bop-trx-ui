@@ -95,7 +95,6 @@ export type Transfer = {
   payeeParty?: Maybe<Party>;
   transferTerms?: Maybe<TransferTerms>;
   conversions?: Maybe<Conversion>;
-  conversionTerms?: Maybe<ConversionTerms>;
   partyLookupEvents?: Maybe<Scalars['JSONObject']>;
   quoteEvents?: Maybe<Scalars['JSONObject']>;
   transferEvents?: Maybe<Scalars['JSONObject']>;
@@ -139,6 +138,7 @@ export type Conversion = {
   conversionSettlementWindowId?: Maybe<Scalars['Int']>;
   conversionType?: Maybe<Scalars['String']>;
   counterPartyProxy?: Maybe<Scalars['String']>;
+  conversionTerms?: Maybe<ConversionTerms>;
 };
 
 export type ConversionTerms = {

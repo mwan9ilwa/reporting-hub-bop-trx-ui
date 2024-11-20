@@ -14,6 +14,7 @@ export const GET_TRANSFER = gql`
       lastUpdated
       transferState
       transactionType
+      baseUseCase
       errorCode
       transferSettlementWindowId
       payerDFSP
@@ -72,6 +73,7 @@ export const GET_TRANSFER = gql`
         conversionRequestId
         conversionId
         conversionCommitRequestId
+        conversionSettlementWindowId
         conversionState
         conversionType
         conversionStateChanges {
@@ -80,7 +82,6 @@ export const GET_TRANSFER = gql`
           reason
         }
         counterPartyFSP
-        conversionSettlementWindowId
         conversionTerms {
           conversionId
           determiningTransferId

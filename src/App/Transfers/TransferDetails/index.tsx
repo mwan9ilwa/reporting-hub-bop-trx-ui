@@ -502,7 +502,7 @@ const TransferDetails: FC<ConnectorProps> = ({
             disabled
             type="text"
             label="Transfer Settlement Batch ID"
-            value={transferDetails.settlementWindowId?.toString() || ''}
+            value={transferDetails.transferSettlementWindowId?.toString() || ''}
           />
           <FormField
             disabled
@@ -510,7 +510,6 @@ const TransferDetails: FC<ConnectorProps> = ({
             label="Conversion Settlement Batch ID"
             value={transferDetails.conversions?.conversionSettlementWindowId?.toString() || ''}
           />
-          <FormField disabled type="text" label="FXP Proxy" value="FXP Proxy" />
           <FormField
             disabled
             type="text"
