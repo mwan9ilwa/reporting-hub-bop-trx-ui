@@ -7,9 +7,9 @@ import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
 import { ReduxContext, State, Dispatch } from 'store';
 import { GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP } from 'apollo/query';
 import { map, groupBy, sumBy } from 'lodash';
-import * as selectors from '../selectors';
 import { FilterChangeValue, TransfersFilter } from '../types';
 import { actions } from '../slice';
+import * as selectors from '../selectors';
 import { GREEN_CHART_GRADIENT_COLORS, renderActiveShape, renderGreenLegend } from './utils';
 
 const stateProps = (state: State) => ({
@@ -37,7 +37,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
 
   const [activeIndex, setActiveIndex] = useState<number>();
 
-  const onPieEnter = (_: any, index: number) => {
+  const onPieEnter = (_pieData: any, index: number) => {
     setActiveIndex(index);
   };
 
@@ -67,7 +67,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
       (a: { targetAmount: number }, b: { targetAmount: number }) => b.targetAmount - a.targetAmount,
     );
 
-    const firstThree = summary.slice(0, 3);
+    const topThree = summary.slice(0, 3);
     const remainingSummary = {
       payeeDFSP: 'Other',
       targetAmount: summary
@@ -75,7 +75,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
         .reduce((n: number, { targetAmount }: { targetAmount: number }) => n + targetAmount, 0),
     };
     if (remainingSummary.targetAmount > 0) {
-      firstThree.push(remainingSummary);
+      topThree.push(remainingSummary);
     }
 
     content = (
@@ -92,8 +92,8 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           content={renderGreenLegend}
         />
         <Pie
-          data={firstThree}
-          dataKey="count"
+          data={topThree}
+          dataKey="targetAmount"
           nameKey="payeeDFSP"
           innerRadius={30}
           outerRadius={50}
@@ -108,7 +108,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           onMouseEnter={onPieEnter}
           onMouseLeave={onPieLeave}
         >
-          {firstThree.map((_entry: any, index: number) => (
+          {topThree.map((_entry: any, index: number) => (
             <Cell
               key={`${_entry.payeeDFSP}`}
               fill={GREEN_CHART_GRADIENT_COLORS[index % GREEN_CHART_GRADIENT_COLORS.length]}
@@ -119,6 +119,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
       </PieChart>
     );
   }
+
   return content;
 };
 

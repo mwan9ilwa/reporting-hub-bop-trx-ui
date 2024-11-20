@@ -1,4 +1,4 @@
-import { GET_TRANSFER_SUMMARY_BY_CURRENCY } from 'apollo/query';
+import { GET_TRANSFER_SUMMARY_BY_SOURCE_CURRENCY } from 'apollo/query';
 import React, { FC, useState } from 'react';
 import { connect } from 'react-redux';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
@@ -27,7 +27,7 @@ interface ConnectorProps {
 }
 
 const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
-  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_CURRENCY, {
+  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_SOURCE_CURRENCY, {
     fetchPolicy: 'no-cache',
     variables: {
       startDate: filtersModel.from,
@@ -46,6 +46,7 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
   };
 
   let content = null;
+
   if (error) {
     content = <MessageBox kind="danger">Error fetching transfers: {error.message}</MessageBox>;
   } else if (loading) {
@@ -56,15 +57,16 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
       .slice()
       .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
 
-    const firstThree = summary.slice(0, 3);
+    const topThree = summary.slice(0, 3);
     const remainingSummary = {
-      sourceCurrency: 'Other',
+      group: { sourceCurrency: 'Other' },
       count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
     };
 
     if (remainingSummary.count > 0) {
-      firstThree.push(remainingSummary);
+      topThree.push(remainingSummary);
     }
+
     content = (
       <PieChart id="TransfersBySourceCurrencyChart" width={300} height={120}>
         <Legend
@@ -79,9 +81,9 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
           content={renderGreenLegend}
         />
         <Pie
-          data={firstThree}
-          dataKey="count"
-          nameKey="sourceCurrency"
+          data={topThree}
+          dataKey="sum.sourceAmount"
+          nameKey="group.sourceCurrency"
           innerRadius={30}
           outerRadius={50}
           blendStroke
@@ -95,9 +97,9 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
           onMouseEnter={onPieEnter}
           onMouseLeave={onPieLeave}
         >
-          {firstThree.map((_entry: any, index: number) => (
+          {topThree.map((_entry: any, index: number) => (
             <Cell
-              key={`${_entry.sourceCurrency}`}
+              key={`${_entry.group.sourceCurrency}`}
               fill={GREEN_CHART_GRADIENT_COLORS[index % GREEN_CHART_GRADIENT_COLORS.length]}
             />
           ))}
@@ -106,8 +108,10 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
       </PieChart>
     );
   }
+
   return content;
 };
+
 export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(
   BySourceCurrencyChart,
 );

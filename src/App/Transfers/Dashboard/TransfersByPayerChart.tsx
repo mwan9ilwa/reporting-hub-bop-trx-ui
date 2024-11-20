@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
 import { ReduxContext, Dispatch, State } from 'store';
 import { TransferSummary } from 'apollo/types';
-import { groupBy, map, sumBy } from 'lodash';
+import { map, groupBy, sumBy } from 'lodash';
 import { FilterChangeValue, TransfersFilter } from '../types';
 import { actions } from '../slice';
 import * as selectors from '../selectors';
@@ -44,6 +44,7 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   const onPieLeave = () => {
     setActiveIndex(undefined);
   };
+
   let content = null;
   if (error) {
     content = <MessageBox kind="danger">Error fetching transfers: {error.message}</MessageBox>;
@@ -59,21 +60,19 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
       (ts: any, payerDFSP: string) => {
         return {
           payerDFSP,
-          sourceAmount: sumBy(ts, (t: any) => t.sum.sourceAmount),
+          sourceAmount: sumBy(ts, (t: any) => t.sum.sourceAmount), 
         };
       },
     ).sort((a: any, b: any) => b.sourceAmount - a.sourceAmount);
 
-    const firstThree = summary.slice(0, 3);
+    const topThree = summary.slice(0, 3);
     const remainingSummary = {
       payerDFSP: 'Other',
-      sourceAmount: summary
-        .slice(3)
-        .reduce((n: number, { sourceAmount }: any) => n + sourceAmount, 0),
+      sourceAmount: summary.slice(3).reduce((n: number, { sourceAmount }: any) => n + sourceAmount, 0),
     };
 
     if (remainingSummary.sourceAmount > 0) {
-      firstThree.push(remainingSummary);
+      topThree.push(remainingSummary);
     }
 
     content = (
@@ -84,19 +83,15 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           layout="vertical"
           verticalAlign="middle"
           align="right"
-          width={165}
+          width={50}
           height={100}
           iconSize={0}
           content={renderGreenLegend}
-          wrapperStyle={{
-            paddingLeft: '30px',
-            marginLeft: '30px',
-          }}
         />
         <Pie
-          data={firstThree}
-          dataKey="count"
-          nameKey="payerDFSP"
+          data={topThree}
+          dataKey="sourceAmount"  
+          nameKey="payerDFSP" 
           innerRadius={30}
           outerRadius={50}
           blendStroke
@@ -110,17 +105,21 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           onMouseEnter={onPieEnter}
           onMouseLeave={onPieLeave}
         >
-          {firstThree.map((_entry: any, index: number) => (
+          {topThree.map((_entry: any, index: number) => (
             <Cell
               key={`${_entry.payerDFSP}`}
               fill={GREEN_CHART_GRADIENT_COLORS[index % GREEN_CHART_GRADIENT_COLORS.length]}
             />
           ))}
         </Pie>
-        <Tooltip />
+        <Tooltip
+          formatter={(value: any) => value.toFixed(2)} 
+          labelFormatter={(label: string) => `${label}`} 
+        />
       </PieChart>
     );
   }
+
   return content;
 };
 

@@ -403,6 +403,57 @@ export const GET_TRANSFER_SUMMARY_BY_PAYER_DFSP = gql`
     }
   }
 `;
+export const GET_TRANSFER_SUMMARY_BY_PAYER = gql`
+  query GetTransferSummaryByPayerDFSP(
+    $limit: Int = 100
+    $offset: Int = 0
+    $startDate: DateTimeFlexible!
+    $endDate: DateTimeFlexible!
+  ) {
+    transferSummary(
+      limit: $limit
+      offset: $offset
+      filter: { startDate: $startDate, endDate: $endDate }
+      groupBy: ["errorCode", "payerDFSP"]
+    ) {
+      count
+      group {
+        payerDFSP
+        errorCode
+      }
+      sum {
+        sourceAmount
+        targetAmount
+      }
+    }
+  }
+`;
+
+export const GET_TRANSFER_SUMMARY_BY_PAYEE = gql`
+  query GetTransferSummaryByPayerDFSP(
+    $limit: Int = 100
+    $offset: Int = 0
+    $startDate: DateTimeFlexible!
+    $endDate: DateTimeFlexible!
+  ) {
+    transferSummary(
+      limit: $limit
+      offset: $offset
+      filter: { startDate: $startDate, endDate: $endDate }
+      groupBy: ["errorCode", "payeeDFSP"]
+    ) {
+      count
+      group {
+        payeeDFSP
+        errorCode
+      }
+      sum {
+        sourceAmount
+        targetAmount
+      }
+    }
+  }
+`;
 
 export const GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP = gql`
   query GetTransferSummaryByPayeeDFSP(

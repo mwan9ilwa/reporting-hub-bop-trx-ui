@@ -44,13 +44,13 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
       })
       .slice()
       .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
-    const firstThree = summary.slice(0, 3);
+    const topThree = summary.slice(0, 3);
     const remainingSummary = {
       errorCode: 'Other',
       count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
     };
     if (remainingSummary.count > 0) {
-      firstThree.push(remainingSummary);
+      topThree.push(remainingSummary);
     }
     content = (
       <PieChart id="ErrorsByTargetCurrencyChart" width={300} height={120}>
@@ -66,7 +66,7 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
           content={renderRedLegend}
         />
         <Pie
-          data={firstThree}
+          data={topThree}
           dataKey="count"
           nameKey="errorCode"
           innerRadius={30}
@@ -77,7 +77,7 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
           onMouseEnter={onPieEnter}
           onMouseLeave={onPieLeave}
         >
-          {firstThree.map((_entry: any, index: number) => (
+          {topThree.map((_entry: any, index: number) => (
             <Cell
               key={`${_entry.errorCode}`}
               fill={RED_CHART_GRADIENT_COLORS[index % RED_CHART_GRADIENT_COLORS.length]}

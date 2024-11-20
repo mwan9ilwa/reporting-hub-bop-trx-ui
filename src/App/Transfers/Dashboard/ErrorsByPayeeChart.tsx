@@ -5,7 +5,7 @@ import React, { FC, useState } from 'react';
 import { connect } from 'react-redux';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
 import { ReduxContext, State, Dispatch } from 'store';
-import { GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP } from 'apollo/query';
+import { GET_TRANSFER_SUMMARY_BY_PAYEE } from 'apollo/query';
 import { map, groupBy, sumBy } from 'lodash';
 import { FilterChangeValue, TransfersFilter } from '../types';
 import { actions } from '../slice';
@@ -27,7 +27,7 @@ interface ConnectorProps {
 }
 
 const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
-  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP, {
+  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_PAYEE, {
     fetchPolicy: 'no-cache',
     variables: {
       startDate: filtersModel.from,
@@ -51,26 +51,26 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    const prunedSummary = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode !== null;
-      })
-      .slice();
-
-    const summary = map(groupBy(prunedSummary, 'payerDFSP'), (ts: any, payeeDFSP: string) => {
-      return {
+    const groupedSummary = map(
+      groupBy(
+        data.transferSummary.filter((obj: TransferSummary) => obj.group.errorCode !== null),
+        (item: TransferSummary) => item.group.payeeDFSP,
+      ),
+      (groupedItems, payeeDFSP) => ({
         payeeDFSP,
-        count: sumBy(ts, 'count'),
-      };
-    }).sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
+        count: sumBy(groupedItems, 'count'),
+      }),
+    );
 
-    const firstThree = summary.slice(0, 3);
+    const sortedSummary = groupedSummary.sort((a, b) => b.count - a.count);
+    const topThree = sortedSummary.slice(0, 3);
     const remainingSummary = {
       payeeDFSP: 'Other',
-      count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
+      count: sortedSummary.slice(3).reduce((sum, { count }) => sum + count, 0),
     };
+
     if (remainingSummary.count > 0) {
-      firstThree.push(remainingSummary);
+      topThree.push(remainingSummary);
     }
 
     content = (
@@ -87,7 +87,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           content={renderRedLegend}
         />
         <Pie
-          data={firstThree}
+          data={topThree}
           dataKey="count"
           nameKey="payeeDFSP"
           innerRadius={30}
@@ -103,7 +103,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           onMouseEnter={onPieEnter}
           onMouseLeave={onPieLeave}
         >
-          {firstThree.map((_entry: any, index: number) => (
+          {topThree.map((_entry: any, index: number) => (
             <Cell
               key={`${_entry.payeeDFSP}`}
               fill={RED_CHART_GRADIENT_COLORS[index % RED_CHART_GRADIENT_COLORS.length]}
