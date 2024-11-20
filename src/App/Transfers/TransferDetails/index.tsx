@@ -392,17 +392,13 @@ const TransferDetails: FC<ConnectorProps> = ({
             disabled
             type="text"
             label="Payer Identifier"
-            value={`${transferDetails.payerParty?.firstName || ''} ${
-              transferDetails.payerParty?.lastName || ''
-            }`}
+            value={transferDetails.payerParty?.partyIdentifier?.toString() || ''}
           />
           <FormField
             disabled
             type="text"
             label="Payee Identifier"
-            value={`${transferDetails.payeeParty?.firstName || ''} ${
-              transferDetails.payeeParty?.lastName || ''
-            }`}
+            value={transferDetails.payeeParty?.partyIdentifier?.toString() || ''}
           />
         </FormField.Container>
         <FormField.Container direction="column">
@@ -434,15 +430,13 @@ const TransferDetails: FC<ConnectorProps> = ({
             disabled
             type="text"
             label="Payer Identifier Type"
-            value={`${transferDetails.payerParty?.idType || ''} ${
-              transferDetails.payerParty?.idValue || ''
-            }`}
+            value={transferDetails.payerParty?.partyIdType || ''}
           />
           <FormField
             disabled
             type="text"
             label="Payee Identifier Type"
-            value={`${transferDetails.payeeParty?.idType || ''} ${
+            value={`${transferDetails.payeeParty?.partyIdType || ''} ${
               transferDetails.payeeParty?.idValue || ''
             }`}
           />
@@ -482,13 +476,13 @@ const TransferDetails: FC<ConnectorProps> = ({
             disabled
             type="text"
             label="Payer DFSP"
-            value={transferDetails.payerDFSP?.name?.toString() || ''}
+            value={transferDetails.payerDFSP?.toString() || ''}
           />
           <FormField
             disabled
             type="text"
             label="Payee DFSP"
-            value={transferDetails.payeeDFSP?.name?.toString() || ''}
+            value={transferDetails.payeeDFSP?.toString() || ''}
           />
         </FormField.Container>
         <FormField.Container direction="column">
@@ -1014,15 +1008,15 @@ const TransferDetails: FC<ConnectorProps> = ({
             <h6>Payer Details</h6>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>Payer Identifier</label>
-              <FormField disabled type="text" value={transferDetails.payerParty?.idValue || ''} />
+              <FormField disabled type="text" value={transferDetails.payerParty?.partyIdentifier?.toString () || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>Payer Identifier Type</label>
-              <FormField disabled type="text" value={transferDetails.payerParty?.idType || ''} />
+              <FormField disabled type="text" value={transferDetails.payerParty?.partyIdType || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>First Name</label>
-              <FormField disabled type="text" value={transferDetails.payerParty?.firstName || ''} />
+              <FormField disabled type="text" value={transferDetails.payerParty?.partyName || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>Middle Name</label>
@@ -1041,7 +1035,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.payerParty?.supportedCurrency || ''}
+                value={transferDetails.payerParty?.supportedCurrencies || ''}
               />
             </div>
           </FormField.Container>
@@ -1052,15 +1046,15 @@ const TransferDetails: FC<ConnectorProps> = ({
             <h6>Payee Details</h6>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>Payee Identifier</label>
-              <FormField disabled type="text" value={transferDetails.payeeParty?.idValue || ''} />
+              <FormField disabled type="text" value={transferDetails.payeeParty?.partyIdentifier?.toString () || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>Payee Identifier Type</label>
-              <FormField disabled type="text" value={transferDetails.payeeParty?.idType || ''} />
+              <FormField disabled type="text" value={transferDetails.payeeParty?.partyIdType || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>First Name</label>
-              <FormField disabled type="text" value={transferDetails.payeeParty?.firstName || ''} />
+              <FormField disabled type="text" value={transferDetails.payeeParty?.partyName || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>Middle Name</label>
@@ -1079,7 +1073,7 @@ const TransferDetails: FC<ConnectorProps> = ({
               <FormField
                 disabled
                 type="text"
-                value={transferDetails.payeeParty?.supportedCurrency || ''}
+                value={transferDetails.payeeParty?.supportedCurrencies || ''}
               />
             </div>
           </FormField.Container>
