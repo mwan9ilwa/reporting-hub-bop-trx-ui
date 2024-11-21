@@ -154,8 +154,12 @@ export type ConversionTerms = {
   sourceAmount?: Maybe<Amount>;
   targetAmount?: Maybe<Amount>;
   expiration?: Maybe<Scalars['DateTimeFlexible']>;
-  charges?: Maybe<Charges>;
+  charges?: Maybe<Charges[]>;
   ilpPacket?: Maybe<Scalars['String']>;
+  // conversionIdRef?: Maybe<Scalars['Int']>;
+  // payeeReceiveAmount?: Maybe<Amount>;
+  // payeeFspCommission?: Maybe<Amount>;
+  // payeeFspFee?: Maybe<Amount>;
 };
 
 export type Amount = {

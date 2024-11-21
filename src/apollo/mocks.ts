@@ -95,10 +95,10 @@ export const ConversionTermsMock = Factory.Sync.makeFactory<ConversionTerms>({
   sourceAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
   targetAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
   expiration: Factory.each(() => faker.datatype.datetime().toJSON()),
-  charges: Factory.each(() => ({
-    sourceAmount: { amount: faker.datatype.number(), currency: 'USD' },
-    targetAmount: { amount: faker.datatype.number(), currency: 'USD' },
-  })),
+  // charges: Factory.each(() => ({
+  //   sourceAmount: { amount: faker.datatype.number(), currency: 'USD' },
+  //   targetAmount: { amount: faker.datatype.number(), currency: 'USD' },
+  // })),
   ilpPacket: Factory.each(() => faker.datatype.string()),
   // conversionIdRef: Factory.each(() => faker.datatype.number()),
   // payeeReceiveAmount: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
@@ -106,7 +106,7 @@ export const ConversionTermsMock = Factory.Sync.makeFactory<ConversionTerms>({
   // payeeFspFee: Factory.each(() => ({ amount: faker.datatype.number(), currency: 'USD' })),
 });
 
-export const ConversionMock = Factory.Sync.makeFactory<Conversion>({
+export const ConversionMock = Factory.Sync.makeFactory<Conversions>({
   conversionRequestId: Factory.each(() => faker.datatype.uuid()),
   conversionId: Factory.each(() => faker.datatype.uuid()),
   conversionCommitRequestId: Factory.each(() => faker.datatype.uuid()),
