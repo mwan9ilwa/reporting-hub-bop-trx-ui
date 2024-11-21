@@ -52,27 +52,23 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
     content = <Spinner center />;
   } else {
     const prunedSummary = data.transferSummary.filter(
-      (obj: TransferSummary) => obj.group.payeeDFSP && obj.sum.targetAmount > 0,
+      (obj: TransferSummary) => obj.group.errorCode === null && obj.sum.targetAmount > 0,
     );
 
     const summary = map(
       groupBy(prunedSummary, (ts: any) => ts.group.payeeDFSP),
-      (ts: any, payeeDFSP: string) => {
-        return {
-          payeeDFSP,
-          targetAmount: sumBy(ts, (item: any) => item.sum.targetAmount),
-        };
-      },
-    ).sort(
-      (a: { targetAmount: number }, b: { targetAmount: number }) => b.targetAmount - a.targetAmount,
-    );
+      (ts: any, payeeDFSP: string) => ({
+        payeeDFSP,
+        targetAmount: sumBy(ts, (item: any) => item.sum.targetAmount),
+      }),
+    ).sort((a: any, b: any) => b.targetAmount - a.targetAmount);
 
     const topThree = summary.slice(0, 3);
     const remainingSummary = {
       payeeDFSP: 'Other',
       targetAmount: summary
         .slice(3)
-        .reduce((n: number, { targetAmount }: { targetAmount: number }) => n + targetAmount, 0),
+        .reduce((n: number, { targetAmount }: any) => n + targetAmount, 0),
     };
     if (remainingSummary.targetAmount > 0) {
       topThree.push(remainingSummary);

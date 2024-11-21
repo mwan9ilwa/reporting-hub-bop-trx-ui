@@ -231,6 +231,7 @@ export type TransferSummaryFilter = {
 };
 
 export type TransferSummary = {
+  [x: string]: any;
   __typename?: 'TransferSummary';
   count: Scalars['Int'];
   id: Scalars['Int'];
