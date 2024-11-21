@@ -51,18 +51,17 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
+    
     const prunedSummary = data.transferSummary.filter(
-      (obj: TransferSummary) => obj.group.payerDFSP && obj.sum.sourceAmount > 0,
+      (obj: TransferSummary) => obj.group.errorCode === null && obj.sum.sourceAmount > 0
     );
 
     const summary = map(
       groupBy(prunedSummary, (ts: any) => ts.group.payerDFSP),
-      (ts: any, payerDFSP: string) => {
-        return {
-          payerDFSP,
-          sourceAmount: sumBy(ts, (t: any) => t.sum.sourceAmount), 
-        };
-      },
+      (ts: any, payerDFSP: string) => ({
+        payerDFSP,
+        sourceAmount: sumBy(ts, (t: any) => t.sum.sourceAmount),
+      })
     ).sort((a: any, b: any) => b.sourceAmount - a.sourceAmount);
 
     const topThree = summary.slice(0, 3);
@@ -90,8 +89,8 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
         />
         <Pie
           data={topThree}
-          dataKey="sourceAmount"  
-          nameKey="payerDFSP" 
+          dataKey="sourceAmount"
+          nameKey="payerDFSP"
           innerRadius={30}
           outerRadius={50}
           blendStroke
@@ -113,8 +112,8 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           ))}
         </Pie>
         <Tooltip
-          formatter={(value: any) => value.toFixed(2)} 
-          labelFormatter={(label: string) => `${label}`} 
+          formatter={(value: any) => value.toFixed(2)}
+          labelFormatter={(label: string) => `${label}`}
         />
       </PieChart>
     );

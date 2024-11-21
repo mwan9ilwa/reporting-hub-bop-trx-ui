@@ -52,19 +52,42 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    const summary = data.transferSummary
-      .filter((obj: TransferSummary) => obj.group.sourceCurrency)
-      .slice()
-      .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
+    const groupedSummary = data.transferSummary
+      .filter((obj: TransferSummary) => obj.group.errorCode === null)
+      .reduce(
+        (acc: Record<string, { count: number; sourceAmount: number }>, curr: TransferSummary) => {
+          const { sourceCurrency } = curr.group;
+          if (!sourceCurrency) return acc;
+          if (!acc[sourceCurrency]) {
+            acc[sourceCurrency] = { count: 0, sourceAmount: 0 };
+          }
+          acc[sourceCurrency].count += curr.count;
+          acc[sourceCurrency].sourceAmount += curr.sum.sourceAmount;
+          return acc;
+        },
+        {},
+      );
 
-    const topThree = summary.slice(0, 3);
-    const remainingSummary = {
-      group: { sourceCurrency: 'Other' },
-      count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
-    };
+    const summaryArray = Object.entries(groupedSummary)
+      .map(([sourceCurrency, { count, sourceAmount }]: [string, { count: number; sourceAmount: number }]) => ({
+        sourceCurrency,
+        count,
+        sourceAmount,
+      }))
+      .sort((a, b) => b.count - a.count);
 
-    if (remainingSummary.count > 0) {
-      topThree.push(remainingSummary);
+    const topThree = summaryArray.slice(0, 3);
+    const other = summaryArray.slice(3).reduce(
+      (acc, curr) => {
+        acc.count += curr.count;
+        acc.sourceAmount += curr.sourceAmount;
+        return acc;
+      },
+      { sourceCurrency: 'Other', count: 0, sourceAmount: 0 },
+    );
+
+    if (other.count > 0) {
+      topThree.push(other);
     }
 
     content = (
@@ -82,8 +105,8 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
         />
         <Pie
           data={topThree}
-          dataKey="sum.sourceAmount"
-          nameKey="group.sourceCurrency"
+          dataKey="sourceAmount"
+          nameKey="sourceCurrency"
           innerRadius={30}
           outerRadius={50}
           blendStroke
@@ -99,7 +122,7 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
         >
           {topThree.map((_entry: any, index: number) => (
             <Cell
-              key={`${_entry.group.sourceCurrency}`}
+              key={`${_entry.sourceCurrency}`}
               fill={GREEN_CHART_GRADIENT_COLORS[index % GREEN_CHART_GRADIENT_COLORS.length]}
             />
           ))}
