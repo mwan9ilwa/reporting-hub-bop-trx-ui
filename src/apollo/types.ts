@@ -203,8 +203,6 @@ export type Party = {
   __typename?: 'Party';
   partyIdentifier?: Maybe<Scalars['Int']>;
   partyName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  middleName?: Maybe<Scalars['String']>;
   dateOfBirth?: Maybe<Scalars['Date']>;
   partyIdType?: Maybe<PartyIdType>;
   idValue?: Maybe<Scalars['String']>;

@@ -1008,27 +1008,23 @@ const TransferDetails: FC<ConnectorProps> = ({
             <h6>Payer Details</h6>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>Payer Identifier</label>
-              <FormField disabled type="text" value={transferDetails.payerParty?.partyIdentifier?.toString () || ''} />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '10px', width: '100px' }}>Payer Identifier Type</label>
-              <FormField disabled type="text" value={transferDetails.payerParty?.partyIdType || ''} />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '10px', width: '100px' }}>First Name</label>
-              <FormField disabled type="text" value={transferDetails.payerParty?.partyName || ''} />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '10px', width: '100px' }}>Middle Name</label>
               <FormField
                 disabled
                 type="text"
-                value={String(transferDetails.payerParty?.middleName || '')}
+                value={transferDetails.payerParty?.partyIdentifier?.toString() || ''}
               />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '10px', width: '100px' }}>Last Name</label>
-              <FormField disabled type="text" value={transferDetails.payerParty?.lastName || ''} />
+              <label style={{ marginRight: '10px', width: '100px' }}>Payer Identifier Type</label>
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payerParty?.partyIdType || ''}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '10px', width: '100px' }}>Full Name</label>
+              <FormField disabled type="text" value={transferDetails.payerParty?.partyName || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>Supported Currencies</label>
@@ -1046,27 +1042,23 @@ const TransferDetails: FC<ConnectorProps> = ({
             <h6>Payee Details</h6>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>Payee Identifier</label>
-              <FormField disabled type="text" value={transferDetails.payeeParty?.partyIdentifier?.toString () || ''} />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '10px', width: '100px' }}>Payee Identifier Type</label>
-              <FormField disabled type="text" value={transferDetails.payeeParty?.partyIdType || ''} />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '10px', width: '100px' }}>First Name</label>
-              <FormField disabled type="text" value={transferDetails.payeeParty?.partyName || ''} />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '10px', width: '100px' }}>Middle Name</label>
               <FormField
                 disabled
                 type="text"
-                value={String(transferDetails.payeeParty?.middleName)}
+                value={transferDetails.payeeParty?.partyIdentifier?.toString() || ''}
               />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label style={{ marginRight: '10px', width: '100px' }}>Last Name</label>
-              <FormField disabled type="text" value={transferDetails.payeeParty?.lastName || ''} />
+              <label style={{ marginRight: '10px', width: '100px' }}>Payee Identifier Type</label>
+              <FormField
+                disabled
+                type="text"
+                value={transferDetails.payeeParty?.partyIdType || ''}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label style={{ marginRight: '10px', width: '100px' }}>Full Name</label>
+              <FormField disabled type="text" value={transferDetails.payeeParty?.partyName || ''} />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px', width: '100px' }}>Supported Currencies</label>

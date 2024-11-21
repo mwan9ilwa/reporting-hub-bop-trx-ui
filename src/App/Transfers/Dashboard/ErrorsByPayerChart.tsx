@@ -54,12 +54,12 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
     const groupedSummary = map(
       groupBy(
         data.transferSummary.filter((obj: TransferSummary) => obj.group.errorCode !== null),
-        (item: TransferSummary) => item.group.payerDFSP
+        (item: TransferSummary) => item.group.payerDFSP,
       ),
       (groupedItems, payerDFSP) => ({
         payerDFSP,
         count: sumBy(groupedItems, 'count'),
-      })
+      }),
     );
 
     const sortedSummary = groupedSummary.sort((a, b) => b.count - a.count);

@@ -60,7 +60,7 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
       (ts: any, payerDFSP: string) => {
         return {
           payerDFSP,
-          sourceAmount: sumBy(ts, (t: any) => t.sum.sourceAmount), 
+          sourceAmount: sumBy(ts, (t: any) => t.sum.sourceAmount),
         };
       },
     ).sort((a: any, b: any) => b.sourceAmount - a.sourceAmount);
@@ -68,7 +68,9 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
     const topThree = summary.slice(0, 3);
     const remainingSummary = {
       payerDFSP: 'Other',
-      sourceAmount: summary.slice(3).reduce((n: number, { sourceAmount }: any) => n + sourceAmount, 0),
+      sourceAmount: summary
+        .slice(3)
+        .reduce((n: number, { sourceAmount }: any) => n + sourceAmount, 0),
     };
 
     if (remainingSummary.sourceAmount > 0) {
@@ -90,8 +92,8 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
         />
         <Pie
           data={topThree}
-          dataKey="sourceAmount"  
-          nameKey="payerDFSP" 
+          dataKey="sourceAmount"
+          nameKey="payerDFSP"
           innerRadius={30}
           outerRadius={50}
           blendStroke
@@ -113,8 +115,8 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           ))}
         </Pie>
         <Tooltip
-          formatter={(value: any) => value.toFixed(2)} 
-          labelFormatter={(label: string) => `${label}`} 
+          formatter={(value: any) => value.toFixed(2)}
+          labelFormatter={(label: string) => `${label}`}
         />
       </PieChart>
     );
