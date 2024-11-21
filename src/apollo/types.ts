@@ -100,7 +100,7 @@ export type Transfer = {
   payeeParty?: Maybe<Party>;
   quoteRequest?: Maybe<QuoteRequest>;
   transferTerms?: Maybe<TransferTerms>;
-  conversions?: Maybe<Conversions>;
+  conversions?: Maybe<Conversions[]>;
   partyLookupEvents?: Maybe<Scalars['JSONObject']>;
   quoteEvents?: Maybe<Scalars['JSONObject']>;
   transferEvents?: Maybe<Scalars['JSONObject']>;
@@ -154,7 +154,7 @@ export type ConversionTerms = {
   sourceAmount?: Maybe<Amount>;
   targetAmount?: Maybe<Amount>;
   expiration?: Maybe<Scalars['DateTimeFlexible']>;
-  charges?: Maybe<Charges>;
+  charges?: Maybe<Charges[]>;
   ilpPacket?: Maybe<Scalars['String']>;
   // conversionIdRef?: Maybe<Scalars['Int']>;
   // payeeReceiveAmount?: Maybe<Amount>;
