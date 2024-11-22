@@ -26,7 +26,7 @@ import {
 export const PartyMock = Factory.Sync.makeFactory<Party>({
   __typename: 'Party',
   partyIdentifier: Factory.each(() => faker.datatype.number()),
-  partyName: Factory.each(() => faker.name.fullName()),
+  partyName: Factory.each(() => faker.name.firstName()),
   dateOfBirth: Factory.each(() => faker.datatype.datetime().toJSON()),
   partyIdType: Factory.each(() =>
     faker.random.arrayElement([
