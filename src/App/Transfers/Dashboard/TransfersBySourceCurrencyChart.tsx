@@ -69,16 +69,11 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
       );
 
     const summaryArray = Object.entries(groupedSummary)
-      .map(
-        ([sourceCurrency, { count, sourceAmount }]: [
-          string,
-          { count: number; sourceAmount: number },
-        ]) => ({
-          sourceCurrency,
-          count,
-          sourceAmount,
-        }),
-      )
+      .map(([sourceCurrency, { count, sourceAmount }]: [string, { count: number; sourceAmount: number }]) => ({
+        sourceCurrency,
+        count,
+        sourceAmount,
+      }))
       .sort((a, b) => b.count - a.count);
 
     const topThree = summaryArray.slice(0, 3);

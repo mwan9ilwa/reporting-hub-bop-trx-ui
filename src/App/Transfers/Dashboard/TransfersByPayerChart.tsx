@@ -51,8 +51,9 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
+    
     const prunedSummary = data.transferSummary.filter(
-      (obj: TransferSummary) => obj.group.errorCode === null && obj.sum.sourceAmount > 0,
+      (obj: TransferSummary) => obj.group.errorCode === null && obj.sum.sourceAmount > 0
     );
 
     const summary = map(
@@ -60,15 +61,13 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
       (ts: any, payerDFSP: string) => ({
         payerDFSP,
         sourceAmount: sumBy(ts, (t: any) => t.sum.sourceAmount),
-      }),
+      })
     ).sort((a: any, b: any) => b.sourceAmount - a.sourceAmount);
 
     const topThree = summary.slice(0, 3);
     const remainingSummary = {
       payerDFSP: 'Other',
-      sourceAmount: summary
-        .slice(3)
-        .reduce((n: number, { sourceAmount }: any) => n + sourceAmount, 0),
+      sourceAmount: summary.slice(3).reduce((n: number, { sourceAmount }: any) => n + sourceAmount, 0),
     };
 
     if (remainingSummary.sourceAmount > 0) {

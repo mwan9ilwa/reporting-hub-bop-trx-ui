@@ -341,10 +341,11 @@ export const GET_TRANSFER_SUMMARY_BY_SOURCE_CURRENCY = gql`
       limit: $limit
       offset: $offset
       filter: { startDate: $startDate, endDate: $endDate }
-      groupBy: ["sourceCurrency"]
+      groupBy: ["sourceCurrency","errorCode"]
     ) {
       count
       group {
+        errorCode
         sourceCurrency
       }
       sum {
@@ -366,10 +367,11 @@ export const GET_TRANSFER_SUMMARY_BY_TARGET_CURRENCY = gql`
       limit: $limit
       offset: $offset
       filter: { startDate: $startDate, endDate: $endDate }
-      groupBy: ["targetCurrency"]
+      groupBy: ["targetCurrency","errorCode"]
     ) {
       count
       group {
+        errorCode
         targetCurrency
       }
       sum {
@@ -391,10 +393,11 @@ export const GET_TRANSFER_SUMMARY_BY_PAYER_DFSP = gql`
       limit: $limit
       offset: $offset
       filter: { startDate: $startDate, endDate: $endDate }
-      groupBy: ["payerDFSP"]
+      groupBy: ["payerDFSP","errorCode"]
     ) {
       count
       group {
+        errorCode
         payerDFSP
       }
       sum {
@@ -467,10 +470,11 @@ export const GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP = gql`
       limit: $limit
       offset: $offset
       filter: { startDate: $startDate, endDate: $endDate }
-      groupBy: ["payeeDFSP"]
+      groupBy: ["payeeDFSP", "errorCode"]
     ) {
       count
       group {
+        errorCode
         payeeDFSP
       }
       sum {
