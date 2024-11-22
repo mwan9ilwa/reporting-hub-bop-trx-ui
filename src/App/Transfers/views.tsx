@@ -68,15 +68,15 @@ const transfersColumns = [
   {
     label: 'Payer DFSP',
     key: 'payerDFSP',
-    fn: (rawValue: DFSP) => {
-      return `${rawValue ? rawValue.name : ''}`;
+    fn: (rawValue: string) => {
+      return rawValue ? rawValue : '';
     },
   },
   {
     label: 'Payee DFSP',
     key: 'payeeDFSP',
-    fn: (rawValue: DFSP) => {
-      return `${rawValue ? rawValue.name : ''}`;
+    fn: (rawValue: string) => {
+      return rawValue ? rawValue : '';
     },
   },
   {
