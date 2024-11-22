@@ -3,7 +3,6 @@ import { FormField, Modal } from 'components';
 import { connect } from 'react-redux';
 import { State, Dispatch } from 'store/types';
 import { ReduxContext } from 'store';
-import moment from 'moment';
 import { actions } from '../slice';
 import * as selectors from '../selectors';
 import { PartyModalData } from '../types';
@@ -29,50 +28,26 @@ const JsonModal: FC<ConnectorProps> = ({ partyModalData, onModalCloseClick }) =>
       onClose={onModalCloseClick}
     >
       <FormField.Container direction="row">
-        <FormField disabled type="text" label="Id Type" value={partyModalData.party.idType || ''} />
+        <FormField disabled type="text" label="Id Type" value={partyModalData.party.partyIdType || ''} />
         <FormField
           disabled
           type="text"
           label="Id Value"
-          value={partyModalData.party.idValue || ''}
+          value={partyModalData.party.partyIdentifier?.toString() || ''}
         />
       </FormField.Container>
       <FormField.Container direction="row">
         <FormField
           disabled
           type="text"
-          label="First Name"
-          value={partyModalData.party.firstName || ''}
-        />
-        <FormField
-          disabled
-          type="text"
-          label="Middle Name"
-          value={partyModalData.party.middleName || ''}
-        />
-        <FormField
-          disabled
-          type="text"
-          label="Last Name"
-          value={partyModalData.party.lastName || ''}
-        />
-      </FormField.Container>
-      <FormField.Container direction="row">
-        <FormField
-          disabled
-          type="text"
-          label="Date of Birth"
-          value={
-            partyModalData.party.dateOfBirth
-              ? moment(partyModalData.party.dateOfBirth).local().format()
-              : ''
-          }
+          label="Full Name"
+          value={partyModalData.party.partyName || ''}
         />
         <FormField
           disabled
           type="text"
           label="FSP Id"
-          value={partyModalData.party.id?.toString() || ''}
+          value={partyModalData.party.idValue || ''}
         />
       </FormField.Container>
     </Modal>
