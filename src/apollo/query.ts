@@ -14,7 +14,6 @@ export const GET_TRANSFER = gql`
       lastUpdated
       transferState
       transactionType
-      baseUseCase
       errorCode
       transferSettlementWindowId
       payerDFSP
@@ -111,6 +110,10 @@ export const GET_TRANSFER = gql`
           ilpPacket
         }
       }
+      quoteEvents
+      transferEvents
+      partyLookupEvents
+      settlementEvents
     }
   }
 `;
@@ -252,6 +255,10 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
           ilpPacket
         }
       }
+      quoteEvents
+      transferEvents
+      partyLookupEvents
+      settlementEvents
     }
   }
 `;
@@ -341,7 +348,7 @@ export const GET_TRANSFER_SUMMARY_BY_SOURCE_CURRENCY = gql`
       limit: $limit
       offset: $offset
       filter: { startDate: $startDate, endDate: $endDate }
-      groupBy: ["sourceCurrency","errorCode"]
+      groupBy: ["sourceCurrency", "errorCode"]
     ) {
       count
       group {
@@ -367,7 +374,7 @@ export const GET_TRANSFER_SUMMARY_BY_TARGET_CURRENCY = gql`
       limit: $limit
       offset: $offset
       filter: { startDate: $startDate, endDate: $endDate }
-      groupBy: ["targetCurrency","errorCode"]
+      groupBy: ["targetCurrency", "errorCode"]
     ) {
       count
       group {
@@ -393,7 +400,7 @@ export const GET_TRANSFER_SUMMARY_BY_PAYER_DFSP = gql`
       limit: $limit
       offset: $offset
       filter: { startDate: $startDate, endDate: $endDate }
-      groupBy: ["payerDFSP","errorCode"]
+      groupBy: ["payerDFSP", "errorCode"]
     ) {
       count
       group {
