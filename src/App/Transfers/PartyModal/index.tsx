@@ -3,12 +3,15 @@ import { FormField, Modal } from 'components';
 import { connect } from 'react-redux';
 import { State, Dispatch } from 'store/types';
 import { ReduxContext } from 'store';
+import { Transfer } from 'apollo/types';
 import { actions } from '../slice';
 import * as selectors from '../selectors';
 import { PartyModalData } from '../types';
+// import TransferDetails from '../TransferDetails';
 
 const stateProps = (state: State) => ({
   partyModalData: selectors.getSelectedPartyModalData(state),
+  transferDetails: selectors.getSelectedTransfer(state),
 });
 
 const dispatchProps = (dispatch: Dispatch) => ({
@@ -17,10 +20,11 @@ const dispatchProps = (dispatch: Dispatch) => ({
 
 interface ConnectorProps {
   partyModalData: PartyModalData;
+  transferDetails: Transfer;
   onModalCloseClick: () => void;
 }
 
-const JsonModal: FC<ConnectorProps> = ({ partyModalData, onModalCloseClick }) => {
+const JsonModal: FC<ConnectorProps> = ({ partyModalData, transferDetails, onModalCloseClick }) => {
   return (
     <Modal
       title={`${partyModalData.type} Information`}
@@ -28,7 +32,12 @@ const JsonModal: FC<ConnectorProps> = ({ partyModalData, onModalCloseClick }) =>
       onClose={onModalCloseClick}
     >
       <FormField.Container direction="row">
-        <FormField disabled type="text" label="Id Type" value={partyModalData.party.partyIdType || ''} />
+        <FormField
+          disabled
+          type="text"
+          label="Id Type"
+          value={partyModalData.party.partyIdType || ''}
+        />
         <FormField
           disabled
           type="text"
@@ -47,7 +56,7 @@ const JsonModal: FC<ConnectorProps> = ({ partyModalData, onModalCloseClick }) =>
           disabled
           type="text"
           label="FSP Id"
-          value={partyModalData.party.idValue || ''}
+          value={transferDetails.payeeDFSP?.toString() || ''}
         />
       </FormField.Container>
     </Modal>

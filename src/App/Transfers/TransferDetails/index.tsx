@@ -826,7 +826,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                 type="text"
                 style={{ flex: 1, marginBottom: 0, padding: '8px 10px', marginRight: '10px' }}
                 value={
-                  transferDetails.conversions?.[0]?.conversionTerms?.charges?.[0]?.sourceAmount?.amount?.toString() ||
+                  transferDetails.conversions?.[0]?.conversionTerms?.sourceAmount?.amount?.toString() ||
                   ''
                 }
               />

@@ -91,7 +91,7 @@ export type Transfer = {
   errorCode?: Maybe<Scalars['Int']>;
   settlementWindowId?: Maybe<Scalars['Int']>;
   // settlementId?: Maybe<Scalars['Int']>;
-  payerDFSP?: Maybe<Scalars['String']>;
+  payerDFSP?: Maybe<Scalars['String']>; /// this one
   payerDFSPProxy?: Maybe<Scalars['String']>;
   payeeDFSP?: Maybe<Scalars['String']>;
   payeeDFSPProxy?: Maybe<Scalars['String']>;
