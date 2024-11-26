@@ -81,7 +81,7 @@ const transfersColumns = [
   },
   {
     label: 'Settlement Batch',
-    key: 'settlementId',
+    key: 'transferSettlementWindowId',
     fn: (rawValue: Number) => {
       return `${rawValue ? rawValue.toString() : ''}`;
     },
@@ -342,13 +342,14 @@ const Transfers: FC<ConnectorProps> = ({
             startDate: filtersModel.from,
             endDate: filtersModel.to,
             sourceCurrency: filtersModel.sourceCurrency,
+            targetCurrency: filtersModel.targetCurrency,
             transferState: filtersModel.transferState,
-            payeeFSPId: filtersModel.payeeFSPId,
-            payerFSPId: filtersModel.payerFSPId,
+            payeeFspId: filtersModel.payeeFSPId,
+            payerFspId: filtersModel.payerFSPId,
             payeeIdType: filtersModel.payeeIdType,
             payerIdType: filtersModel.payerIdType,
-            payeeIdValue: filtersModel.payeeIdValue,
-            payerIdValue: filtersModel.payerIdValue,
+            payeeIdentifier: filtersModel.payeeIdValue,
+            payerIdentifier: filtersModel.payerIdValue,
           },
     },
   );

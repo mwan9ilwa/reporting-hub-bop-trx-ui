@@ -25,6 +25,8 @@ interface ConnectorProps {
 }
 
 const JsonModal: FC<ConnectorProps> = ({ partyModalData, transferDetails, onModalCloseClick }) => {
+  let fspId = partyModalData.type === 'Payer' ? transferDetails.payerDFSP?.toString() || '': transferDetails.payeeDFSP?.toString() || '';
+
   return (
     <Modal
       title={`${partyModalData.type} Information`}
@@ -52,12 +54,7 @@ const JsonModal: FC<ConnectorProps> = ({ partyModalData, transferDetails, onModa
           label="Full Name"
           value={partyModalData.party.partyName || ''}
         />
-        <FormField
-          disabled
-          type="text"
-          label="FSP Id"
-          value={transferDetails.payeeDFSP?.toString() || ''}
-        />
+        <FormField disabled type="text" label="FSP Id" value={fspId} />
       </FormField.Container>
     </Modal>
   );

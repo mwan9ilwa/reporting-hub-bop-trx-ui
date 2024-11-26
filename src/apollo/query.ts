@@ -13,13 +13,27 @@ export const GET_TRANSFER = gql`
       createdAt
       lastUpdated
       transferState
+      transferStateChanges {
+        transferState
+        dateTime
+        reason
+      }
       transactionType
+      baseUseCase
       errorCode
       transferSettlementWindowId
       payerDFSP
       payerDFSPProxy
       payeeDFSP
       payeeDFSPProxy
+      positionChanges {
+        participantName
+        currency
+        ledgerType
+        dateTime
+        updatedPosition
+        change
+      }
       payerParty {
         partyIdType
         partyIdentifier
@@ -36,68 +50,59 @@ export const GET_TRANSFER = gql`
         quoteId
         amountType
         amount {
-          amount
           currency
+          amount
         }
         fees {
-          amount
           currency
+          amount
         }
       }
       transferTerms {
         transferAmount {
-          amount
           currency
-        }
-        payeeFspFee {
           amount
-          currency
-        }
-        payeeFspCommission {
-          amount
-          currency
         }
         payeeReceiveAmount {
-          amount
           currency
+          amount
         }
+        payeeFspFee {
+          currency
+          amount
+        }
+        payeeFspCommission {
+          currency
+          amount
+        }
+        expiration
         geoCode {
           latitude
           longitude
         }
-        expiration
         ilpPacket
       }
       conversions {
-        conversionRequestId
-        conversionId
-        conversionCommitRequestId
-        conversionSettlementWindowId
-        conversionState
-        conversionType
-        conversionStateChanges {
-          conversionState
-          dateTime
-          reason
-        }
-        counterPartyFSP
-        conversionTerms {
+        payer {
+          conversionRequestId
           conversionId
-          determiningTransferId
-          initiatingFsp
-          counterPartyFsp
-          amountType
-          sourceAmount {
-            amount
-            currency
+          conversionCommitRequestId
+          conversionSettlementWindowId
+          conversionState
+          conversionType
+          conversionStateChanges {
+            conversionState
+            dateTime
+            reason
           }
-          targetAmount {
-            amount
-            currency
-          }
-          expiration
-          charges {
-            chargeType
+          counterPartyFSP
+          counterPartyProxy
+          conversionTerms {
+            conversionId
+            determiningTransferId
+            initiatingFsp
+            counterPartyFsp
+            amountType
             sourceAmount {
               amount
               currency
@@ -106,14 +111,26 @@ export const GET_TRANSFER = gql`
               amount
               currency
             }
+            expiration
+            charges {
+              chargeType
+              sourceAmount {
+                amount
+                currency
+              }
+              targetAmount {
+                amount
+                currency
+              }
+            }
+            ilpPacket
           }
-          ilpPacket
         }
       }
-      quoteEvents
-      transferEvents
       partyLookupEvents
+      transferEvents
       settlementEvents
+      quoteEvents
     }
   }
 `;
@@ -129,6 +146,8 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
     $conversionState: String
     $targetCurrency: String
     $sourceCurrency: String
+    $payerFspId: String
+    $payeeFspId: String
     $payerIdType: String
     $payerIdentifier: String
     $payeeIdType: String
@@ -140,6 +159,8 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
       filter: {
         startDate: $startDate
         endDate: $endDate
+        payerDFSP: $payerFspId
+        payeeDFSP: $payeeFspId
         transactionType: $transactionType
         transferState: $transferState
         conversionState: $conversionState
@@ -158,13 +179,27 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
       createdAt
       lastUpdated
       transferState
+      transferStateChanges {
+        transferState
+        dateTime
+        reason
+      }
       transactionType
+      baseUseCase
       errorCode
       transferSettlementWindowId
       payerDFSP
       payerDFSPProxy
       payeeDFSP
       payeeDFSPProxy
+      positionChanges {
+        participantName
+        currency
+        ledgerType
+        dateTime
+        updatedPosition
+        change
+      }
       payerParty {
         partyIdType
         partyIdentifier
@@ -181,68 +216,59 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
         quoteId
         amountType
         amount {
-          amount
           currency
+          amount
         }
         fees {
-          amount
           currency
+          amount
         }
       }
       transferTerms {
         transferAmount {
-          amount
           currency
-        }
-        payeeFspFee {
           amount
-          currency
-        }
-        payeeFspCommission {
-          amount
-          currency
         }
         payeeReceiveAmount {
-          amount
           currency
+          amount
         }
+        payeeFspFee {
+          currency
+          amount
+        }
+        payeeFspCommission {
+          currency
+          amount
+        }
+        expiration
         geoCode {
           latitude
           longitude
         }
-        expiration
         ilpPacket
       }
       conversions {
-        conversionRequestId
-        conversionId
-        conversionCommitRequestId
-        conversionState
-        conversionType
-        conversionStateChanges {
-          conversionState
-          dateTime
-          reason
-        }
-        counterPartyFSP
-        conversionSettlementWindowId
-        conversionTerms {
+        payer {
+          conversionRequestId
           conversionId
-          determiningTransferId
-          initiatingFsp
-          counterPartyFsp
-          amountType
-          sourceAmount {
-            amount
-            currency
+          conversionCommitRequestId
+          conversionSettlementWindowId
+          conversionState
+          conversionType
+          conversionStateChanges {
+            conversionState
+            dateTime
+            reason
           }
-          targetAmount {
-            amount
-            currency
-          }
-          expiration
-          charges {
-            chargeType
+          counterPartyFSP
+          counterPartyProxy
+          conversionTerms {
+            conversionId
+            determiningTransferId
+            initiatingFsp
+            counterPartyFsp
+            amountType
             sourceAmount {
               amount
               currency
@@ -251,14 +277,26 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
               amount
               currency
             }
+            expiration
+            charges {
+              chargeType
+              sourceAmount {
+                amount
+                currency
+              }
+              targetAmount {
+                amount
+                currency
+              }
+            }
+            ilpPacket
           }
-          ilpPacket
         }
       }
-      quoteEvents
-      transferEvents
       partyLookupEvents
+      transferEvents
       settlementEvents
+      quoteEvents
     }
   }
 `;
