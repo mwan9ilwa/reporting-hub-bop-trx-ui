@@ -174,6 +174,8 @@ export const GET_TRANSFER = gql`
       transferEvents
       settlementEvents
       quoteEvents
+      fxQuoteEvents
+      fxTransferEvents
     }
   }
 `;
@@ -383,6 +385,8 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
       transferEvents
       settlementEvents
       quoteEvents
+      fxQuoteEvents
+      fxTransferEvents
     }
   }
 `;
