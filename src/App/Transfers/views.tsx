@@ -344,6 +344,7 @@ const Transfers: FC<ConnectorProps> = ({
             sourceCurrency: filtersModel.sourceCurrency,
             targetCurrency: filtersModel.targetCurrency,
             transferState: filtersModel.transferState,
+            conversionState: filtersModel.conversionState,
             payeeFspId: filtersModel.payeeFSPId,
             payerFspId: filtersModel.payerFSPId,
             payeeIdType: filtersModel.payeeIdType,

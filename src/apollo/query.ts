@@ -126,6 +126,49 @@ export const GET_TRANSFER = gql`
             ilpPacket
           }
         }
+        payee {
+          conversionRequestId
+          conversionId
+          conversionCommitRequestId
+          conversionSettlementWindowId
+          conversionState
+          conversionType
+          conversionStateChanges {
+            conversionState
+            dateTime
+            reason
+          }
+          counterPartyFSP
+          counterPartyProxy
+          conversionTerms {
+            conversionId
+            determiningTransferId
+            initiatingFsp
+            counterPartyFsp
+            amountType
+            sourceAmount {
+              amount
+              currency
+            }
+            targetAmount {
+              amount
+              currency
+            }
+            expiration
+            charges {
+              chargeType
+              sourceAmount {
+                amount
+                currency
+              }
+              targetAmount {
+                amount
+                currency
+              }
+            }
+            ilpPacket
+          }
+        }
       }
       partyLookupEvents
       transferEvents
@@ -250,6 +293,49 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
       }
       conversions {
         payer {
+          conversionRequestId
+          conversionId
+          conversionCommitRequestId
+          conversionSettlementWindowId
+          conversionState
+          conversionType
+          conversionStateChanges {
+            conversionState
+            dateTime
+            reason
+          }
+          counterPartyFSP
+          counterPartyProxy
+          conversionTerms {
+            conversionId
+            determiningTransferId
+            initiatingFsp
+            counterPartyFsp
+            amountType
+            sourceAmount {
+              amount
+              currency
+            }
+            targetAmount {
+              amount
+              currency
+            }
+            expiration
+            charges {
+              chargeType
+              sourceAmount {
+                amount
+                currency
+              }
+              targetAmount {
+                amount
+                currency
+              }
+            }
+            ilpPacket
+          }
+        }
+        payee {
           conversionRequestId
           conversionId
           conversionCommitRequestId
