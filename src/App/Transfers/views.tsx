@@ -81,7 +81,7 @@ const transfersColumns = [
   },
   {
     label: 'Settlement Batch',
-    key: 'transferSettlementWindowId',
+    key: 'transferSettlementBatchId',
     fn: (rawValue: Number) => {
       return `${rawValue ? rawValue.toString() : ''}`;
     },

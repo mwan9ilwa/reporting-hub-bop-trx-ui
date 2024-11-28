@@ -170,6 +170,8 @@ export const GET_TRANSFER = gql`
           }
         }
       }
+      transferSettlementBatchId
+      conversionSettlementBatchId
       partyLookupEvents
       transferEvents
       settlementEvents
@@ -381,6 +383,8 @@ export const GET_TRANSFERS_WITH_EVENTS = gql`
           }
         }
       }
+      transferSettlementBatchId
+      conversionSettlementBatchId
       partyLookupEvents
       transferEvents
       settlementEvents

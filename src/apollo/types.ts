@@ -107,6 +107,8 @@ export type Transfer = {
   transferEvents?: Maybe<Scalars['JSONObject']>;
   settlementEvents?: Maybe<Scalars['JSONObject']>;
   transferSettlementWindowId?: Maybe<Scalars['Int']>;
+  transferSettlementBatchId?: Maybe<Scalars['Int']>;
+  conversionSettlementBatchId?: Maybe<Scalars['Int']>;
   payerPartyId?: Maybe<Scalars['Int']>;
   payeePartyId?: Maybe<Party>;
   quoteRequestId?: Maybe<Scalars['Int']>;

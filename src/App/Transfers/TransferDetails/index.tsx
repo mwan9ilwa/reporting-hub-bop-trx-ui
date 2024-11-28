@@ -497,13 +497,13 @@ const TransferDetails: FC<ConnectorProps> = ({
             disabled
             type="text"
             label="Transfer Settlement Batch ID"
-            value={transferDetails.transferSettlementWindowId?.toString() || ''}
+            value={transferDetails.transferSettlementBatchId?.toString() || ''}
           />
           <FormField
             disabled
             type="text"
             label="Conversion Settlement Batch ID"
-            value={transferDetails.conversions?.payer?.conversionSettlementWindowId?.toString() || ''}
+            value={transferDetails.conversionSettlementBatchId?.toString() || ''}
           />
           <FormField
             disabled
