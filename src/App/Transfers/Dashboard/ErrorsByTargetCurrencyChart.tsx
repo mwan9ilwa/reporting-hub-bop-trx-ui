@@ -34,7 +34,14 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
   };
   let content = null;
   if (error) {
-    content = <MessageBox kind="danger">Error fetching transfers: {error.message}</MessageBox>;
+    const status = error.networkError?.statusCode;
+
+    const isForbidden = status === 403;
+    content = (
+      <MessageBox kind={isForbidden ? 'default' : 'danger'}>
+        {isForbidden ? 'Restricted Access' : `Error fetching transfers: ${error.message}`}
+      </MessageBox>
+    );
   } else if (loading) {
     content = <Spinner center />;
   } else {
