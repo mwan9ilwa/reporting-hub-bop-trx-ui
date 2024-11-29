@@ -24,9 +24,10 @@ const dispatchProps = (dispatch: Dispatch) => ({
 interface ConnectorProps {
   filtersModel: TransfersFilter;
   onFilterChange: (field: string, value: FilterChangeValue | string) => void;
+  onError: (component: string, error: any) => void;
 }
 
-const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
+const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onError }) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP, {
     fetchPolicy: 'no-cache',
     variables: {
@@ -48,6 +49,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   let content = null;
   if (error) {
     const status = error.networkError?.statusCode;
+    onError('BySourceCurrencyChart', error);
 
     const isForbidden = status === 403;
     content = (

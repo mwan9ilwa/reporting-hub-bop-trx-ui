@@ -24,9 +24,10 @@ const dispatchProps = (dispatch: Dispatch) => ({
 interface ConnectorProps {
   filtersModel: TransfersFilter;
   onFilterChange: (field: string, value: FilterChangeValue | string) => void;
+  onError: (component: string, error: any) => void;
 }
 
-const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
+const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onError }) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_SOURCE_CURRENCY, {
     fetchPolicy: 'no-cache',
     variables: {
@@ -48,7 +49,7 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
   let content = null;
   if (error) {
     const status = error.networkError?.statusCode;
-
+    onError('BySourceCurrencyChart', error);
     const isForbidden = status === 403;
     content = (
       <MessageBox kind={isForbidden ? 'default' : 'danger'}>

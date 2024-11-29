@@ -13,11 +13,15 @@ import { RED_CHART_GRADIENT_COLORS, renderActiveShape, renderRedLegend } from '.
 const stateProps = (state: State) => ({
   filtersModel: selectors.getTransfersFilter(state),
 });
+
 const dispatchProps = () => ({});
+
 interface ConnectorProps {
   filtersModel: TransfersFilter;
+  onError: (component: string, error: any) => void;
 }
-const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
+
+const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY, {
     fetchPolicy: 'no-cache',
     variables: {
@@ -25,77 +29,84 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
       endDate: filtersModel.to,
     },
   });
+
   const [activeIndex, setActiveIndex] = useState<number>();
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index);
   };
+
   const onPieLeave = () => {
     setActiveIndex(undefined);
   };
-  let content = null;
+
   if (error) {
     const status = error.networkError?.statusCode;
-
     const isForbidden = status === 403;
-    content = (
+    onError('BySourceCurrencyChart', error);
+
+    return (
       <MessageBox kind={isForbidden ? 'default' : 'danger'}>
         {isForbidden ? 'Restricted Access' : `Error fetching transfers: ${error.message}`}
       </MessageBox>
     );
-  } else if (loading) {
-    content = <Spinner center />;
-  } else {
-    const summary = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode !== null;
-      })
-      .slice()
-      .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
-    const topThree = summary.slice(0, 3);
-    const remainingSummary = {
-      errorCode: 'Other',
-      count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
-    };
-    if (remainingSummary.count > 0) {
-      topThree.push(remainingSummary);
-    }
-    content = (
-      <PieChart id="ErrorsByTargetCurrencyChart" width={300} height={120}>
-        <Legend
-          id="ErrorsByTargetCurrencyChartLegend"
-          name="Target Error Code"
-          layout="vertical"
-          verticalAlign="middle"
-          align="right"
-          width={50}
-          height={100}
-          iconSize={0}
-          content={renderRedLegend}
-        />
-        <Pie
-          data={topThree}
-          dataKey="count"
-          nameKey="errorCode"
-          innerRadius={30}
-          outerRadius={50}
-          blendStroke
-          activeIndex={activeIndex}
-          activeShape={renderActiveShape}
-          onMouseEnter={onPieEnter}
-          onMouseLeave={onPieLeave}
-        >
-          {topThree.map((_entry: any, index: number) => (
-            <Cell
-              key={`${_entry.errorCode}`}
-              fill={RED_CHART_GRADIENT_COLORS[index % RED_CHART_GRADIENT_COLORS.length]}
-            />
-          ))}
-        </Pie>
-        <Tooltip />
-      </PieChart>
-    );
   }
-  return content;
+
+  if (loading) {
+    return <Spinner center />;
+  }
+
+  const summary = data.transferSummary
+    .filter((obj: TransferSummary) => {
+      return obj.errorCode !== null;
+    })
+    .slice()
+    .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
+
+  const topThree = summary.slice(0, 3);
+  const remainingSummary = {
+    errorCode: 'Other',
+    count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
+  };
+
+  if (remainingSummary.count > 0) {
+    topThree.push(remainingSummary);
+  }
+
+  return (
+    <PieChart id="ErrorsBySourceCurrencyChart" width={300} height={120}>
+      <Legend
+        id="ErrorsBySourceCurrencyChartLegend"
+        name="Source Error Code"
+        layout="vertical"
+        verticalAlign="middle"
+        align="right"
+        width={50}
+        height={100}
+        iconSize={0}
+        content={renderRedLegend}
+      />
+      <Pie
+        data={topThree}
+        dataKey="count"
+        nameKey="errorCode"
+        innerRadius={30}
+        outerRadius={50}
+        blendStroke
+        activeIndex={activeIndex}
+        activeShape={renderActiveShape}
+        onMouseEnter={onPieEnter}
+        onMouseLeave={onPieLeave}
+      >
+        {topThree.map((_entry: any, index: number) => (
+          <Cell
+            key={`${_entry.errorCode}`}
+            fill={RED_CHART_GRADIENT_COLORS[index % RED_CHART_GRADIENT_COLORS.length]}
+          />
+        ))}
+      </Pie>
+      <Tooltip />
+    </PieChart>
+  );
 };
 
 export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(

@@ -24,9 +24,10 @@ const dispatchProps = (dispatch: Dispatch) => ({
 interface ConnectorProps {
   filtersModel: TransfersFilter;
   onFilterChange: (field: string, value: FilterChangeValue | string) => void;
+  onError: (component: string, error: any) => void;
 }
 
-const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
+const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onError }) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_PAYER, {
     fetchPolicy: 'no-cache',
     variables: {
@@ -49,8 +50,9 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   // Check if the Error is a 403
   if (error) {
     const status = error.networkError?.statusCode;
-
     const isForbidden = status === 403;
+    onError('ByPayerChart', error);
+
     content = (
       <MessageBox kind={isForbidden ? 'default' : 'danger'}>
         {isForbidden ? 'Restricted Access' : `Error fetching transfers: ${error.message}`}
@@ -122,6 +124,7 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
       </PieChart>
     );
   }
+
   return content;
 };
 

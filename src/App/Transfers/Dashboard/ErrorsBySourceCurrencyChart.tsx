@@ -16,8 +16,9 @@ const stateProps = (state: State) => ({
 const dispatchProps = () => ({});
 interface ConnectorProps {
   filtersModel: TransfersFilter;
+  onError: (component: string, error: any) => void;
 }
-const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
+const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY, {
     fetchPolicy: 'no-cache',
     variables: {
@@ -37,6 +38,7 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
     const status = error.networkError?.statusCode;
 
     const isForbidden = status === 403;
+    onError('BySourceCurrencyChart', error);
     content = (
       <MessageBox kind={isForbidden ? 'default' : 'danger'}>
         {isForbidden ? 'Restricted Access' : `Error fetching transfers: ${error.message}`}
