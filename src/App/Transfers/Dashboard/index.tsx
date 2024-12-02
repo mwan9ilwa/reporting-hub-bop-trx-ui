@@ -2,14 +2,15 @@ import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { ReduxContext } from 'store';
 import { Row } from 'antd';
-import TransfersByCurrencyChart from './TransfersByCurrencyChart';
 import ErrorsByPayeeChart from './ErrorsByPayeeChart';
 import ErrorsByPayerChart from './ErrorsByPayerChart';
-import ErrorsByErrorCodeChart from './ErrorsByErrorCodeChart';
 import TransfersByPayeeChart from './TransfersByPayeeChart';
 import TransfersByPayerChart from './TransfersByPayerChart';
 import TransferTotalSummary from './TransferTotalSummary';
+import TransfersBySourceCurrencyChart from './TransfersBySourceCurrencyChart';
+import TransfersByTargetCurrencyChart from './TransfersByTargetCurrencyChart';
 import ErrorSummary from './ErrorSummary';
+import ErrorsByErrorCodeChart from './ErrorsByErrorCodeChart';
 
 const stateProps = () => ({});
 
@@ -20,17 +21,22 @@ interface ConnectorProps {}
 const Dashboard: FC<ConnectorProps> = () => {
   return (
     <div>
-      <Row style={{ marginBottom: 8 }}>
+      <Row style={{ marginBottom: 10, gap: 20 }}>
         <TransferTotalSummary />
-        <TransfersByCurrencyChart />
-        <TransfersByPayerChart />
+        <TransfersBySourceCurrencyChart />
+        <TransfersByTargetCurrencyChart />
+        <div style={{ marginLeft: '55px' }}>
+          <TransfersByPayerChart />
+        </div>
         <TransfersByPayeeChart />
       </Row>
-      <Row style={{ marginBottom: 8 }}>
+      <Row style={{ marginBottom: 30, gap: 20 }}>
         <ErrorSummary />
         <ErrorsByErrorCodeChart />
         <ErrorsByPayerChart />
-        <ErrorsByPayeeChart />
+        <div style={{ marginLeft: '55px' }}>
+          <ErrorsByPayeeChart />
+        </div>
       </Row>
     </div>
   );

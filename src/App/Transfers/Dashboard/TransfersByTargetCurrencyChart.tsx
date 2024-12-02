@@ -1,12 +1,12 @@
-import { useQuery } from '@apollo/client';
-import { GET_TRANSFER_SUMMARY_BY_PAYER_DFSP } from 'apollo/query';
-import { MessageBox, Spinner } from 'components';
+import { GET_TRANSFER_SUMMARY_BY_TARGET_CURRENCY } from 'apollo/query';
 import React, { FC, useState } from 'react';
 import { connect } from 'react-redux';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
-import { ReduxContext, Dispatch, State } from 'store';
+import { ReduxContext } from 'store';
+import { State, Dispatch } from 'store/types';
+import { MessageBox, Spinner } from 'components';
+import { useQuery } from '@apollo/client';
 import { TransferSummary } from 'apollo/types';
-import { map, groupBy, sumBy } from 'lodash';
 import { FilterChangeValue, TransfersFilter } from '../types';
 import { actions } from '../slice';
 import * as selectors from '../selectors';
@@ -26,8 +26,8 @@ interface ConnectorProps {
   onFilterChange: (field: string, value: FilterChangeValue | string) => void;
 }
 
-const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
-  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_PAYER_DFSP, {
+const ByTargetCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
+  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_TARGET_CURRENCY, {
     fetchPolicy: 'no-cache',
     variables: {
       startDate: filtersModel.from,
@@ -46,40 +46,60 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   };
 
   let content = null;
+
   if (error) {
     content = <MessageBox kind="danger">Error fetching transfers: {error.message}</MessageBox>;
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    const prunedSummary = data.transferSummary.filter(
-      (obj: TransferSummary) => obj.group.errorCode === null && obj.sum.sourceAmount > 0,
+    const groupedSummary = data.transferSummary
+      .filter((obj: TransferSummary) => obj.group.errorCode === null)
+      .reduce(
+        (acc: Record<string, { count: number; targetAmount: number }>, curr: TransferSummary) => {
+          const { targetCurrency } = curr.group;
+          if (!targetCurrency) return acc;
+          if (!acc[targetCurrency]) {
+            acc[targetCurrency] = { count: 0, targetAmount: 0 };
+          }
+          acc[targetCurrency].count += curr.count;
+          acc[targetCurrency].targetAmount += curr.sum.targetAmount;
+          return acc;
+        },
+        {},
+      );
+
+    const summaryArray = Object.entries(groupedSummary)
+      .map(
+        ([targetCurrency, { count, targetAmount }]: [
+          string,
+          { count: number; targetAmount: number },
+        ]) => ({
+          targetCurrency,
+          count,
+          targetAmount,
+        }),
+      )
+      .sort((a, b) => b.count - a.count);
+
+    const topThree = summaryArray.slice(0, 3);
+    const other = summaryArray.slice(3).reduce(
+      (acc, curr) => {
+        acc.count += curr.count;
+        acc.targetAmount += curr.targetAmount;
+        return acc;
+      },
+      { targetCurrency: 'Other', count: 0, targetAmount: 0 },
     );
 
-    const summary = map(
-      groupBy(prunedSummary, (ts: any) => ts.group.payerDFSP),
-      (ts: any, payerDFSP: string) => ({
-        payerDFSP,
-        sourceAmount: sumBy(ts, (t: any) => t.sum.sourceAmount),
-      }),
-    ).sort((a: any, b: any) => b.sourceAmount - a.sourceAmount);
-
-    const topThree = summary.slice(0, 3);
-    const remainingSummary = {
-      payerDFSP: 'Other',
-      sourceAmount: summary
-        .slice(3)
-        .reduce((n: number, { sourceAmount }: any) => n + sourceAmount, 0),
-    };
-
-    if (remainingSummary.sourceAmount > 0) {
-      topThree.push(remainingSummary);
+    if (other.count > 0) {
+      topThree.push(other);
     }
 
     content = (
-      <PieChart id="TransfersByPayerChart" width={300} height={120}>
+      <PieChart id="TransfersByTargetCurrencyChart" width={300} height={120}>
         <Legend
-          id="TransfersByPayerChartLegend"
-          name="Payer DFSP"
+          id="TransfersByTargetCurrencyChartLegend"
+          name="Target Currency"
           layout="vertical"
           verticalAlign="middle"
           align="right"
@@ -90,14 +110,14 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
         />
         <Pie
           data={topThree}
-          dataKey="sourceAmount"
-          nameKey="payerDFSP"
+          dataKey="targetAmount"
+          nameKey="targetCurrency"
           innerRadius={30}
           outerRadius={50}
           blendStroke
           onClick={(value) => {
             if (value.name !== 'Other') {
-              onFilterChange('payerFSPId', value.name);
+              onFilterChange('targetCurrency', value.name);
             }
           }}
           activeIndex={activeIndex}
@@ -107,15 +127,12 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
         >
           {topThree.map((_entry: any, index: number) => (
             <Cell
-              key={`${_entry.payerDFSP}`}
+              key={`${_entry.targetCurrency}`}
               fill={GREEN_CHART_GRADIENT_COLORS[index % GREEN_CHART_GRADIENT_COLORS.length]}
             />
           ))}
         </Pie>
-        <Tooltip
-          formatter={(value: any) => value.toFixed(2)}
-          labelFormatter={(label: string) => `${label}`}
-        />
+        <Tooltip />
       </PieChart>
     );
   }
@@ -123,4 +140,6 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   return content;
 };
 
-export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(ByPayerChart);
+export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(
+  ByTargetCurrencyChart,
+);

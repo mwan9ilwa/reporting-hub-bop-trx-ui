@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
 import { ReduxContext, State, Dispatch } from 'store';
 import { GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP } from 'apollo/query';
-import * as selectors from '../selectors';
+import { map, groupBy, sumBy } from 'lodash';
 import { FilterChangeValue, TransfersFilter } from '../types';
 import { actions } from '../slice';
+import * as selectors from '../selectors';
 import { GREEN_CHART_GRADIENT_COLORS, renderActiveShape, renderGreenLegend } from './utils';
 
 const stateProps = (state: State) => ({
@@ -36,7 +37,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
 
   const [activeIndex, setActiveIndex] = useState<number>();
 
-  const onPieEnter = (_: any, index: number) => {
+  const onPieEnter = (_pieData: any, index: number) => {
     setActiveIndex(index);
   };
 
@@ -50,26 +51,34 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    const summary = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode === null;
-      })
-      .slice()
-      .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
-    const firstThree = summary.slice(0, 3);
+    const prunedSummary = data.transferSummary.filter(
+      (obj: TransferSummary) => obj.group.errorCode === null && obj.sum.targetAmount > 0,
+    );
+
+    const summary = map(
+      groupBy(prunedSummary, (ts: any) => ts.group.payeeDFSP),
+      (ts: any, payeeDFSP: string) => ({
+        payeeDFSP,
+        targetAmount: sumBy(ts, (item: any) => item.sum.targetAmount),
+      }),
+    ).sort((a: any, b: any) => b.targetAmount - a.targetAmount);
+
+    const topThree = summary.slice(0, 3);
     const remainingSummary = {
       payeeDFSP: 'Other',
-      count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
+      targetAmount: summary
+        .slice(3)
+        .reduce((n: number, { targetAmount }: any) => n + targetAmount, 0),
     };
-    if (remainingSummary.count > 0) {
-      firstThree.push(remainingSummary);
+    if (remainingSummary.targetAmount > 0) {
+      topThree.push(remainingSummary);
     }
 
     content = (
       <PieChart id="TransfersByPayeeChart" width={300} height={120}>
         <Legend
           id="TransfersByPayeeChartLegend"
-          name="By Payee"
+          name="Payee DFSP"
           layout="vertical"
           verticalAlign="middle"
           align="right"
@@ -79,8 +88,8 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           content={renderGreenLegend}
         />
         <Pie
-          data={firstThree}
-          dataKey="count"
+          data={topThree}
+          dataKey="targetAmount"
           nameKey="payeeDFSP"
           innerRadius={30}
           outerRadius={50}
@@ -95,7 +104,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           onMouseEnter={onPieEnter}
           onMouseLeave={onPieLeave}
         >
-          {firstThree.map((_entry: any, index: number) => (
+          {topThree.map((_entry: any, index: number) => (
             <Cell
               key={`${_entry.payeeDFSP}`}
               fill={GREEN_CHART_GRADIENT_COLORS[index % GREEN_CHART_GRADIENT_COLORS.length]}
@@ -106,6 +115,7 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
       </PieChart>
     );
   }
+
   return content;
 };
 

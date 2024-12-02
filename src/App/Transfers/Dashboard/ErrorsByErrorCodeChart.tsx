@@ -47,25 +47,28 @@ const ByCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
     content = <Spinner center />;
   } else {
     const summary = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode !== null;
-      })
-      .slice()
+      .filter((obj: TransferSummary) => obj.group.errorCode !== null)
+      .map((obj: TransferSummary) => ({
+        errorCode: obj.group.errorCode,
+        count: obj.count,
+      }))
       .sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
-    const firstThree = summary.slice(0, 3);
+
+    const topThree = summary.slice(0, 3);
     const remainingSummary = {
       errorCode: 'Other',
-      count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
+      count: summary.slice(3).reduce((n: number, { count }: { count: number }) => n + count, 0),
     };
+
     if (remainingSummary.count > 0) {
-      firstThree.push(remainingSummary);
+      topThree.push(remainingSummary);
     }
 
     content = (
       <PieChart id="ErrorsByErrorCodeChart" width={300} height={120}>
         <Legend
           id="ErrorsByErrorCodeChartLegend"
-          name="By Error Code"
+          name="Error Code"
           layout="vertical"
           verticalAlign="middle"
           align="right"
@@ -75,7 +78,7 @@ const ByCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
           content={renderRedLegend}
         />
         <Pie
-          data={firstThree}
+          data={topThree}
           dataKey="count"
           nameKey="errorCode"
           innerRadius={30}
@@ -86,7 +89,7 @@ const ByCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
           onMouseEnter={onPieEnter}
           onMouseLeave={onPieLeave}
         >
-          {firstThree.map((_entry: any, index: number) => (
+          {topThree.map((_entry: any, index: number) => (
             <Cell
               key={`${_entry.errorCode}`}
               fill={RED_CHART_GRADIENT_COLORS[index % RED_CHART_GRADIENT_COLORS.length]}
@@ -97,6 +100,7 @@ const ByCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
       </PieChart>
     );
   }
+
   return content;
 };
 
