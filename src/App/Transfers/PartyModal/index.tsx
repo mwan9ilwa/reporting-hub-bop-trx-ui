@@ -25,7 +25,11 @@ interface ConnectorProps {
 }
 
 const JsonModal: FC<ConnectorProps> = ({ partyModalData, transferDetails, onModalCloseClick }) => {
-  let fspId = partyModalData.type === 'Payer' ? transferDetails.payerDFSP?.toString() || '': transferDetails.payeeDFSP?.toString() || '';
+  // let fspId = partyModalData.type === 'Payer' ? transferDetails.payerDFSP?.toString() || '': transferDetails.payeeDFSP?.toString() || '';
+  const fspId =
+    partyModalData.type === 'Payer'
+      ? transferDetails.payerDFSP?.toString() || ''
+      : transferDetails.payeeDFSP?.toString() || '';
 
   return (
     <Modal

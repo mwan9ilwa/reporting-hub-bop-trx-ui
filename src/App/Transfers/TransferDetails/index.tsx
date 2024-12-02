@@ -176,7 +176,9 @@ const TransferDetails: FC<ConnectorProps> = ({
             />
             <button
               onClick={() =>
-                handleCopy(transferDetails.conversions?.payer?.conversionRequestId?.toString() || '')
+                handleCopy(
+                  transferDetails.conversions?.payer?.conversionRequestId?.toString() || '',
+                )
               }
               style={{
                 position: 'absolute',
@@ -834,8 +836,7 @@ const TransferDetails: FC<ConnectorProps> = ({
                 disabled
                 type="text"
                 value={
-                  transferDetails.conversions?.payer?.conversionTerms?.sourceAmount?.currency ||
-                  ''
+                  transferDetails.conversions?.payer?.conversionTerms?.sourceAmount?.currency || ''
                 }
                 style={{ width: '100%', marginRight: '10px', marginBottom: 0 }}
               />
@@ -862,8 +863,10 @@ const TransferDetails: FC<ConnectorProps> = ({
                 <FormField
                   disabled
                   type="text"
-                  value={transferDetails.conversions?.payer?.conversionTerms?.targetAmount?.currency ||
-                    ''}
+                  value={
+                    transferDetails.conversions?.payer?.conversionTerms?.targetAmount?.currency ||
+                    ''
+                  }
                   style={{ marginBottom: 0, flex: '0 0 20%', marginRight: '5px' }}
                 />
               </div>
