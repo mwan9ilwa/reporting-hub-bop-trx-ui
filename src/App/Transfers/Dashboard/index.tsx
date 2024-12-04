@@ -13,8 +13,6 @@ import ErrorSummary from './ErrorSummary';
 import ErrorsByErrorCodeChart from './ErrorsByErrorCodeChart';
 import ErrorMessage from './ErrorMessage';
 import { TransfersFilter } from '../types';
-import ErrorsByTargetCurrencyChart from './ErrorsByTargetCurrencyChart';
-import ErrorsBySourceCurrencyChart from './ErrorsBySourceCurrencyChart';
 
 const stateProps = () => ({});
 const dispatchProps = () => ({});
@@ -45,7 +43,7 @@ const Dashboard: FC<ConnectorProps> = () => {
   return (
     <div>
       <Row style={{ marginBottom: 10, gap: 20 }}>
-        <TransferTotalSummary onError={handleError}/>
+        <TransferTotalSummary onError={handleError} />
         <TransfersBySourceCurrencyChart onError={handleError} />
         <TransfersByTargetCurrencyChart onError={handleError} />
         <div style={{ marginLeft: '55px' }}>
