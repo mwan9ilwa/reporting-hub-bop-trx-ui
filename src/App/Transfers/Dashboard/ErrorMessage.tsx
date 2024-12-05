@@ -11,7 +11,7 @@ const ErrorMessage: FC<ErrorMessageProps> = () => {
       style={{
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'left',
+        alignItems: 'center',
         marginTop: '-8px',
         marginBottom: '-8px',
         marginLeft: '-16px',
@@ -22,14 +22,14 @@ const ErrorMessage: FC<ErrorMessageProps> = () => {
         kind="default"
         style={{
           width: '100%',
-          textAlign: 'left',
+          textAlign: 'center',
           marginTop: '-8px',
           marginBottom: '-8px',
           marginLeft: '-16px',
           marginRight: '-16px',
         }}
       >
-        <p style={{ fontSize: '14px' }}>Restricted Access</p>
+        <p style={{ fontSize: '14px', fontWeight:'bold' }}>Restricted Access</p>
       </MessageBox>
     </div>
   );

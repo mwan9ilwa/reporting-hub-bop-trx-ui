@@ -26,6 +26,7 @@ import TransferDetailsModal from './TransferDetails';
 import JsonModal from './JsonModal';
 import PartyModal from './PartyModal';
 import Dashboard from './Dashboard';
+import ErrorMessageModal from './ErrorMessageModal';
 import { dateRanges, partyIdTypeOptions, transferStateOptions } from './constants';
 
 const { Panel } = Collapse;
@@ -352,15 +353,17 @@ const Transfers: FC<ConnectorProps> = ({
           },
     },
   );
-
   if (error) {
     const status = error.networkError?.statusCode;
 
     const isForbidden = status === 403;
-    content = (
-      <MessageBox kind={isForbidden ? 'default' : 'danger'}>
-        {isForbidden ? 'Restricted Access' : `Error fetching transfers: ${error.message}`}
-      </MessageBox>
+    content = isForbidden ? (
+      <ErrorMessageModal
+        errorTitle="Restricted Access"
+        errorMessage="You do not have permission to view this data"
+      />
+    ) : (
+      <MessageBox kind={'danger'}>{`Error fetching transfers: ${error.message}`}</MessageBox>
     );
   } else if (loading) {
     content = <Spinner center />;
