@@ -53,10 +53,10 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
       topThree.push(remainingSummary);
     }
     content = (
-      <PieChart id="ErrorsByTargetCurrencyChart" width={300} height={120}>
+      <PieChart id="ErrorsBySourceCurrencyChart" width={300} height={120}>
         <Legend
-          id="ErrorsByTargetCurrencyChartLegend"
-          name="Target Error Code"
+          id="ErrorsBySourceCurrencyLegend"
+          name="Source Error Code"
           layout="vertical"
           verticalAlign="middle"
           align="right"
@@ -90,7 +90,6 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel }) => {
   }
   return content;
 };
-
 export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(
   BySourceCurrencyChart,
 );

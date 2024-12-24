@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { GET_TRANSFER_SUMMARY_BY_PAYER_DFSP } from 'apollo/query';
+import { GET_TRANSFER_SUMMARY_BY_PAYER } from 'apollo/query';
 import { MessageBox, Spinner } from 'components';
 import React, { FC, useState } from 'react';
 import { connect } from 'react-redux';
@@ -27,7 +27,7 @@ interface ConnectorProps {
 }
 
 const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
-  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_PAYER_DFSP, {
+  const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_PAYER, {
     fetchPolicy: 'no-cache',
     variables: {
       startDate: filtersModel.from,
@@ -51,33 +51,33 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
-    const prunedSummary = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode !== null;
-      })
-      .slice();
-
-    const summary = map(groupBy(prunedSummary, 'payerDFSP'), (ts: any, payerDFSP: string) => {
-      return {
+    const groupedSummary = map(
+      groupBy(
+        data.transferSummary.filter((obj: TransferSummary) => obj.group.errorCode !== null),
+        (item: TransferSummary) => item.group.payerDFSP,
+      ),
+      (groupedItems, payerDFSP) => ({
         payerDFSP,
-        count: sumBy(ts, 'count'),
-      };
-    }).sort((a: TransferSummary, b: TransferSummary) => b.count - a.count);
+        count: sumBy(groupedItems, 'count'),
+      }),
+    );
 
-    const firstThree = summary.slice(0, 3);
+    const sortedSummary = groupedSummary.sort((a, b) => b.count - a.count);
+    const topThree = sortedSummary.slice(0, 3);
     const remainingSummary = {
       payerDFSP: 'Other',
-      count: summary.slice(3).reduce((n: number, { count }: TransferSummary) => n + count, 0),
+      count: sortedSummary.slice(3).reduce((sum, { count }) => sum + count, 0),
     };
+
     if (remainingSummary.count > 0) {
-      firstThree.push(remainingSummary);
+      topThree.push(remainingSummary);
     }
 
     content = (
       <PieChart id="ErrorsByPayerChart" width={300} height={120}>
         <Legend
           id="ErrorsByPayerChartLegend"
-          name="By Payer"
+          name="Payer"
           layout="vertical"
           verticalAlign="middle"
           align="right"
@@ -87,7 +87,7 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           content={renderRedLegend}
         />
         <Pie
-          data={firstThree}
+          data={topThree}
           dataKey="count"
           nameKey="payerDFSP"
           innerRadius={30}
@@ -103,9 +103,9 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange }) => {
           onMouseEnter={onPieEnter}
           onMouseLeave={onPieLeave}
         >
-          {firstThree.map((_entry: any, index: number) => (
+          {topThree.map((_entry, index) => (
             <Cell
-              key={`${_entry.payerDFSP}`}
+              key={_entry.payerDFSP}
               fill={RED_CHART_GRADIENT_COLORS[index % RED_CHART_GRADIENT_COLORS.length]}
             />
           ))}

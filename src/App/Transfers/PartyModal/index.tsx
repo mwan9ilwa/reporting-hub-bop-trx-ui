@@ -3,13 +3,15 @@ import { FormField, Modal } from 'components';
 import { connect } from 'react-redux';
 import { State, Dispatch } from 'store/types';
 import { ReduxContext } from 'store';
-import moment from 'moment';
+import { Transfer } from 'apollo/types';
 import { actions } from '../slice';
 import * as selectors from '../selectors';
 import { PartyModalData } from '../types';
+// import TransferDetails from '../TransferDetails';
 
 const stateProps = (state: State) => ({
   partyModalData: selectors.getSelectedPartyModalData(state),
+  transferDetails: selectors.getSelectedTransfer(state),
 });
 
 const dispatchProps = (dispatch: Dispatch) => ({
@@ -18,10 +20,17 @@ const dispatchProps = (dispatch: Dispatch) => ({
 
 interface ConnectorProps {
   partyModalData: PartyModalData;
+  transferDetails: Transfer;
   onModalCloseClick: () => void;
 }
 
-const JsonModal: FC<ConnectorProps> = ({ partyModalData, onModalCloseClick }) => {
+const JsonModal: FC<ConnectorProps> = ({ partyModalData, transferDetails, onModalCloseClick }) => {
+  // let fspId = partyModalData.type === 'Payer' ? transferDetails.payerDFSP?.toString() || '': transferDetails.payeeDFSP?.toString() || '';
+  const fspId =
+    partyModalData.type === 'Payer'
+      ? transferDetails.payerDFSP?.toString() || ''
+      : transferDetails.payeeDFSP?.toString() || '';
+
   return (
     <Modal
       title={`${partyModalData.type} Information`}
@@ -29,51 +38,27 @@ const JsonModal: FC<ConnectorProps> = ({ partyModalData, onModalCloseClick }) =>
       onClose={onModalCloseClick}
     >
       <FormField.Container direction="row">
-        <FormField disabled type="text" label="Id Type" value={partyModalData.party.idType || ''} />
+        <FormField
+          disabled
+          type="text"
+          label="Id Type"
+          value={partyModalData.party.partyIdType || ''}
+        />
         <FormField
           disabled
           type="text"
           label="Id Value"
-          value={partyModalData.party.idValue || ''}
+          value={partyModalData.party.partyIdentifier?.toString() || ''}
         />
       </FormField.Container>
       <FormField.Container direction="row">
         <FormField
           disabled
           type="text"
-          label="First Name"
-          value={partyModalData.party.firstName || ''}
+          label="Full Name"
+          value={partyModalData.party.partyName || ''}
         />
-        <FormField
-          disabled
-          type="text"
-          label="Middle Name"
-          value={partyModalData.party.middleName || ''}
-        />
-        <FormField
-          disabled
-          type="text"
-          label="Last Name"
-          value={partyModalData.party.lastName || ''}
-        />
-      </FormField.Container>
-      <FormField.Container direction="row">
-        <FormField
-          disabled
-          type="text"
-          label="Date of Birth"
-          value={
-            partyModalData.party.dateOfBirth
-              ? moment(partyModalData.party.dateOfBirth).local().format()
-              : ''
-          }
-        />
-        <FormField
-          disabled
-          type="text"
-          label="FSP Id"
-          value={partyModalData.party.id?.toString() || ''}
-        />
+        <FormField disabled type="text" label="FSP Id" value={fspId} />
       </FormField.Container>
     </Modal>
   );

@@ -35,6 +35,7 @@ const ErrorSummary: FC<ConnectorProps> = ({ filtersModel }) => {
       endDate: filtersModel.to,
     },
   });
+
   let content = null;
 
   if (error) {
@@ -42,19 +43,15 @@ const ErrorSummary: FC<ConnectorProps> = ({ filtersModel }) => {
   } else if (loading) {
     content = <Spinner center />;
   } else {
+    const totalTransactionCount = data.transferSummary.reduce(
+      (total: number, { count }: TransferSummary) => total + count,
+      0,
+    );
     const totalErrorCount = data.transferSummary
-      .filter((obj: TransferSummary) => {
-        return obj.errorCode !== null;
-      })
-      .reduce((n: number, { count }: TransferSummary) => n + count, 0);
-
-    let totalTransferCount = 0;
-    const totalTransfers = data.transferSummary.filter((obj: TransferSummary) => {
-      return obj.errorCode === null;
-    });
-    if (totalTransfers.length > 0) {
-      totalTransferCount = totalTransfers[0].count;
-    }
+      .filter((obj: TransferSummary) => obj.group.errorCode !== null)
+      .reduce((total: number, { count }: TransferSummary) => total + count, 0);
+    const errorPercentage =
+      totalTransactionCount > 0 ? (totalErrorCount / totalTransactionCount) * 100 : 0;
 
     content = (
       <div className="transfer-summary">
@@ -64,11 +61,14 @@ const ErrorSummary: FC<ConnectorProps> = ({ filtersModel }) => {
             compactDisplay: 'short',
           }).format(totalErrorCount)}
         />
-        <Title level={5}>{`${round((totalErrorCount / totalTransferCount) * 100, 2)}%`}</Title>
+        <Title level={5} style={{ color: errorPercentage > 50 ? 'red' : 'green' }}>
+          {round(errorPercentage, 2)}%
+        </Title>
         <Text type="secondary">Total Errors</Text>
       </div>
     );
   }
+
   return content;
 };
 
