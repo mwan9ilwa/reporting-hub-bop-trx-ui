@@ -88,7 +88,8 @@ export type Transfer = {
   transferState?: Maybe<Scalars['String']>;
   transferStateChanges?: Maybe<Scalars['String']>;
   transactionType?: Maybe<Scalars['String']>;
-  errorCode?: Maybe<Scalars['Int']>;
+  // errorCode?: Maybe<Scalars['Int']>;
+  errorCode?: Maybe<Scalars['String']>;
   settlementWindowId?: Maybe<Scalars['Int']>;
   // settlementId?: Maybe<Scalars['Int']>;
   payerDFSP?: Maybe<Scalars['String']>; /// this one
@@ -100,12 +101,14 @@ export type Transfer = {
   payeeParty?: Maybe<Party>;
   quoteRequest?: Maybe<QuoteRequest>;
   transferTerms?: Maybe<TransferTerms>;
-  conversions?: Maybe<Conversions[]>;
+  conversions?: Maybe<Conversions>;
   partyLookupEvents?: Maybe<Scalars['JSONObject']>;
   quoteEvents?: Maybe<Scalars['JSONObject']>;
   transferEvents?: Maybe<Scalars['JSONObject']>;
   settlementEvents?: Maybe<Scalars['JSONObject']>;
   transferSettlementWindowId?: Maybe<Scalars['Int']>;
+  transferSettlementBatchId?: Maybe<Scalars['Int']>;
+  conversionSettlementBatchId?: Maybe<Scalars['Int']>;
   payerPartyId?: Maybe<Scalars['Int']>;
   payeePartyId?: Maybe<Party>;
   quoteRequestId?: Maybe<Scalars['Int']>;
@@ -132,6 +135,10 @@ export type TransferTerms = {
 };
 
 export type Conversions = {
+  payer?: Maybe<ConversionsObject>;
+  payee?: Maybe<ConversionsObject>;
+};
+export type ConversionsObject = {
   conversionRequestId?: Maybe<Scalars['String']>;
   conversionId?: Maybe<Scalars['String']>;
   conversionCommitRequestId?: Maybe<Scalars['String']>;

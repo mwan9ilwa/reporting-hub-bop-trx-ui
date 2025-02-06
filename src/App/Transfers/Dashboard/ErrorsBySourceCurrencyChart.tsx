@@ -14,10 +14,12 @@ const stateProps = (state: State) => ({
   filtersModel: selectors.getTransfersFilter(state),
 });
 const dispatchProps = () => ({});
+
 interface ConnectorProps {
   filtersModel: TransfersFilter;
   onError: (component: string, error: any) => void;
 }
+
 const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY, {
     fetchPolicy: 'no-cache',
@@ -33,6 +35,7 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) =>
   const onPieLeave = () => {
     setActiveIndex(undefined);
   };
+  
   let content = null;
   if (error) {
     const status = error.networkError?.statusCode;
