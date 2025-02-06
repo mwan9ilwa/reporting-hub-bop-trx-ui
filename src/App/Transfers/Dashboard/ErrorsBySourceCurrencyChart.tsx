@@ -35,7 +35,7 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) =>
   const onPieLeave = () => {
     setActiveIndex(undefined);
   };
-  
+
   let content = null;
   if (error) {
     const status = error.networkError?.statusCode;

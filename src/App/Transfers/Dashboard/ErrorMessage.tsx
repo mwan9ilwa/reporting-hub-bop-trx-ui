@@ -29,7 +29,7 @@ const ErrorMessage: FC<ErrorMessageProps> = () => {
           marginRight: '-16px',
         }}
       >
-        <p style={{ fontSize: '14px', fontWeight:'bold' }}>Restricted Access</p>
+        <p style={{ fontSize: '14px', fontWeight: 'bold' }}>Restricted Access</p>
       </MessageBox>
     </div>
   );

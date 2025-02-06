@@ -365,7 +365,7 @@ const Transfers: FC<ConnectorProps> = ({
         errorMessage="You do not have permission to view this data"
       />
     ) : (
-      <MessageBox kind={'danger'}>{`Error fetching transfers: ${error.message}`}</MessageBox>
+      <MessageBox kind="danger">{`Error fetching transfers: ${error.message}`}</MessageBox>
     );
   } else if (loading) {
     content = <Spinner center />;

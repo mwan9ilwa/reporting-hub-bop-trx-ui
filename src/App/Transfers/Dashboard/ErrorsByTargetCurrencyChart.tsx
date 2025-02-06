@@ -29,12 +29,12 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) =>
       endDate: filtersModel.to,
     },
   });
-  
+
   const [activeIndex, setActiveIndex] = useState<number>();
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index);
   };
-  
+
   const onPieLeave = () => {
     setActiveIndex(undefined);
   };
@@ -49,7 +49,8 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) =>
         {isForbidden ? 'Restricted Access' : `Error fetching transfers: ${error.message}`}
       </MessageBox>
     );
-  } else if (loading) {
+  }
+  if (loading) {
     content = <Spinner center />;
   } else {
     const summary = data.transferSummary
