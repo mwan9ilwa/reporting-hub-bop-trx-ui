@@ -356,8 +356,7 @@ const Transfers: FC<ConnectorProps> = ({
     },
   );
   if (error) {
-    const status = error.networkError?.statusCode;
-
+    const status = (error.networkError as { statusCode?: number })?.statusCode;
     const isForbidden = status === 403;
     content = isForbidden ? (
       <ErrorMessageModal
@@ -425,7 +424,7 @@ const Transfers: FC<ConnectorProps> = ({
       />
       <Collapse defaultActiveKey={['1']}>
         <Panel header="Overview for Date Range" key={1}>
-          <Dashboard />
+          <Dashboard filtersModel={filtersModel} />
         </Panel>
       </Collapse>
       <Collapse defaultActiveKey={['1']}>

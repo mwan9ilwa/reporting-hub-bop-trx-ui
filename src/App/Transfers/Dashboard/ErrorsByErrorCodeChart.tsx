@@ -21,7 +21,7 @@ interface ConnectorProps {
   onError: (component: string, error: any) => void;
 }
 
-const ByCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) => {
+const ErrorsByErrorCodeChart: FC<ConnectorProps> = ({ filtersModel, onError }) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY, {
     fetchPolicy: 'no-cache',
     variables: {
@@ -44,10 +44,10 @@ const ByCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) => {
 
   if (error) {
     // Check if the error is a 403
-    const status = error.networkError?.statusCode;
+    const status = (error.networkError as { statusCode?: number })?.statusCode;
 
     const isForbidden = status === 403;
-    onError('BySourceCurrencyChart', error);
+    onError('ErrorsByErrorCodeChart', error);
     content = (
       <MessageBox kind={isForbidden ? 'default' : 'danger'}>
         {isForbidden ? 'Restricted Access' : `Error fetching transfers: ${error.message}`}
@@ -114,4 +114,6 @@ const ByCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) => {
   return content;
 };
 
-export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(ByCurrencyChart);
+export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(
+  ErrorsByErrorCodeChart,
+);

@@ -40,8 +40,8 @@ const ErrorSummary: FC<ConnectorProps> = ({ filtersModel, onError }) => {
   let content = null;
 
   if (error) {
-    const status = error.networkError?.statusCode;
-    onError('BySourceCurrencyChart', error);
+    const status = (error.networkError as { statusCode?: number })?.statusCode;
+    onError('ErrorSummaryChart', error);
     const isForbidden = status === 403;
     content = (
       <MessageBox kind={isForbidden ? 'default' : 'danger'}>

@@ -1,5 +1,5 @@
 import { GET_TRANSFER_SUMMARY_BY_SOURCE_CURRENCY } from 'apollo/query';
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Cell, Legend, Pie, PieChart, Tooltip } from 'recharts';
 import { ReduxContext } from 'store';
@@ -27,7 +27,11 @@ interface ConnectorProps {
   onError: (component: string, error: any) => void;
 }
 
-const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onError }) => {
+const TransfersBySourceCurrencyChart: FC<ConnectorProps> = ({
+  filtersModel,
+  onFilterChange,
+  onError,
+}) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_SOURCE_CURRENCY, {
     fetchPolicy: 'no-cache',
     variables: {
@@ -46,10 +50,17 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
     setActiveIndex(undefined);
   };
 
+  // Ensure onError does not trigger a state update during render
+  useEffect(() => {
+    if (error) {
+      onError('TransfersBySourceCurrencyChart', error);
+    }
+  }, [error, onError]);
+
   let content = null;
+
   if (error) {
-    const status = error.networkError?.statusCode;
-    onError('BySourceCurrencyChart', error);
+    const status = (error.networkError as { statusCode?: number })?.statusCode;
     const isForbidden = status === 403;
     content = (
       <MessageBox kind={isForbidden ? 'default' : 'danger'}>
@@ -148,5 +159,5 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onFilterChang
 };
 
 export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(
-  BySourceCurrencyChart,
+  TransfersBySourceCurrencyChart,
 );

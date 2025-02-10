@@ -37,10 +37,10 @@ const TransferTotalSummary: FC<ConnectorProps> = ({ filtersModel, onError }) => 
   });
   let content = null;
   if (error) {
-    const status = error.networkError?.statusCode;
+    const status = (error.networkError as { statusCode?: number })?.statusCode;
 
     const isForbidden = status === 403;
-    onError('BySourceCurrencyChart', error);
+    onError('TransferTotalSummary', error);
     content = (
       <MessageBox kind={isForbidden ? 'default' : 'danger'}>
         {isForbidden ? 'Restricted Access' : `Error fetching transfers: ${error.message}`}

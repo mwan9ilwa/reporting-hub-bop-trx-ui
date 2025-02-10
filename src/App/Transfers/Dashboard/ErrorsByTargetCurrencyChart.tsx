@@ -21,7 +21,7 @@ interface ConnectorProps {
   onError: (component: string, error: any) => void;
 }
 
-const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) => {
+const ErrorsByTargetCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY, {
     fetchPolicy: 'no-cache',
     variables: {
@@ -40,9 +40,9 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) =>
   };
   let content = null;
   if (error) {
-    const status = error.networkError?.statusCode;
+    const status = (error.networkError as { statusCode?: number })?.statusCode;
     const isForbidden = status === 403;
-    onError('BySourceCurrencyChart', error);
+    onError('ErrorsByTargetCurrencyChart', error);
 
     return (
       <MessageBox kind={isForbidden ? 'default' : 'danger'}>
@@ -107,5 +107,5 @@ const BySourceCurrencyChart: FC<ConnectorProps> = ({ filtersModel, onError }) =>
 };
 
 export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(
-  BySourceCurrencyChart,
+  ErrorsByTargetCurrencyChart,
 );

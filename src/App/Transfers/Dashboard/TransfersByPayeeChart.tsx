@@ -27,7 +27,7 @@ interface ConnectorProps {
   onError: (component: string, error: any) => void;
 }
 
-const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onError }) => {
+const TransfersByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onError }) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_PAYEE_DFSP, {
     fetchPolicy: 'no-cache',
     variables: {
@@ -48,8 +48,8 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onErro
 
   let content = null;
   if (error) {
-    const status = error.networkError?.statusCode;
-    onError('BySourceCurrencyChart', error);
+    const status = (error.networkError as { statusCode?: number })?.statusCode;
+    onError('TransferByPayeeChart', error);
 
     const isForbidden = status === 403;
     content = (
@@ -128,4 +128,6 @@ const ByPayeeChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onErro
   return content;
 };
 
-export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(ByPayeeChart);
+export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(
+  TransfersByPayeeChart,
+);

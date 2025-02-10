@@ -27,7 +27,7 @@ interface ConnectorProps {
   onError: (component: string, error: any) => void;
 }
 
-const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onError }) => {
+const ErrorsByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onError }) => {
   const { loading, error, data } = useQuery(GET_TRANSFER_SUMMARY_BY_PAYER, {
     fetchPolicy: 'no-cache',
     variables: {
@@ -49,9 +49,9 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onErro
   let content = null;
   // Check if the Error is a 403
   if (error) {
-    const status = error.networkError?.statusCode;
+    const status = (error.networkError as { statusCode?: number })?.statusCode;
     const isForbidden = status === 403;
-    onError('ByPayerChart', error);
+    onError('ErrorsByPayerChart', error);
 
     content = (
       <MessageBox kind={isForbidden ? 'default' : 'danger'}>
@@ -128,4 +128,6 @@ const ByPayerChart: FC<ConnectorProps> = ({ filtersModel, onFilterChange, onErro
   return content;
 };
 
-export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(ByPayerChart);
+export default connect(stateProps, dispatchProps, null, { context: ReduxContext })(
+  ErrorsByPayerChart,
+);

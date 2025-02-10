@@ -19,12 +19,11 @@ const dispatchProps = () => ({});
 
 interface ConnectorProps {
   filtersModel: TransfersFilter;
-  onError: (component: string, error: any) => void;
+  onError?: (component: string, error: any) => void;
 }
 
 const Dashboard: FC<ConnectorProps> = () => {
   const [errorComponent, setErrorComponent] = useState<string | null>(null);
-
   // Error handling function
   const handleError = (component: string, error: any) => {
     // Check for a 403 error or any other error
